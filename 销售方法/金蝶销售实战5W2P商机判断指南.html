@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金蝶销售实战 · 5W2P商机判断指南</title>
+<style>
+:root {--primary:#4F46E5;--primary-l:#818CF8;--primary-bg:#EEF2FF;--success:#059669;--success-bg:#D1FAE5;--error:#DC2626;--error-bg:#FEE2E2;--warn:#D97706;--warn-bg:#FEF3C7;--text:#1E293B;--text-s:#475569;--text-t:#94A3B8;--bg:#F8FAFC;--card:#FFFFFF;--border:#E2E8F0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;}
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:4px;padding:10px 16px;flex-wrap:wrap;}
+.nav-btn{padding:8px 18px;border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;background:transparent;color:var(--text-s);transition:all .2s;font-family:inherit;white-space:nowrap;}
+.nav-btn:hover{background:var(--primary-bg);color:var(--primary);}
+.nav-btn.active{background:var(--primary);color:#fff;}
+.hero{margin-top:52px;background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 50%,#9333EA 100%);color:#fff;text-align:center;padding:56px 24px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);top:-150px;right:-80px;border-radius:50%;}
+.hero::after{content:'';position:absolute;width:350px;height:350px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);bottom:-120px;left:-50px;border-radius:50%;}
+.hero h1{font-size:2.6rem;font-weight:800;position:relative;z-index:1;}
+.hero .sub{font-size:1.15rem;opacity:.85;margin-top:10px;position:relative;z-index:1;}
+.hero .tags{display:inline-flex;gap:12px;margin-top:18px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;}
+.hero .tag{background:rgba(255,255,255,.15);padding:6px 16px;border-radius:20px;font-size:.95rem;}
+.section{max-width:1060px;margin:0 auto;padding:40px 24px;}
+.sec-anchor{scroll-margin-top:72px;}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:12px;border-bottom:3px solid var(--primary);}
+.sec-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0;}
+.sec-header h2{font-size:1.65rem;font-weight:700;}
+.sec-header .en{font-size:.8rem;color:var(--text-t);font-weight:400;margin-left:6px;}
+.card{background:var(--card);border-radius:12px;padding:24px 28px;margin-bottom:18px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.02);transition:box-shadow .2s;}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card h3{font-size:1.2rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.card p{margin-bottom:6px;color:var(--text-s);font-size:1.02rem;}
+.card ul{margin:6px 0 6px 18px;color:var(--text-s);font-size:1.02rem;}
+.card li{margin-bottom:4px;}
+.highlight{background:#F0F9FF;border-left:4px solid #3B82F6;border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-size:1.02rem;color:#334155;line-height:1.7;}
+.highlight.warn{background:var(--warn-bg);border-color:var(--warn);}
+.highlight.err{background:var(--error-bg);border-color:var(--error);}
+.highlight.ok{background:var(--success-bg);border-color:var(--success);}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem;}
+th{background:var(--primary-bg);color:var(--primary);padding:10px 14px;text-align:left;font-weight:600;border:1px solid var(--border);}
+td{padding:10px 14px;border:1px solid var(--border);color:var(--text-s);}
+tr:nth-child(even) td{background:#FAFBFC;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+.grid-item{background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--border);}
+.grid-item h4{color:var(--primary);font-size:1rem;margin-bottom:4px;}
+.grid-item p{font-size:.95rem;color:var(--text-s);}
+.step-flow{margin:10px 0;}
+.step{display:flex;gap:12px;padding:10px 0;}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;flex-shrink:0;}
+.step-content{flex:1;}
+.step-content strong{color:var(--text);}
+.step-content p{font-size:.95rem;color:var(--text-s);}
+.footer{text-align:center;padding:30px;color:var(--text-t);font-size:.82rem;border-top:1px solid var(--border);margin-top:20px;}
+@media(max-width:640px){
+  .hero h1{font-size:1.5rem;}
+  .hero{padding:40px 16px 32px;margin-top:48px;}
+  .section{padding:28px 12px;}
+  .card{padding:18px 16px;}
+  .grid-2{grid-template-columns:1fr;}
+  .top-nav{gap:2px;padding:8px 10px;}
+  .nav-btn{padding:5px 10px;font-size:.82rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <button class="nav-btn active" onclick="s('hero',this)">首页</button>
+  <button class="nav-btn" onclick="s('sec-why',this)">WHY</button>
+  <button class="nav-btn" onclick="s('sec-who',this)">WHO</button>
+  <button class="nav-btn" onclick="s('sec-what',this)">WHAT</button>
+  <button class="nav-btn" onclick="s('sec-when',this)">WHEN</button>
+  <button class="nav-btn" onclick="s('sec-whom',this)">WHOM</button>
+  <button class="nav-btn" onclick="s('sec-plan',this)">2P·立项</button>
+  <button class="nav-btn" onclick="s('sec-budget',this)">2P·预算</button>
+</div>
+
+<div class="hero" id="hero">
+  <h1>金蝶销售实战 · 5W2P商机判断指南</h1>
+  <p class="sub">一套框架，帮你快速判断一个商机值不值得打、怎么打</p>
+  <div class="tags">
+    <span class="tag">WHY 采购动机</span>
+    <span class="tag">WHO 决策相关方</span>
+    <span class="tag">WHAT 需求与决策要素</span>
+    <span class="tag">WHEN 时间计划</span>
+    <span class="tag">WHOM 竞争情况</span>
+    <span class="tag">PLAN 立项状态</span>
+    <span class="tag">BUDGET 预算规划</span>
+  </div>
+</div>
+
+<!-- ==================== WHY ==================== -->
+<div class="section sec-anchor" id="sec-why">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#EF4444,#F97316);">W</div>
+    <h2>WHY <span class="en">采购动机 —— 客户为什么现在要买？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>客户发起项目的7种典型动因</h3>
+    <div class="grid-2">
+      <div class="grid-item"><h4>🚀 业务增长驱动</h4><p>业务扩张、新业态上线、管理复杂度超过现有系统能力</p></div>
+      <div class="grid-item"><h4>🏛️ 政策合规驱动</h4><p>信创要求、国产化替代、行业监管新规、集团统一管控</p></div>
+      <div class="grid-item"><h4>🔧 问题爆发驱动</h4><p>现有系统老旧/性能瓶颈/停服、痛点积累到不可忍受</p></div>
+      <div class="grid-item"><h4>👀 机会驱动</h4><p>竞对动作刺激、行业趋势推动、老板外出考察后想落地</p></div>
+      <div class="grid-item"><h4>📈 战略升级驱动</h4><p>企业上市准备、融资后需要规范化、组织架构大调整</p></div>
+      <div class="grid-item"><h4>🔗 生态协同驱动</h4><p>上下游合作伙伴要求系统对接、集团统一平台推广</p></div>
+      <div class="grid-item" style="grid-column:1/3;"><h4>💬 试探性了解（假商机）</h4><p>客户只是看看行业动向、了解一下价格，没有明确诉求和时间表，也没有预算信号。这种商机先别投入太多资源。</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>如何判断动机真伪</h3>
+    <table>
+      <tr><th>判断维度</th><th>真需求信号 ✅</th><th>假需求信号 ❌</th></tr>
+      <tr><td>有没有明确诉求</td><td>客户能清晰说出要解决什么问题</td><td>"先看看"、"了解一下"、"有机会合作"</td></tr>
+      <tr><td>有没有预算信号</td><td>有明确预算或预算编制中</td><td>"还没考虑预算"、"价格无所谓"</td></tr>
+      <tr><td>有没有时间要求</td><td>有明确的deadline或上线时间</td><td>"不着急"、"看情况"、"以后再定"</td></tr>
+      <tr><td>有没有内部推动力</td><td>有具体的人在推、有会议纪要</td><td>只有一个人随口提，没人跟进</td></tr>
+      <tr><td>竞对在不在参与</td><td>已有竞对在接触，说明市场验证过</td><td>完全没竞对——要么假商机，要么你信息滞后</td></tr>
+    </table>
+  </div>
+
+  <div class="highlight warn">
+    <strong>💡 核心判断：</strong>采购动机越"硬"（政策强制、系统不能用了、业务增长的刚需），商机质量越高。动机越"软"（随便看看、老板随口一提），越要控制投入。
+  </div>
+</div>
+
+<!-- ==================== WHO ==================== -->
+<div class="section sec-anchor" id="sec-who">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#3B82F6,#6366F1);">W</div>
+    <h2>WHO <span class="en">决策相关方 —— 谁说了算？谁会反对？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>五类决策角色识别</h3>
+    <table>
+      <tr><th>角色</th><th>典型职位</th><th>核心关注</th><th>你的动作</th></tr>
+      <tr><td><strong>发起者</strong></td><td>业务部门负责人、CIO</td><td>解决自己的痛点、做出业绩</td><td>挖需求、建信任，让他成为你的内部推手</td></tr>
+      <tr><td><strong>使用者</strong></td><td>部门员工、操作人员</td><td>系统好不好用、影不影响我的工作</td><td>倾听他们的槽点，你的方案要解决他们的实际困难</td></tr>
+      <tr><td><strong>技术评估者</strong></td><td>IT负责人、架构师</td><td>技术架构、数据安全、系统集成</td><td>展现技术能力，你的背景在这里是杀手锏</td></tr>
+      <tr><td><strong>决策者</strong></td><td>总经理、分管副总</td><td>ROI、同行案例、战略价值</td><td>讲价值、讲故事、讲趋势，不谈功能</td></tr>
+      <tr><td><strong>审批者</strong></td><td>财务总监、采购部长</td><td>预算合规、流程规范、性价比</td><td>提前沟通、尊重流程、不要让他意外</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>决策流程的四种模式</h3>
+    <table>
+      <tr><th>模式</th><th>特征</th><th>你的应对</th></tr>
+      <tr><td>自上而下型</td><td>老板说了算，下面执行</td><td>先搞定老板，再让下面配合</td></tr>
+      <tr><td>自下而上型</td><td>业务部门推，老板审批</td><td>帮发起者做材料，让他有理由去说服老板</td></tr>
+      <tr><td>集权管控型</td><td>集团统一采购，分公司执行</td><td>双线作战——集团关系 + 分公司实际需求</td></tr>
+      <tr><td>委员会决策型</td><td>多方评估、集体投票</td><td>全面覆盖，一个反对票都可能翻盘</td></tr>
+    </table>
+  </div>
+
+  <div class="highlight warn">
+    <strong>⚠️ 关键问题清单：</strong><br>
+    □ 最终决策者是谁？你见过他了吗？<br>
+    □ 有内线吗？内线可靠吗？<br>
+    □ 谁可能会反对？他的理由是什么？<br>
+    □ 见过所有关键角色了吗？有没有忽视的人？
+  </div>
+</div>
+
+<!-- ==================== WHAT ==================== -->
+<div class="section sec-anchor" id="sec-what">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#059669,#10B981);">W</div>
+    <h2>WHAT <span class="en">需求与决策要素 —— 客户到底要什么？选谁的标准是什么？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>需求三层挖掘法</h3>
+    <div class="step-flow">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><strong>表面需求</strong><p>客户说出来的："我们想上一套ERP"、"需要财务共享"——这只是冰山一角</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><strong>真实痛点</strong><p>深挖一层：为什么现在要上？是库存对不上、还是报表出不来、还是审计过不了？</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><strong>核心动机</strong><p>最底层的东西：老板要上市、集团要管控、竞对抄了后路——这个才是驱动力</p></div></div>
+    </div>
+    <div class="highlight ok">
+      <strong>话术示例：</strong>"王总，您说想上ERP，是什么契机让您现在考虑这个事？这个问题大概给公司带来多少损失？如果不解决，最坏的结果是什么？" —— 这就是从表层挖到底层的追问逻辑。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>客户选型的决策要素排序</h3>
+    <p>每个客户的排序不一样，你必须搞清楚他的前三名：</p>
+    <table>
+      <tr><th>权重</th><th>要素</th><th>说明</th></tr>
+      <tr><td>常见TOP1</td><td>功能匹配度</td><td>能不能解决我的核心痛点？有没有这个行业的经验？</td></tr>
+      <tr><td>常见TOP2</td><td>信任感</td><td>销售是否专业？公司是否靠谱？同行有没有在用？</td></tr>
+      <tr><td>常见TOP3</td><td>价格</td><td>在不在预算内？性价比怎么样？</td></tr>
+      <tr><td>其他</td><td>品牌、服务、技术架构、案例</td><td>越靠后的要素越容易被"谈条件"</td></tr>
+    </table>
+    <div class="highlight warn">
+      <strong>关键：</strong>如果客户的第一要素是"价格"，那风险很大——说明他没有看到差异化的价值。你要做的是帮他重新排顺序，把"信任感"和"功能匹配"提到前面。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>我们的匹配度评估</h3>
+    <table>
+      <tr><th>维度</th><th>高匹配 ✅</th><th>低匹配 ❌</th></tr>
+      <tr><td>产品匹配</td><td>我们的产品能直接解决核心痛点</td><td>需要大量定制或只能用部分功能</td></tr>
+      <tr><td>方案匹配</td><td>有同行业案例，方案可复制</td><td>行业差异大，方案需要从零摸索</td></tr>
+      <tr><td>关系匹配</td><td>关键人认识或愿意了解</td><td>决策层完全不认识，竞对关系深厚</td></tr>
+      <tr><td>服务匹配</td><td>交付能力、本地团队支持到位</td><td>团队能力不足或资源紧张</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== WHEN ==================== -->
+<div class="section sec-anchor" id="sec-when">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#D97706,#F59E0B);">W</div>
+    <h2>WHEN <span class="en">时间计划 —— 什么时候要？时间窗口还有多大？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>项目时间表判断</h3>
+    <table>
+      <tr><th>节点</th><th>要了解什么</th><th>为什么重要</th></tr>
+      <tr><td>立项时间</td><td>什么时候启动的？已经走完流程了吗？</td><td>判断项目的新旧程度，越早介入越好</td></tr>
+      <tr><td>选型截止时间</td><td>什么时候必须定供应商？</td><td>倒逼你的推进节奏，也看竞对的时间线</td></tr>
+      <tr><td>签约时间</td><td>预计什么时候签合同？</td><td>判断你的收款节奏和团队资源安排</td></tr>
+      <tr><td>上线时间</td><td>系统什么时候必须上线？</td><td>紧迫度越高，说明项目越真</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>紧迫度分级</h3>
+    <table>
+      <tr><th>等级</th><th>时间线</th><th>信号</th><th>应对</th></tr>
+      <tr><td>🔴 高紧迫</td><td>1-3个月内要定</td><td>有明确的deadline、有预算、有内部会议纪要</td><td>优先投入资源，快速推进</td></tr>
+      <tr><td>🟡 中紧迫</td><td>3-6个月</td><td>有规划但还没细化，预算在编制中</td><td>保持跟进，控制节奏，不要太过超前</td></tr>
+      <tr><td>🟢 低紧迫</td><td>6个月以上或没时间表</td><td>"先看看"、"明年再考虑"</td><td>低投入维护，等信号出现再加速</td></tr>
+    </table>
+    <div class="highlight warn">
+      <strong>📌 竞对进度判断：</strong>竞接触多久了？到什么阶段了？如果竞对已经跟了3个月而你刚知道，你的策略不是"硬追上"，而是"找差异化突破口"。
+    </div>
+  </div>
+</div>
+
+<!-- ==================== WHOM ==================== -->
+<div class="section sec-anchor" id="sec-whom">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#DC2626,#EF4444);">W</div>
+    <h2>WHOM <span class="en">竞争情况 —— 谁在跟这个单？谁的优势更大？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>竞对渗透程度判断</h3>
+    <table>
+      <tr><th>阶段</th><th>信号</th><th>危险等级</th><th>应对</th></tr>
+      <tr><td>无竞对</td><td>客户只说"就看了你们一家"</td><td>⚠️ 可能是假商机</td><td>确认客户是真的在选型，还是只是随便问问</td></tr>
+      <tr><td>初步接触</td><td>客户提了一嘴也有别家在接触</td><td>🟡 黄色</td><td>加速节奏，建立壁垒</td></tr>
+      <tr><td>方案比较</td><td>要求正式出方案、做对比</td><td>🟠 橙色</td><td>调动资源，必须打赢这场仗</td></tr>
+      <tr><td>倾向竞对</td><td>客户内部有人在推竞对，选型标准偏向竞对</td><td>🔴 红色</td><td>找翻盘点——是关系问题还是方案问题？还是价格问题？</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>竞对类型与应对策略</h3>
+    <table>
+      <tr><th>竞对类型</th><th>优势</th><th>软肋</th><th>你的反制</th></tr>
+      <tr><td>品牌型（用友/SAP）</td><td>品牌响、客户认知度高</td><td>中端产品体验不如金蝶、AI案例少</td><td>打产品体验对比、打AI差异化、打本地服务</td></tr>
+      <tr><td>价格型（中小厂商）</td><td>便宜、灵活</td><td>平台能力弱、无法支撑长期成长</td><td>打平台完整性、打长期价值、打服务保障</td></tr>
+      <tr><td>关系型（有内部人推）</td><td>客户内部有关系</td><td>产品不一定有优势</td><td>用产品/方案/案例击穿关系壁垒</td></tr>
+    </table>
+  </div>
+
+  <div class="highlight warn">
+    <strong>💡 竞争的核心问题：</strong>客户选我们不选别人的理由是什么？这个理由够不够硬？如果答不上来，这个单子就很危险。
+  </div>
+</div>
+
+<!-- ==================== PLAN ==================== -->
+<div class="section sec-anchor" id="sec-plan">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#7C3AED,#8B5CF6);">P</div>
+    <h2>PLAN <span class="en">立项状态 —— 项目到底有没有正式立项？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>立项层级判断</h3>
+    <table>
+      <tr><th>层级</th><th>特征</th><th>商机质量</th><th>应对策略</th></tr>
+      <tr><td>未立项</td><td>口头讨论阶段、没有正式文件</td><td>🟡 低质量</td><td>找到推手，帮客户形成立项文档</td></tr>
+      <tr><td>内部立项</td><td>公司内部有批复、有项目编号</td><td>🟢 中等质量</td><td>加速接触关键人、了解预算来源</td></tr>
+      <tr><td>公开招标</td><td>已发标书、有明确截止时间</td><td>🟢 高质量</td><td>快速响应标书、判断标书倾向性</td></tr>
+      <tr><td>已定供应商</td><td>客户已经有意向供应商了</td><td>🔴 慎入</td><td>除非有颠覆性的翻盘点，否则及时止损</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>未立项项目怎么推进</h3>
+    <ul>
+      <li><strong>找推手：</strong>谁最想推动这个项目？他的动机是什么？帮他把立项材料准备好</li>
+      <li><strong>找决策链：</strong>立项需要谁来批？谁能影响这个人的决定？</li>
+      <li><strong>警惕竞对帮你立项：</strong>如果竞对已经在帮客户写需求、写标书，说明他们已经占了先手</li>
+      <li><strong>设标准：</strong>在客户的立项阶段就把选型标准往你的优势方向引导</li>
+    </ul>
+    <div class="highlight warn">
+      <strong>📌 关键判断：</strong>一个没立项的项目 ≠ 没有价值的项目。很多大单都是从"帮客户立项"开始的。关键是判断——推动立项的人有没有足够的动力和权力？
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BUDGET ==================== -->
+<div class="section sec-anchor" id="sec-budget">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#059669,#34D399);">P</div>
+    <h2>PLAN <span class="en">预算规划 —— 钱从哪来？预算是多少？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>预算状态判断</h3>
+    <table>
+      <tr><th>状态</th><th>信号</th><th>商机判断</th></tr>
+      <tr><td>没预算</td><td>"今年没预算"、"要明年再看"</td><td>除非你能帮客户"挤"出预算，否则暂缓投入</td></tr>
+      <tr><td>预算编制中</td><td>"正在做预算"、"大概在XX范围"</td><td>这不是否定信号！要在预算编制阶段就让客户把你的方案算进去</td></tr>
+      <tr><td>预算已获批</td><td>明确告诉你预算多少、流程已通过</td><td>高质量商机！预算越清晰，说明项目越真</td></tr>
+      <tr><td>已走采购流程</td><td>价格谈判阶段</td><td>机会窗口在关闭，加速推进</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>预算三问</h3>
+    <ul>
+      <li><strong>一问金额：</strong>预算是多少？这个金额跟项目范围匹配吗？如果客户说"预算不多"，要具体问范围</li>
+      <li><strong>二问来源：</strong>IT预算还是业务部门预算？还是专项项目预算？——来源不同，决策流程不同，影响的人也不同</li>
+      <li><strong>三问弹性：</strong>预算是严格框死的还是有谈判空间的？有弹性的预算才有商务谈判余地</li>
+    </ul>
+  </div>
+
+  <div class="highlight ok">
+    <strong>✅ 一句话总结：</strong>有明确预算 + 预算金额合理 + 能找到预算负责人 = 真商机。<br>
+    没预算、预算不清楚、客户不愿意聊预算 = 先别太当真。
+  </div>
+</div>
+
+<!-- ==================== SUMMARY ==================== -->
+<div class="section">
+  <div class="card" style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border-color:var(--primary);">
+    <h3 style="color:var(--primary);font-size:1.3rem;">🎯 5W2P商机速评表（每拿到一个新商机，花5分钟填一遍）</h3>
+    <table>
+      <tr><th>维度</th><th>你的判断</th><th>评分(1-5)</th></tr>
+      <tr><td>WHY 采购动机够硬吗？</td><td></td><td>/5</td></tr>
+      <tr><td>WHO 决策链覆盖了吗？有内线吗？</td><td></td><td>/5</td></tr>
+      <tr><td>WHAT 需求清楚吗？我们匹配度高吗？</td><td></td><td>/5</td></tr>
+      <tr><td>WHEN 时间紧迫吗？</td><td></td><td>/5</td></tr>
+      <tr><td>WHOM 竞对情况清楚吗？我们有差异化优势吗？</td><td></td><td>/5</td></tr>
+      <tr><td>PLAN 立项了吗？</td><td></td><td>/5</td></tr>
+      <tr><td>BUDGET 预算清楚吗？</td><td></td><td>/5</td></tr>
+      <tr><td><strong>总分</strong></td><td></td><td><strong>/35</strong></td></tr>
+    </table>
+    <div class="highlight" style="margin:8px 0 0;">
+      <strong>评分参考：</strong>≥28分 → 好商机，全力投入。21-27分 → 有风险，需要针对性补短板。&lt;21分 → 谨慎投入，先搞清楚能不能打。
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  金蝶软件 · 客户成功业务部 · 内部培训资料<br>
+  编写：聪哥 | 适用对象：新销售 / 销售经理人 | 2026年5月
+</div>
+
+<script>
+var navBtns=document.querySelectorAll('.nav-btn');
+function s(id,btn){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  navBtns.forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+}
+window.addEventListener('scroll',function(){
+  var scrollY=window.scrollY+100;
+  var best=0,bestDist=Infinity;
+  var sections=['hero','sec-why','sec-who','sec-what','sec-when','sec-whom','sec-plan','sec-budget'];
+  sections.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(!el)return;
+    var dist=Math.abs(el.offsetTop-scrollY);
+    if(dist<bestDist){bestDist=dist;best=i;}
+  });
+  navBtns.forEach(function(b,j){
+    b.classList.toggle('active',j===best);
+  });
+});
+</script>
+</body>
+</html>

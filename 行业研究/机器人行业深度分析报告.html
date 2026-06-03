@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国机器人行业深度分析报告</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --kd-gradient-start:#2372EF; --kd-gradient-mid:#238EF7; --kd-gradient-end:#22AAFE;
+    --kd-blue:#2971EB; --kd-skyblue:#22AAFE; --kd-skyL:#00CCFE;
+    --kd-teal:#05C8C8; --kd-purple:#A06EFF; --kd-yellow:#FFB61A;
+    --kd-blue-purple:#28235F; --kd-gray-dark:#3B3838; --kd-gray:#BFBFBF;
+    --kd-light-blue:#E7F1FF; --bg-white:#FFFFFF;
+    --text-primary:#1A1A1A; --text-body:#333333; --text-secondary:#666666;
+    --text-caption:#999999; --text-on-blue:#FFFFFF;
+    --divider:#E5E5E5; --card-bg:#F5F7FA;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",
+                "Segoe UI","Roboto","Helvetica Neue",-apple-system,sans-serif;
+    background:var(--bg-white); color:var(--text-primary); line-height:1.7;
+  }
+  .hero {
+    background:var(--bg-white); position:relative; overflow:hidden;
+    display:flex; align-items:center; padding:0;
+    min-height:100vh; min-height:100dvh;
+  }
+  .hero::before { display:none; }
+  .hero .hero-image {
+    position:absolute; top:-10%; right:0; width:45%; height:120%;
+    object-fit:cover; opacity:0.85; z-index:1;
+  }
+  .hero .logo { position:absolute; top:40px; left:60px; height:48px; z-index:10; }
+  .hero .title-content { padding-left:80px; max-width:55%; z-index:5; }
+  .hero h1 { font-size:56pt; font-weight:700; color:var(--kd-blue); line-height:1.2; max-width:100%; }
+  .hero .subtitle { color:var(--text-secondary); font-size:1.05em; margin-top:18px; }
+  .hero .date-tag {
+    display:inline-block; margin-top:18px; padding:5px 16px; border-radius:16px;
+    background:var(--kd-light-blue); border:1px solid rgba(41,113,235,0.2); color:var(--kd-blue); font-size:0.82em;
+  }
+  .hero .hero-footer { position:absolute; left:80px; bottom:60px; z-index:10; }
+  .hero .hero-author { font-size:24pt; font-weight:600; color:var(--kd-blue); margin-bottom:8px; }
+  .hero .hero-time { font-size:18pt; font-weight:400; color:var(--kd-blue); }
+  .hero .copyright-hero,.hero .conf-hero { position:absolute; bottom:20px; font-size:9.4pt; color:#808080; letter-spacing:1px; }
+  .hero .copyright-hero { left:60px; }
+  .hero .conf-hero { right:60px; }
+  .container { max-width:1200px; margin:0 auto; padding:50px 40px 60px; position:relative; }
+  .exec-summary {
+    background:var(--kd-light-blue); border-left:4px solid var(--kd-blue);
+    border-radius:0 12px 12px 0; padding:28px 32px; margin:30px 0 10px;
+  }
+  .exec-summary h2 {
+    font-size:18pt; font-weight:700; color:var(--kd-blue); margin-bottom:16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .exec-summary h2::before {
+    content:''; display:inline-block; width:6px; height:22px; border-radius:3px;
+    background:linear-gradient(180deg,var(--kd-gradient-start),var(--kd-gradient-end));
+  }
+  .exec-summary ul { list-style:none; padding:0; margin:0; }
+  .exec-summary li {
+    position:relative; padding:8px 0 8px 24px; font-size:12pt; line-height:1.6;
+    color:var(--text-primary); border-bottom:1px dashed rgba(41,113,235,0.15);
+  }
+  .exec-summary li:last-child { border-bottom:none; }
+  .exec-summary li::before {
+    content:''; position:absolute; left:0; top:16px; width:10px; height:10px;
+    border-radius:50%; background:var(--kd-blue);
+  }
+  .exec-summary li strong { color:var(--kd-blue); }
+  .section-title {
+    font-size:22pt; font-weight:700; color:var(--text-primary);
+    margin:52px 0 8px; padding-bottom:14px; border-bottom:3px solid var(--kd-blue);
+    display:flex; align-items:center; gap:14px;
+  }
+  .section-title .num {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:40px; height:40px; border-radius:10px;
+    background:linear-gradient(135deg,var(--kd-gradient-start),var(--kd-gradient-end));
+    color:#fff; font-size:0.55em; font-weight:800; flex-shrink:0;
+  }
+  .section-desc { color:var(--text-secondary); margin-bottom:24px; font-size:12pt; line-height:1.3; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; margin:20px 0; }
+  @media(max-width:900px) { .grid-2,.grid-3 { grid-template-columns:1fr; } .hero .title-content { padding-left:24px; max-width:85%; } .hero .hero-footer { left:24px; bottom:40px; } }
+  .card {
+    background:var(--card-bg); border:1px solid var(--divider); border-radius:12px;
+    padding:24px; transition:box-shadow 0.2s,border-color 0.2s;
+  }
+  .card:hover { box-shadow:0 4px 20px rgba(41,113,235,0.08); border-color:rgba(41,113,235,0.25); }
+  .card h3 { font-size:12pt; font-weight:700; margin-bottom:16px; color:var(--text-primary); display:flex; align-items:center; gap:8px; }
+  .card h3 .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .chart-container { position:relative; width:100%; margin:0 auto; }
+  .chart-container.medium { max-height:360px; }
+  .ba-card {
+    display:grid; grid-template-columns:1fr auto 1fr; gap:0; margin:20px 0;
+    border-radius:12px; overflow:hidden; border:1px solid var(--divider);
+  }
+  .ba-before { background:#F8F8F8; padding:24px; text-align:center; }
+  .ba-before .ba-label { font-size:10pt; color:var(--text-secondary); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+  .ba-before .ba-value { font-size:28pt; font-weight:700; color:var(--kd-gray-dark); }
+  .ba-before .ba-unit { font-size:10pt; color:var(--text-secondary); margin-top:4px; }
+  .ba-arrow {
+    display:flex; align-items:center; justify-content:center; padding:0 16px;
+    background:linear-gradient(180deg,#F8F8F8,var(--kd-light-blue));
+    font-size:20pt; color:var(--kd-blue);
+  }
+  .ba-after { background:var(--kd-light-blue); padding:24px; text-align:center; }
+  .ba-after .ba-label { font-size:10pt; color:var(--kd-blue); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+  .ba-after .ba-value { font-size:28pt; font-weight:700; color:var(--kd-blue); }
+  .ba-after .ba-unit { font-size:10pt; color:var(--kd-blue); margin-top:4px; }
+  .ba-improvement {
+    grid-column:1/-1; text-align:center; padding:10px;
+    background:linear-gradient(135deg,var(--kd-gradient-start),var(--kd-gradient-end));
+    color:#fff; font-size:11pt; font-weight:600;
+  }
+  .prose { font-size:12pt; line-height:1.75; color:var(--text-primary); }
+  .prose p { margin-bottom:14px; }
+  .prose strong { color:var(--kd-blue); font-weight:700; }
+  .table-wrap { overflow-x:auto; margin:20px 0; }
+  table { width:100%; border-collapse:collapse; font-size:10pt; line-height:1.3; }
+  th {
+    background:linear-gradient(135deg,var(--kd-gradient-start),var(--kd-gradient-end));
+    text-align:left; padding:12px 16px; font-weight:600; color:#fff; border:none; white-space:nowrap;
+  }
+  th:first-child { border-radius:8px 0 0 0; }
+  th:last-child { border-radius:0 8px 0 0; }
+  td { padding:11px 16px; border-bottom:1px solid var(--divider); color:var(--text-primary); }
+  tr:hover td { background:var(--kd-light-blue); }
+  .tag { display:inline-block; padding:3px 10px; border-radius:6px; font-size:9pt; font-weight:600; white-space:nowrap; }
+  .tag-blue   { background:rgba(41,113,235,0.1); color:var(--kd-blue); }
+  .tag-green  { background:rgba(5,200,200,0.1); color:var(--kd-teal); }
+  .tag-orange { background:rgba(255,182,26,0.12); color:#D4900A; }
+  .tag-purple { background:rgba(160,110,255,0.1); color:var(--kd-purple); }
+  .tag-cyan   { background:rgba(34,170,254,0.1); color:#1A8AD4; }
+  .tag-red    { background:rgba(235,87,87,0.1); color:#C0392B; }
+  .callout {
+    background:var(--kd-light-blue); border-left:4px solid var(--kd-blue);
+    border-radius:0 10px 10px 0; padding:20px 24px; margin:20px 0; font-size:12pt; line-height:1.6;
+  }
+  .callout strong { color:var(--kd-blue); }
+  .rec-card {
+    background:var(--card-bg); border:1px solid var(--divider); border-radius:12px;
+    padding:24px; position:relative; overflow:hidden;
+  }
+  .rec-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
+  .rec-card.blue::before   { background:linear-gradient(90deg,var(--kd-blue),var(--kd-skyblue)); }
+  .rec-card.green::before  { background:linear-gradient(90deg,var(--kd-teal),var(--kd-skyL)); }
+  .rec-card.purple::before { background:linear-gradient(90deg,var(--kd-purple),#c89bff); }
+  .rec-card.orange::before { background:linear-gradient(90deg,var(--kd-yellow),#FFCF60); }
+  .rec-card .persona { font-size:14pt; font-weight:700; color:var(--text-primary); margin-bottom:4px; }
+  .rec-card .persona-desc { font-size:10pt; color:var(--text-secondary); margin-bottom:16px; }
+  .rec-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; font-size:10pt; line-height:1.5; }
+  .rec-item .label { flex-shrink:0; width:72px; color:var(--text-secondary); font-size:9pt; padding-top:2px; }
+  .rec-item .value { color:var(--text-primary); }
+  .rec-item .value strong { color:var(--kd-blue); font-weight:700; }
+  .sources { margin-top:50px; padding:24px; background:var(--card-bg); border-radius:12px; border:1px solid var(--divider); }
+  .sources h3 { font-size:14pt; font-weight:700; margin-bottom:12px; }
+  .sources a { color:var(--kd-blue); text-decoration:none; font-size:9pt; }
+  .sources a:hover { text-decoration:underline; }
+  .source-item { margin-bottom:6px; color:var(--text-secondary); font-size:9pt; }
+  .source-item .source-note { color:#C0392B; font-style:italic; }
+  .page-footer { max-width:1200px; margin:0 auto; padding:20px 40px 30px; display:flex; justify-content:space-between; font-size:9.4pt; color:#808080; letter-spacing:0.5px; }
+  .kd-content-logo { position:absolute; top:12px; right:40px; height:40px; opacity:0.8; z-index:10; }
+  .tianjin-tag {
+    display:inline-block; padding:2px 8px; border-radius:4px; font-size:8pt; font-weight:700;
+    background:linear-gradient(135deg,#E74C3C,#C0392B); color:#fff; margin-left:6px; vertical-align:middle;
+    letter-spacing:0.5px;
+  }
+  .segment-badge {
+    display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:20px;
+    font-size:11pt; font-weight:700; margin:6px 4px;
+  }
+  .segment-badge.industrial { background:rgba(41,113,235,0.1); color:var(--kd-blue); }
+  .segment-badge.service { background:rgba(5,200,200,0.1); color:var(--kd-teal); }
+  .segment-badge.special { background:rgba(160,110,255,0.1); color:var(--kd-purple); }
+  .segment-badge .icon { font-size:14pt; }
+  @media print {
+    body { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .hero { break-after:page; }
+    .exec-summary { break-after:page; break-inside:avoid; }
+    .section-title { break-after:avoid; break-before:page; }
+    .section-title:first-of-type { break-before:auto; }
+    .card { break-inside:avoid; }
+    .ba-card { break-inside:avoid; }
+    .chart-container { break-inside:avoid; }
+    .table-wrap { break-inside:avoid; }
+    .callout { break-inside:avoid; }
+    .rec-card { break-inside:avoid; }
+    .sources { break-before:page; }
+    .grid-2, .grid-3 { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <img class="logo" src="https://kingdee-cdn.pages.dev/kingdee-blue.png" alt="金蝶Logo">
+  <img class="hero-image" src="https://kingdee-cdn.pages.dev/homepage.png" alt="首页装饰">
+  <div class="title-content">
+    <h1>中国机器人行业<br>深度分析报告</h1>
+    <div class="subtitle">工业机器人 · 服务机器人 · 特种机器人</div>
+    <div class="date-tag">更新于 2026年5月</div>
+  </div>
+  <div class="hero-footer">
+    <div class="hero-author">金蝶软件</div>
+    <div class="hero-time">2026年5月</div>
+  </div>
+  <div class="copyright-hero">版权所有©金蝶国际软件集团有限公司 始创于1993</div>
+  <div class="conf-hero">④内部公开 请勿外传</div>
+</div>
+
+<div class="container">
+  <img class="kd-content-logo" src="https://kingdee-cdn.pages.dev/kingdee-blue.png" alt="金蝶Logo">
+
+<!-- 执行摘要 -->
+<div class="exec-summary">
+  <h2>执行摘要</h2>
+  <ul>
+    <li><strong>市场规模持续扩张</strong>：中国机器人市场规模2025年突破1,800亿元，近5年CAGR达18.2%，工业机器人占半壁江山，服务机器人增速最快</li>
+    <li><strong>国产替代加速</strong>：工业机器人国产化率从2020年的28%提升至2025年的47%，核心零部件（减速器、伺服电机）国产替代进入深水区</li>
+    <li><strong>服务机器人爆发</strong>：商用清洁、配送、手术机器人引领增长，2024-2025年复合增速超35%，To B场景率先规模化落地</li>
+    <li><strong>特种机器人政策驱动</strong>：应急救援、核电巡检、深海探测受"十四五"规划重点扶持，军工与安防需求刚性增长</li>
+    <li><strong>天津产业集群崛起</strong>：天津已成为北方最大的工业机器人产业集聚区，新松天津、清研同创等落户，武清区机器人产业园入驻企业超80家</li>
+    <li><strong>信息化缺口显著</strong>：行业平均IT投入占比仅2.3%，远低于制造业平均水平，供应链协同、成本精细管控、项目制交付管理是三大痛点</li>
+    <li><strong>数字化转型窗口期</strong>：预计2025-2028年机器人企业将进入ERP升级+MES深度集成+AI赋能的集中建设期</li>
+  </ul>
+</div>
+
+<!-- ==================== 01 行业全景概览 ==================== -->
+<h2 class="section-title"><span class="num">01</span> 行业全景概览</h2>
+<p class="section-desc">中国机器人产业规模、增速、政策环境与关键趋势</p>
+
+<div class="grid-2">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-blue)"></span>三大细分市场规模（2025E）</h3>
+    <div class="chart-container medium"><canvas id="chart01_market"></canvas></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-teal)"></span>市场规模增长趋势</h3>
+    <div class="chart-container medium"><canvas id="chart01_trend"></canvas></div>
+  </div>
+</div>
+
+<div class="prose">
+  <p>中国机器人产业已形成<strong>工业机器人、服务机器人、特种机器人</strong>三大细分赛道并行发展的格局。据IFR及中国机器人产业联盟数据，2025年中国机器人市场规模预计达到<strong>1,800亿元</strong>，其中工业机器人约920亿元（51%），服务机器人约580亿元（32%），特种机器人约300亿元（17%）。</p>
+  <p>政策端，<strong>《"十四五"机器人产业发展规划》</strong>明确提出2025年机器人产业营收年均增速超20%、制造业机器人密度较2020年翻番的目标。2024年工信部发布《人形机器人创新发展指导意见》，将人形机器人列为未来产业重点方向。<strong>天津</strong>在《天津市智能制造发展"十四五"规划》中将机器人列为十大重点产业链之一，武清区机器人产业园、滨海新区智能制造基地形成双核驱动。</p>
+</div>
+
+<div class="callout">
+  <strong>关键洞察：</strong>中国已连续11年成为全球最大工业机器人市场，但人均密度仍仅为韩国的1/4、日本的1/2，渗透率提升空间巨大。服务机器人在To B场景（清洁、配送、医疗）率先规模化，特种机器人受国家安全与公共安全需求刚性拉动。
+</div>
+
+<!-- ==================== 02 工业机器人细分深度分析 ==================== -->
+<h2 class="section-title"><span class="num">02</span> 工业机器人：制造升级的核心引擎</h2>
+<p class="section-desc">竞争格局、核心功能、国产替代与天津产业布局</p>
+
+<div class="grid-2">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-blue)"></span>工业机器人市场竞争格局</h3>
+    <div class="chart-container medium"><canvas id="chart02_share"></canvas></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-teal)"></span>核心功能应用分布</h3>
+    <div class="chart-container medium"><canvas id="chart02_func"></canvas></div>
+  </div>
+</div>
+
+<div class="prose">
+  <p><strong>工业机器人</strong>是机器人行业的基本盘，2025年市场规模约920亿元，涵盖搬运、焊接、装配、喷涂、打磨等核心功能场景。中国工业机器人密度2024年达392台/万人（制造业），但较韩国（1,012台）仍有2.5倍提升空间。</p>
+  <p><strong>竞争格局：</strong>四大家族（发那科、ABB、安川、库卡）合计市占率约42%，但国产厂商快速崛起——埃斯顿、汇川技术、新松机器人、埃夫特等国产品牌市占率从2020年的28%提升至2025年的47%。<span class="tianjin-tag">天津</span>新松机器人落户武清区，年产能超5,000台，覆盖焊接、搬运、装配全系列。</p>
+</div>
+
+<!-- 工业机器人核心功能表 -->
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>功能场景</th><th>市场规模（亿元）</th><th>国产化率</th><th>代表企业</th><th>天津标注</th></tr></thead>
+    <tbody>
+      <tr><td>搬运/码垛</td><td>210</td><td>55%</td><td>埃斯顿、埃夫特、新松</td><td><span class="tianjin-tag">天津</span> 新松武清基地</td></tr>
+      <tr><td>焊接</td><td>185</td><td>42%</td><td>埃斯顿、卡诺普、新松</td><td><span class="tianjin-tag">天津</span> 清研同创焊接机器人</td></tr>
+      <tr><td>装配</td><td>165</td><td>35%</td><td>汇川、新松、远也科技</td><td>—</td></tr>
+      <tr><td>喷涂/涂胶</td><td>95</td><td>28%</td><td>埃斯顿、科捷、埃夫特</td><td>—</td></tr>
+      <tr><td>打磨/抛光</td><td>72</td><td>38%</td><td>远也科技、非夕科技</td><td>—</td></tr>
+      <tr><td>冲压/锻造</td><td>68</td><td>32%</td><td>新松、埃斯顿</td><td><span class="tianjin-tag">天津</span> 天津华冲压自动化</td></tr>
+      <tr><td>核心零部件</td><td>125</td><td>30%</td><td>绿的谐波、双环传动、禾川科技</td><td><span class="tianjin-tag">天津</span> 精进电动减速器产线</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>天津产业聚焦：</strong>天津武清机器人产业园已聚集新松、清研同创、华冲压等80+企业，形成"核心零部件+本体+系统集成"完整链条。2024年天津工业机器人产量突破1.2万台，占全国约4.5%，京津冀协同效应显著。
+</div>
+
+<!-- 工业机器人供应链定位图 -->
+<div class="sc-diagram" style="margin:28px 0;padding:0;">
+  <h3 style="font-size:13pt;font-weight:700;margin-bottom:20px;color:var(--text-primary);display:flex;align-items:center;gap:8px;">
+    <span style="width:8px;height:8px;border-radius:50%;background:var(--kd-blue);display:inline-block;"></span>
+    工业机器人产业链定位与上下游协同
+  </h3>
+  <div class="sc-flow" style="display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px;">
+    <div class="sc-layer" style="flex:1;min-width:160px;display:flex;flex-direction:column;">
+      <div class="sc-layer-header" style="text-align:center;padding:10px 12px;font-size:9.5pt;font-weight:700;letter-spacing:0.5px;border-radius:10px 10px 0 0;color:#fff;background:linear-gradient(135deg,#A06EFF,#c89bff);">上游 · 核心零部件</div>
+      <div class="sc-layer-body" style="flex:1;display:flex;flex-direction:column;gap:8px;padding:14px 10px;border:1px solid var(--divider);border-top:none;border-radius:0 0 10px 10px;background:var(--card-bg);">
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">减速器<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">哈默纳科/绿的谐波</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">伺服电机<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">安川/汇川/禾川</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">控制器<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">发那科/卡诺普/固高</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">末端执行器<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">Festo/大然科技</span></div>
+      </div>
+    </div>
+    <div class="sc-arrow-col" style="display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 2px;min-width:36px;">
+      <div class="sc-arrow" style="font-size:18pt;color:var(--kd-blue);">→</div>
+      <div class="sc-arrow-label" style="font-size:7.5pt;color:var(--text-caption);text-align:center;writing-mode:vertical-lr;letter-spacing:1px;margin-top:6px;">供应/定制</div>
+    </div>
+    <div class="sc-layer highlight" style="flex:1;min-width:160px;display:flex;flex-direction:column;">
+      <div class="sc-layer-header" style="text-align:center;padding:10px 12px;font-size:9.5pt;font-weight:700;letter-spacing:0.5px;border-radius:10px 10px 0 0;color:#fff;background:linear-gradient(135deg,var(--kd-gradient-start),var(--kd-gradient-end));">中游 · 本体制造</div>
+      <div class="sc-layer-body" style="flex:1;display:flex;flex-direction:column;gap:8px;padding:14px 10px;border:1px solid var(--kd-blue);border-top:none;border-radius:0 0 10px 10px;background:var(--kd-light-blue);box-shadow:0 4px 24px rgba(41,113,235,0.12);">
+        <div class="sc-node core" style="padding:8px 10px;border-radius:8px;font-size:10pt;line-height:1.4;text-align:center;color:#fff;font-weight:700;background:linear-gradient(135deg,var(--kd-gradient-start),var(--kd-gradient-end));border:none;">工业机器人本体<span style="font-size:8pt;color:rgba(255,255,255,0.7);display:block;margin-top:2px;">6轴/SCARA/协作</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">新松/埃斯顿<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">6轴重载/焊接</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">汇川/埃夫特<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">SCARA/协作</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);"><span class="tianjin-tag" style="font-size:7pt;padding:1px 5px;margin:0;">天津</span> 清研同创<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">焊接专用本体</span></div>
+      </div>
+    </div>
+    <div class="sc-arrow-col" style="display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 2px;min-width:36px;">
+      <div class="sc-arrow" style="font-size:18pt;color:var(--kd-blue);">→</div>
+      <div class="sc-arrow-label" style="font-size:7.5pt;color:var(--text-caption);text-align:center;writing-mode:vertical-lr;letter-spacing:1px;margin-top:6px;">配套/集成</div>
+    </div>
+    <div class="sc-layer" style="flex:1;min-width:160px;display:flex;flex-direction:column;">
+      <div class="sc-layer-header" style="text-align:center;padding:10px 12px;font-size:9.5pt;font-weight:700;letter-spacing:0.5px;border-radius:10px 10px 0 0;color:#fff;background:linear-gradient(135deg,var(--kd-teal),var(--kd-skyL));">下游 · 系统集成</div>
+      <div class="sc-layer-body" style="flex:1;display:flex;flex-direction:column;gap:8px;padding:14px 10px;border:1px solid var(--divider);border-top:none;border-radius:0 0 10px 10px;background:var(--card-bg);">
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">汽车产线集成<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">大连奥托/明珞装备</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">3C电子集成<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">拓斯达/博实股份</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">物流仓储集成<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">极智嘉/海康机器人</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">金属加工集成<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">瑞松科技/华昌达</span></div>
+      </div>
+    </div>
+    <div class="sc-arrow-col" style="display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 2px;min-width:36px;">
+      <div class="sc-arrow" style="font-size:18pt;color:var(--kd-blue);">→</div>
+      <div class="sc-arrow-label" style="font-size:7.5pt;color:var(--text-secondary);text-align:center;writing-mode:vertical-lr;letter-spacing:1px;margin-top:6px;">产线/服务</div>
+    </div>
+    <div class="sc-layer" style="flex:1;min-width:160px;display:flex;flex-direction:column;">
+      <div class="sc-layer-header" style="text-align:center;padding:10px 12px;font-size:9.5pt;font-weight:700;letter-spacing:0.5px;border-radius:10px 10px 0 0;color:#fff;background:linear-gradient(135deg,var(--kd-blue-purple),#3d3578);">终端 · 应用行业</div>
+      <div class="sc-layer-body" style="flex:1;display:flex;flex-direction:column;gap:8px;padding:14px 10px;border:1px solid var(--divider);border-top:none;border-radius:0 0 10px 10px;background:var(--card-bg);">
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">汽车制造<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">占比33%</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">3C电子<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">占比22%</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">金属加工<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">占比12%</span></div>
+        <div class="sc-node" style="padding:8px 10px;border-radius:8px;font-size:9pt;line-height:1.4;text-align:center;color:var(--text-primary);background:#fff;border:1px solid var(--divider);">仓储物流<span style="font-size:8pt;color:var(--text-secondary);display:block;margin-top:2px;">占比9%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 03 服务机器人细分深度分析 ==================== -->
+<h2 class="section-title"><span class="num">03</span> 服务机器人：场景驱动的爆发赛道</h2>
+<p class="section-desc">商用清洁、配送、医疗、家用场景的功能拆解与市场机会</p>
+
+<div class="grid-2">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-teal)"></span>服务机器人细分场景占比</h3>
+    <div class="chart-container medium"><canvas id="chart03_share"></canvas></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-purple)"></span>服务机器人增长趋势</h3>
+    <div class="chart-container medium"><canvas id="chart03_trend"></canvas></div>
+  </div>
+</div>
+
+<div class="prose">
+  <p><strong>服务机器人</strong>是增速最快的细分赛道，2025年市场规模约580亿元，2022-2025年CAGR达35.2%。驱动力来自人口老龄化（护理需求）、人力成本攀升（商用替代）和技术成熟度跃升（SLAM导航、多模态感知）。</p>
+  <p>从功能场景看，<strong>商用清洁机器人</strong>（酒店、商场、医院）率先规模化落地，单台回本周期约12-18个月；<strong>配送机器人</strong>在餐饮、酒店、医院场景快速渗透；<strong>手术机器人</strong>高壁垒高毛利，达芬奇国产替代加速；<strong>家用陪伴/教育机器人</strong>市场渗透率仍低于3%，增长潜力巨大。</p>
+</div>
+
+<!-- 服务机器人核心功能表 -->
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>功能场景</th><th>市场规模（亿元）</th><th>增速(CAGR)</th><th>代表企业</th><th>天津标注</th></tr></thead>
+    <tbody>
+      <tr><td>商用清洁</td><td>135</td><td>38%</td><td>高仙机器人、科沃斯商用、亿嘉和</td><td>—</td></tr>
+      <tr><td>配送/物流</td><td>120</td><td>42%</td><td>普渡科技、擎朗智能、优地科技</td><td>—</td></tr>
+      <tr><td>手术/医疗</td><td>105</td><td>32%</td><td>微创机器人、天智航、精锋医疗</td><td><span class="tianjin-tag">天津</span> 天智航天津运营中心</td></tr>
+      <tr><td>酒店/接待</td><td>68</td><td>35%</td><td>擎朗智能、云迹科技、洛必德</td><td>—</td></tr>
+      <tr><td>家用陪伴/教育</td><td>82</td><td>25%</td><td>优必选、科大讯飞、小米</td><td>—</td></tr>
+      <tr><td>康复/助老</td><td>45</td><td>40%</td><td>傅利叶、程天科技、迈步机器人</td><td><span class="tianjin-tag">天津</span> 傅利叶天津研发中心</td></tr>
+      <tr><td>农业/植保</td><td>25</td><td>28%</td><td>极飞科技、大疆农业、拓攻机器人</td><td>—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout">
+  <strong>关键洞察：</strong>服务机器人To B场景率先规模化的核心逻辑——可量化的ROI。商用清洁机器人单台年节省人工成本约8-12万元，12-18个月回本。配送机器人降低餐饮/酒店人力成本30%-50%。建议关注医疗手术机器人赛道——技术壁垒高、政策扶持力度大、国产替代空间广阔。
+</div>
+
+<!-- ==================== 04 特种机器人细分深度分析 ==================== -->
+<h2 class="section-title"><span class="num">04</span> 特种机器人：国家战略驱动的刚性需求</h2>
+<p class="section-desc">应急救援、核电巡检、军工安防、深海/深空探测的功能覆盖与政策红利</p>
+
+<div class="grid-2">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-purple)"></span>特种机器人应用领域分布</h3>
+    <div class="chart-container medium"><canvas id="chart04_share"></canvas></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-yellow)"></span>特种机器人核心能力雷达</h3>
+    <div class="chart-container medium"><canvas id="chart04_radar"></canvas></div>
+  </div>
+</div>
+
+<div class="prose">
+  <p><strong>特种机器人</strong>2025年市场规模约300亿元，增速稳健（CAGR约22%），驱动力来自国家安全需求与公共安全升级。<strong>应急救援机器人</strong>是最大细分市场（消防灭火、地震搜救、水域救援），受应急管理部装备采购拉动；<strong>核电巡检机器人</strong>受益于核电重启及在运机组运维需求；<strong>军工安防机器人</strong>在边防巡逻、排爆反恐、战场侦察场景需求刚性。</p>
+  <p><span class="tianjin-tag">天津</span>在特种机器人领域具备独特优势——<strong>国家超级计算天津中心</strong>为特种机器人AI算法提供算力支撑，<strong>天津大学机器人与自主系统研究所</strong>在深海探测和水下机器人领域国内领先。滨海新区聚集了一批军工配套企业，具备特种机器人系统集成能力。</p>
+</div>
+
+<!-- 特种机器人核心功能表 -->
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>功能场景</th><th>市场规模（亿元）</th><th>增速(CAGR)</th><th>代表企业</th><th>天津标注</th></tr></thead>
+    <tbody>
+      <tr><td>应急救援/消防</td><td>85</td><td>25%</td><td>中信重工、凌天智能、海伦哲</td><td>—</td></tr>
+      <tr><td>核电巡检</td><td>42</td><td>30%</td><td>中广核达胜、国自机器人、亿嘉和</td><td>—</td></tr>
+      <tr><td>军工安防</td><td>65</td><td>18%</td><td>高德红外、航天科工、华微电子</td><td><span class="tianjin-tag">天津</span> 航天科工三五三一厂</td></tr>
+      <tr><td>水下/深海</td><td>38</td><td>22%</td><td>深之蓝、博雅工道、鳍源科技</td><td><span class="tianjin-tag">天津</span> 深之蓝总部+天大研究所</td></tr>
+      <tr><td>矿山/管道</td><td>35</td><td>20%</td><td>天地科技、中煤科工、亿嘉和</td><td>—</td></tr>
+      <tr><td>空间/星球探测</td><td>25</td><td>15%</td><td>航天五院、中科院沈自所</td><td>—</td></tr>
+      <tr><td>农业/林业</td><td>10</td><td>18%</td><td>林海集团、极飞科技</td><td>—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== 05 三大细分横向对比 ==================== -->
+<h2 class="section-title"><span class="num">05</span> 三大细分领域横向对比</h2>
+<p class="section-desc">市场规模、增速、壁垒、国产化、信息化需求的全面对比</p>
+
+<div class="grid-2">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-blue)"></span>三大细分领域综合能力对比</h3>
+    <div class="chart-container medium"><canvas id="chart05_radar"></canvas></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-teal)"></span>信息化痛点严重度排名</h3>
+    <div class="chart-container medium"><canvas id="chart05_pain"></canvas></div>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>对比维度</th><th>工业机器人</th><th>服务机器人</th><th>特种机器人</th></tr></thead>
+    <tbody>
+      <tr><td>市场规模(2025E)</td><td>920亿元</td><td>580亿元</td><td>300亿元</td></tr>
+      <tr><td>CAGR(22-25)</td><td>15%</td><td>35%</td><td>22%</td></tr>
+      <tr><td>技术壁垒</td><td><span class="tag tag-blue">高</span> 精密控制</td><td><span class="tag tag-green">中</span> AI+导航</td><td><span class="tag tag-purple">极高</span> 特种环境</td></tr>
+      <tr><td>国产化率</td><td>47%</td><td>68%</td><td>55%</td></tr>
+      <tr><td>盈利模式</td><td>设备+维保</td><td>RaaS/设备</td><td>项目制+定制</td></tr>
+      <tr><td>IT投入占比</td><td>2.5%</td><td>1.8%</td><td>3.2%</td></tr>
+      <tr><td>供应链复杂度</td><td><span class="tag tag-orange">极高</span></td><td><span class="tag tag-blue">高</span></td><td><span class="tag tag-green">中</span></td></tr>
+      <tr><td>天津布局</td><td><span class="tianjin-tag">天津</span> 80+企业</td><td><span class="tianjin-tag">天津</span> 3-5家</td><td><span class="tianjin-tag">天津</span> 5-8家</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== 06 行业核心痛点 ==================== -->
+<h2 class="section-title"><span class="num">06</span> 行业核心痛点</h2>
+<p class="section-desc">机器人企业在供应链、成本管控、项目交付、数据协同方面的管理挑战</p>
+
+<div class="grid-3">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-blue)"></span>供应链协同断裂</h3>
+    <div class="prose" style="font-size:10pt;">
+      <p>核心零部件（减速器/伺服）采购周期长、价格波动大，国产替代进程中供应商切换频繁。BOM多版本管理混乱，设计变更无法实时联动采购和生产。</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-purple)"></span>成本精细管控难</h3>
+    <div class="prose" style="font-size:10pt;">
+      <p>项目制生产模式下，料工费归集粗放，实际成本与报价偏差大（平均偏差率15%-25%）。多组织/多基地协同成本分摊规则不清，利润中心核算不准。</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-teal)"></span>项目交付管控弱</h3>
+    <div class="prose" style="font-size:10pt;">
+      <p>系统集成项目周期长（3-18个月），里程碑管控依赖人工，延期率高达40%。交付过程中的变更管理、验收回款缺乏系统化流程支撑。</p>
+    </div>
+  </div>
+</div>
+
+<div class="prose">
+  <p>除上述三大共性痛点外，各细分领域还有差异化挑战：<strong>工业机器人</strong>面临产能排程复杂（多品种小批量）和质量管理追溯难的问题；<strong>服务机器人</strong>受困于C端销售渠道管理和RaaS模式下的资产运营管理；<strong>特种机器人</strong>的核心痛点在军工/政府客户的项目预算管理和合规审计。</p>
+</div>
+
+<!-- Before/After -->
+<div class="ba-card">
+  <div class="ba-before">
+    <div class="ba-label">转型前</div>
+    <div class="ba-value">40%</div>
+    <div class="ba-unit">项目延期率</div>
+  </div>
+  <div class="ba-arrow">→</div>
+  <div class="ba-after">
+    <div class="ba-label">转型后</div>
+    <div class="ba-value">12%</div>
+    <div class="ba-unit">项目延期率</div>
+  </div>
+  <div class="ba-improvement">改善幅度：70% | 数据来源：金蝶标杆客户实施数据（截至2025年）</div>
+</div>
+
+<div class="ba-card">
+  <div class="ba-before">
+    <div class="ba-label">转型前</div>
+    <div class="ba-value">22%</div>
+    <div class="ba-unit">成本偏差率</div>
+  </div>
+  <div class="ba-arrow">→</div>
+  <div class="ba-after">
+    <div class="ba-label">转型后</div>
+    <div class="ba-value">5%</div>
+    <div class="ba-unit">成本偏差率</div>
+  </div>
+  <div class="ba-improvement">改善幅度：77% | 数据来源：金蝶标杆客户实施数据（截至2025年）</div>
+</div>
+
+<!-- ==================== 07 信息化/数字化价值 ==================== -->
+<h2 class="section-title"><span class="num">07</span> 信息化/数字化价值</h2>
+<p class="section-desc">机器人行业数字化转型ROI、IT投入趋势与金蝶方案价值点</p>
+
+<div class="grid-2">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-blue)"></span>机器人行业IT投入趋势</h3>
+    <div class="chart-container medium"><canvas id="chart07_it"></canvas></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-teal)"></span>数字化转型价值分布</h3>
+    <div class="chart-container medium"><canvas id="chart07_value"></canvas></div>
+  </div>
+</div>
+
+<div class="prose">
+  <p>机器人行业IT投入占营收比平均仅<strong>2.3%</strong>，远低于制造业平均水平（3.5%）。但2024-2025年出现拐点——头部企业ERP升级+MES深度集成+AI赋能项目集中启动，预计2026-2028年IT投入占比将提升至3.5%-4.5%。</p>
+  <p><strong>四大数字化价值方向：</strong></p>
+  <p>① <strong>供应链协同</strong>：打通BOM-采购-生产-交付全链路，设计变更实时联动，采购周期缩短20%-30%；</p>
+  <p>② <strong>成本精细管控</strong>：项目制料工费实时归集，多组织成本分摊自动化，成本偏差率从20%+降至5%以内；</p>
+  <p>③ <strong>项目交付管控</strong>：里程碑自动预警、变更在线审批、验收回款系统化，项目延期率降低60%-70%；</p>
+  <p>④ <strong>质量全追溯</strong>：从零部件批次到成品出库全链路追溯，客诉响应时间缩短50%。</p>
+</div>
+
+<!-- ==================== 08 金蝶解决方案 ==================== -->
+<h2 class="section-title"><span class="num">08</span> 金蝶解决方案</h2>
+<p class="section-desc">面向机器人行业的金蝶产品矩阵与核心能力匹配</p>
+
+<div class="grid-3">
+  <div class="rec-card blue">
+    <div class="persona">工业机器人企业</div>
+    <div class="persona-desc">本体制造/系统集成商</div>
+    <div class="rec-item"><div class="label">推荐产品</div><div class="value"><strong>金蝶云·星瀚</strong></div></div>
+    <div class="rec-item"><div class="label">核心场景</div><div class="value">供应链协同、智能排产(APS)、MES集成、质量管理、多组织成本核算</div></div>
+    <div class="rec-item"><div class="label">差异化价值</div><div class="value">BOM多版本联动采购+生产，项目制成本实时归集，集团多基地协同</div></div>
+  </div>
+  <div class="rec-card green">
+    <div class="persona">服务机器人企业</div>
+    <div class="persona-desc">商用清洁/配送/医疗</div>
+    <div class="rec-item"><div class="label">推荐产品</div><div class="value"><strong>金蝶云·星辰</strong></div></div>
+    <div class="rec-item"><div class="label">核心场景</div><div class="value">全渠道销售管理、RaaS资产运营、供应链管理、多维度盈利分析</div></div>
+    <div class="rec-item"><div class="label">差异化价值</div><div class="value">RaaS模式下合同/资产/收入一体化，渠道分销全链路管控</div></div>
+  </div>
+  <div class="rec-card purple">
+    <div class="persona">特种机器人企业</div>
+    <div class="persona-desc">军工/安防/应急救援</div>
+    <div class="rec-item"><div class="label">推荐产品</div><div class="value"><strong>金蝶云·苍穹</strong></div></div>
+    <div class="rec-item"><div class="label">核心场景</div><div class="value">项目预算管理、合同履约跟踪、合规审计、科研核算、军工资质管理</div></div>
+    <div class="rec-item"><div class="label">差异化价值</div><div class="value">项目制全生命周期管控，军工资质/保密合规内置，PaaS平台深度定制</div></div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>天津市场机会：</strong>天津机器人产业园80+企业中，约60%仍使用传统财务软件或基础ERP，MES普及率低于30%，数字化转型空间巨大。金蝶天津分公司可重点聚焦武清区机器人产业集群，以星瀚+星辰双产品线覆盖中大型和成长型企业。建议以"供应链协同+项目成本管控"作为主打场景切入。
+</div>
+
+<!-- ==================== 09 趋势研判与建议 ==================== -->
+<h2 class="section-title"><span class="num">09</span> 趋势研判与建议</h2>
+<p class="section-desc">未来3-5年技术演进、市场变化与行动建议</p>
+
+<div class="grid-2">
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-blue)"></span>机器人行业成熟度演进</h3>
+    <div class="chart-container medium"><canvas id="chart09_polar"></canvas></div>
+  </div>
+  <div class="card">
+    <h3><span class="dot" style="background:var(--kd-purple)"></span>重点投资方向评估</h3>
+    <div class="chart-container medium"><canvas id="chart09_bubble"></canvas></div>
+  </div>
+</div>
+
+<div class="prose">
+  <p><strong>趋势1：人形机器人进入产业化前夜。</strong>特斯拉Optimus、优必选Walker S等产品推动人形机器人从实验室走向工厂，预计2027-2028年实现小批量商用，初期场景聚焦3C装配和仓储物流。</p>
+  <p><strong>趋势2：AI+机器人深度融合。</strong>大模型赋能机器人"理解-决策-执行"闭环，视觉识别准确率从85%提升至97%，自然语言交互替代传统示教编程，降低使用门槛。</p>
+  <p><strong>趋势3：国产替代从本体向核心零部件纵深推进。</strong>谐波减速器国产化率已达45%，RV减速器从15%向30%突破，控制器和伺服电机国产化率2025年分别达50%和40%。</p>
+  <p><strong>趋势4：产业集群化加速。</strong><span class="tianjin-tag">天津</span>、深圳、上海、沈阳四大机器人产业集聚区效应凸显，天津凭借京津冀协同和港口物流优势，在仓储物流机器人和特种机器人领域具备差异化竞争力。</p>
+</div>
+
+<div class="callout">
+  <strong>行动建议：</strong>① 打单优先聚焦工业机器人本体/系统集成商（IT需求最成熟、客单价最高）；② 以"供应链协同+项目成本"双场景切入，3个月内出POC；③ 天津区域重点跟进武清机器人产业园和滨海新区企业，借助产业集群效应实现"打一单带一片"；④ 服务机器人赛道关注RaaS模式下的合同资产一体化管理需求（星辰差异化卖点）；⑤ 特种机器人赛道以苍穹PaaS平台深度定制能力为破局点。
+</div>
+
+<!-- Sources -->
+<div class="sources">
+  <h3>数据来源</h3>
+  <div class="source-item">[1] IFR（国际机器人联合会）World Robotics 2024/2025 Report</div>
+  <div class="source-item">[2] 中国机器人产业联盟《中国机器人产业发展报告2024》</div>
+  <div class="source-item">[3] 工信部《"十四五"机器人产业发展规划》</div>
+  <div class="source-item">[4] 工信部《人形机器人创新发展指导意见》(2024)</div>
+  <div class="source-item">[5] 高工机器人《2024年中国工业机器人市场研究报告》</div>
+  <div class="source-item">[6] 亿欧智库《中国服务机器人行业研究报告2025》 <span class="source-note">（单一来源估算）</span></div>
+  <div class="source-item">[7] 前瞻产业研究院《中国特种机器人行业深度调研2025》 <span class="source-note">（单一来源估算）</span></div>
+  <div class="source-item">[8] 天津市工信局《天津市智能制造发展"十四五"规划》</div>
+  <div class="source-item">[9] 武清区政府《武清区机器人产业园年度发展报告2024》</div>
+  <div class="source-item">[10] 金蝶标杆客户实施数据（内部数据，截至2025年）</div>
+  <div class="source-item" style="margin-top:12px;color:var(--text-caption);font-style:italic;">注：部分市场数据基于公开报告估算，实际数据以各权威机构最新发布为准。标注"单一来源估算"的数据仅有单一信息源佐证。</div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="page-footer">
+  <span>版权所有©金蝶国际软件集团有限公司 始创于1993</span>
+  <span>④内部公开 请勿外传</span>
+</div>
+
+<!-- Charts JS -->
+<script>
+const KD = {
+  blue:'#2971EB', blueLight:'#238EF7', skyblue:'#22AAFE',
+  skyL:'#00CCFE', teal:'#05C8C8', purple:'#A06EFF',
+  yellow:'#FFB61A', bluePurple:'#28235F', gray:'#BFBFBF'
+};
+Chart.defaults.color = '#666666';
+Chart.defaults.borderColor = '#E5E5E5';
+Chart.defaults.font.family = "'Microsoft YaHei','PingFang SC','Segoe UI',sans-serif";
+Chart.defaults.font.size = 11;
+const gridColor = 'rgba(229,229,229,0.7)';
+
+// Chart 01: 三大细分市场规模 (Doughnut)
+new Chart(document.getElementById('chart01_market'), {
+  type: 'doughnut',
+  data: {
+    labels: ['工业机器人 920亿','服务机器人 580亿','特种机器人 300亿'],
+    datasets: [{
+      data: [920, 580, 300],
+      backgroundColor: [KD.blue, KD.teal, KD.purple],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true, cutout:'58%',
+    plugins: {
+      legend:{ position:'bottom', labels:{ padding:14, usePointStyle:true, pointStyleWidth:10, font:{size:11} } },
+      tooltip:{ callbacks:{ label: ctx=>`${ctx.label}` } }
+    }
+  }
+});
+
+// Chart 01: 市场规模增长趋势 (Line)
+new Chart(document.getElementById('chart01_trend'), {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025E'],
+    datasets: [
+      { label:'工业机器人', data:[520,580,650,750,840,920], borderColor:KD.blue, backgroundColor:'rgba(41,113,235,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2 },
+      { label:'服务机器人', data:[180,240,310,400,480,580], borderColor:KD.teal, backgroundColor:'rgba(5,200,200,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2 },
+      { label:'特种机器人', data:[120,145,175,210,250,300], borderColor:KD.purple, backgroundColor:'rgba(160,110,255,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: {
+      y: { grid:{color:gridColor}, title:{display:true,text:'亿元'} },
+      x: { grid:{display:false} }
+    },
+    plugins: { legend:{ position:'bottom', labels:{padding:14,usePointStyle:true,font:{size:11}} } }
+  }
+});
+
+// Chart 02: 工业机器人竞争格局 (Doughnut)
+new Chart(document.getElementById('chart02_share'), {
+  type: 'doughnut',
+  data: {
+    labels: ['发那科 14%','ABB 11%','安川 9%','库卡 8%','埃斯顿 8%','汇川 6%','新松 5%','其他 39%'],
+    datasets: [{
+      data: [14,11,9,8,8,6,5,39],
+      backgroundColor: [KD.blue, KD.skyblue, KD.teal, KD.skyL, KD.purple, KD.yellow, '#FF6B6B', KD.gray],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true, cutout:'50%',
+    plugins: {
+      legend:{ position:'bottom', labels:{ padding:10, usePointStyle:true, pointStyleWidth:10, font:{size:9} } },
+      tooltip:{ callbacks:{ label: ctx=>`${ctx.label}` } }
+    }
+  }
+});
+
+// Chart 02: 工业机器人核心功能分布 (PolarArea)
+new Chart(document.getElementById('chart02_func'), {
+  type: 'polarArea',
+  data: {
+    labels: ['搬运/码垛','焊接','装配','喷涂/涂胶','打磨/抛光','冲压/锻造'],
+    datasets: [{
+      data: [210, 185, 165, 95, 72, 68],
+      backgroundColor: ['rgba(41,113,235,0.55)','rgba(160,110,255,0.55)','rgba(5,200,200,0.55)','rgba(255,182,26,0.55)','rgba(0,204,254,0.55)','rgba(255,107,107,0.55)'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: { r:{ beginAtZero:true, ticks:{display:false,stepSize:50}, grid:{color:gridColor} } },
+    plugins: { legend:{ position:'bottom', labels:{padding:10,usePointStyle:true,font:{size:9}} } }
+  }
+});
+
+// Chart 03: 服务机器人场景占比 (Doughnut)
+new Chart(document.getElementById('chart03_share'), {
+  type: 'doughnut',
+  data: {
+    labels: ['商用清洁 135亿','配送/物流 120亿','手术/医疗 105亿','家用陪伴 82亿','酒店/接待 68亿','康复/助老 45亿','农业/植保 25亿'],
+    datasets: [{
+      data: [135, 120, 105, 82, 68, 45, 25],
+      backgroundColor: [KD.teal, KD.blue, KD.purple, KD.yellow, KD.skyblue, '#FF6B6B', KD.skyL],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true, cutout:'50%',
+    plugins: {
+      legend:{ position:'bottom', labels:{ padding:8, usePointStyle:true, pointStyleWidth:10, font:{size:9} } },
+      tooltip:{ callbacks:{ label: ctx=>`${ctx.label}` } }
+    }
+  }
+});
+
+// Chart 03: 服务机器人增长趋势 (Line)
+new Chart(document.getElementById('chart03_trend'), {
+  type: 'line',
+  data: {
+    labels: ['2022','2023','2024','2025E','2026E','2027E'],
+    datasets: [
+      { label:'商用清洁', data:[45,72,100,135,175,220], borderColor:KD.teal, backgroundColor:'rgba(5,200,200,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2 },
+      { label:'配送机器人', data:[35,55,85,120,160,210], borderColor:KD.blue, backgroundColor:'rgba(41,113,235,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2 },
+      { label:'手术/医疗', data:[40,58,78,105,135,170], borderColor:KD.purple, backgroundColor:'rgba(160,110,255,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: {
+      y: { grid:{color:gridColor}, title:{display:true,text:'亿元'} },
+      x: { grid:{display:false} }
+    },
+    plugins: { legend:{ position:'bottom', labels:{padding:14,usePointStyle:true,font:{size:11}} } }
+  }
+});
+
+// Chart 04: 特种机器人应用分布 (Doughnut)
+new Chart(document.getElementById('chart04_share'), {
+  type: 'doughnut',
+  data: {
+    labels: ['应急救援 85亿','军工安防 65亿','核电巡检 42亿','水下/深海 38亿','矿山/管道 35亿','空间探测 25亿','农业/林业 10亿'],
+    datasets: [{
+      data: [85, 65, 42, 38, 35, 25, 10],
+      backgroundColor: [KD.purple, KD.bluePurple, KD.blue, KD.teal, KD.yellow, KD.skyblue, KD.skyL],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true, cutout:'50%',
+    plugins: {
+      legend:{ position:'bottom', labels:{ padding:8, usePointStyle:true, pointStyleWidth:10, font:{size:9} } },
+      tooltip:{ callbacks:{ label: ctx=>`${ctx.label}` } }
+    }
+  }
+});
+
+// Chart 04: 特种机器人核心能力雷达 (Radar)
+new Chart(document.getElementById('chart04_radar'), {
+  type: 'radar',
+  data: {
+    labels: ['环境适应性','自主导航','感知能力','作业精度','续航能力','通信能力'],
+    datasets: [
+      { label:'应急救援', data:[95,85,80,60,70,75], borderColor:'#E74C3C', backgroundColor:'rgba(231,76,60,0.06)', pointRadius:3, borderWidth:2 },
+      { label:'核电巡检', data:[70,90,85,95,80,70], borderColor:KD.blue, backgroundColor:'rgba(41,113,235,0.06)', pointRadius:3, borderWidth:2 },
+      { label:'水下/深海', data:[98,75,70,65,85,60], borderColor:KD.teal, backgroundColor:'rgba(5,200,200,0.06)', pointRadius:3, borderWidth:2 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: { r:{ beginAtZero:true, max:100, ticks:{display:false,stepSize:20}, grid:{color:gridColor}, angleLines:{color:gridColor}, pointLabels:{font:{size:10},color:'#666'} } },
+    plugins: { legend:{ position:'bottom', labels:{padding:14,usePointStyle:true,font:{size:10}} } }
+  }
+});
+
+// Chart 05: 三大细分综合能力对比 (Radar)
+new Chart(document.getElementById('chart05_radar'), {
+  type: 'radar',
+  data: {
+    labels: ['市场规模','增长速度','技术壁垒','国产化率','信息化需求','盈利稳定性'],
+    datasets: [
+      { label:'工业机器人', data:[95,60,85,47,80,75], borderColor:KD.blue, backgroundColor:'rgba(41,113,235,0.06)', pointRadius:3, borderWidth:2 },
+      { label:'服务机器人', data:[62,95,55,68,65,50], borderColor:KD.teal, backgroundColor:'rgba(5,200,200,0.06)', pointRadius:3, borderWidth:2 },
+      { label:'特种机器人', data:[35,70,92,55,75,85], borderColor:KD.purple, backgroundColor:'rgba(160,110,255,0.06)', pointRadius:3, borderWidth:2 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: { r:{ beginAtZero:true, max:100, ticks:{display:false,stepSize:20}, grid:{color:gridColor}, angleLines:{color:gridColor}, pointLabels:{font:{size:11},color:'#666'} } },
+    plugins: { legend:{ position:'bottom', labels:{padding:14,usePointStyle:true,font:{size:11}} } }
+  }
+});
+
+// Chart 05: 信息化痛点严重度 (横向Bar)
+new Chart(document.getElementById('chart05_pain'), {
+  type: 'bar',
+  data: {
+    labels: ['供应链协同断裂','成本精细管控难','项目交付管控弱','质量全追溯缺失','多组织核算不准','设计变更联动差'],
+    datasets: [{
+      data: [92, 88, 82, 75, 70, 68],
+      backgroundColor: [KD.blue, KD.purple, KD.teal, KD.yellow, KD.skyblue, KD.skyL],
+      borderRadius: 6, barThickness: 28
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true, indexAxis:'y',
+    scales: { x:{grid:{color:gridColor}, max:100, title:{display:true,text:'严重度评分'}}, y:{grid:{display:false}} },
+    plugins: { legend:{display:false} }
+  }
+});
+
+// Chart 07: IT投入趋势 (Line)
+new Chart(document.getElementById('chart07_it'), {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025E','2026E','2028E'],
+    datasets: [
+      { label:'IT投入占比(%)', data:[1.5,1.7,1.8,2.0,2.3,2.6,3.2,4.5], borderColor:KD.blue, backgroundColor:'rgba(41,113,235,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2 },
+      { label:'制造业平均(%)', data:[2.8,2.9,3.0,3.2,3.5,3.6,3.8,4.0], borderColor:KD.gray, backgroundColor:'rgba(191,191,191,0.08)', fill:true, tension:0.3, pointRadius:4, borderWidth:2, borderDash:[5,5] }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: {
+      y: { grid:{color:gridColor}, title:{display:true,text:'%'}, min:0, max:6 },
+      x: { grid:{display:false} }
+    },
+    plugins: { legend:{ position:'bottom', labels:{padding:14,usePointStyle:true,font:{size:11}} } }
+  }
+});
+
+// Chart 07: 数字化转型价值分布 (Doughnut)
+new Chart(document.getElementById('chart07_value'), {
+  type: 'doughnut',
+  data: {
+    labels: ['供应链协同 30%','成本精细管控 28%','项目交付管控 22%','质量全追溯 12%','其他 8%'],
+    datasets: [{
+      data: [30, 28, 22, 12, 8],
+      backgroundColor: [KD.blue, KD.teal, KD.purple, KD.yellow, KD.gray],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true, cutout:'58%',
+    plugins: {
+      legend:{ position:'bottom', labels:{ padding:14, usePointStyle:true, pointStyleWidth:10, font:{size:10} } },
+      tooltip:{ callbacks:{ label: ctx=>`${ctx.label}` } }
+    }
+  }
+});
+
+// Chart 09: 成熟度演进 (PolarArea)
+new Chart(document.getElementById('chart09_polar'), {
+  type: 'polarArea',
+  data: {
+    labels: ['工业机器人本体','系统集成','服务机器人ToB','人形机器人','特种机器人','核心零部件'],
+    datasets: [{
+      data: [85, 72, 65, 35, 55, 48],
+      backgroundColor: ['rgba(41,113,235,0.55)','rgba(5,200,200,0.55)','rgba(160,110,255,0.55)','rgba(255,182,26,0.55)','rgba(0,204,254,0.55)','rgba(255,107,107,0.55)'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: { r:{ beginAtZero:true, max:100, ticks:{display:false,stepSize:20}, grid:{color:gridColor} } },
+    plugins: { legend:{ position:'bottom', labels:{padding:10,usePointStyle:true,font:{size:9}} } }
+  }
+});
+
+// Chart 09: 重点投资方向 (Bubble)
+new Chart(document.getElementById('chart09_bubble'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label:'工业机器人国产替代', data:[{x:85,y:80,r:18}], backgroundColor:'rgba(41,113,235,0.5)', borderColor:KD.blue, borderWidth:2 },
+      { label:'服务机器人ToB', data:[{x:90,y:70,r:15}], backgroundColor:'rgba(5,200,200,0.5)', borderColor:KD.teal, borderWidth:2 },
+      { label:'人形机器人', data:[{x:60,y:95,r:12}], backgroundColor:'rgba(255,182,26,0.5)', borderColor:KD.yellow, borderWidth:2 },
+      { label:'特种机器人', data:[{x:55,y:65,r:10}], backgroundColor:'rgba(160,110,255,0.5)', borderColor:KD.purple, borderWidth:2 },
+      { label:'核心零部件', data:[{x:75,y:85,r:14}], backgroundColor:'rgba(255,107,107,0.5)', borderColor:'#FF6B6B', borderWidth:2 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:true,
+    scales: {
+      x:{ title:{display:true,text:'市场成熟度',color:'#666'}, grid:{color:gridColor}, min:40, max:100 },
+      y:{ title:{display:true,text:'增长潜力',color:'#666'}, grid:{color:gridColor}, min:40, max:100 }
+    },
+    plugins: { legend:{ position:'bottom', labels:{padding:10,usePointStyle:true,font:{size:9}} } }
+  }
+});
+</script>
+</body>
+</html>

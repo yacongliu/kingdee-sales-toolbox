@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>谈判困局实战手册</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pri: #DC2626;
+  --pri-dark: #B91C1C;
+  --pri-deep: #450A0A;
+  --pri-glow: rgba(220,38,38,0.3);
+  --pri-bg: #FEF2F2;
+  --pri-bg2: #FFF5F5;
+  --card-white: #FFFFFF;
+  --card-red: #FEF2F2;
+  --card-blue: #F0F5FF;
+  --card-mint: #F0FDF8;
+  --card-warm: #FFFCF0;
+  --text: #111111;
+  --sub: #111111;
+  --line: #E8ECF2;
+  --gold: #F59E0B;
+  --teal: #0D9488;
+  --green: #10B981;
+  --purple: #7C3AED;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#F9FAFB;color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.floating-nav{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.floating-nav.collapsed{padding:8px;min-width:auto;width:44px}
+.floating-nav.expanded{padding:14px 10px;min-width:160px;width:auto}
+.nav-toggle{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:var(--pri-bg);border:none;cursor:pointer;transition:all .2s}
+.nav-toggle:hover{background:var(--pri)}.nav-toggle svg{width:16px;height:16px;color:var(--pri);transition:all .2s}.nav-toggle:hover svg{color:#fff}
+.nav-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.nav-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--pri);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.nav-body{overflow:hidden}.floating-nav.collapsed .nav-body{max-height:0;opacity:0}.floating-nav.expanded .nav-body{max-height:500px;opacity:1;transition:all .35s}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 10px;font-size:12px;color:var(--sub);text-decoration:none;border-radius:6px;transition:all .2s;cursor:pointer;font-weight:500;white-space:nowrap}
+.nav-item:hover{background:var(--pri-bg);color:var(--pri)}.nav-item.active{background:var(--pri-bg);color:var(--pri);font-weight:700}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--line);flex-shrink:0;transition:all .2s}
+.nav-item:hover .nav-dot,.nav-item.active .nav-dot{background:var(--pri);box-shadow:0 0 10px var(--pri-glow)}
+
+.hero{position:relative;background:linear-gradient(155deg,#2D0A0A 0%,#450A0A 25%,#7F1D1D 50%,#B91C1C 70%,#DC2626 100%);padding:86px 64px 120px;overflow:hidden;color:#fff;z-index:1}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to bottom right,transparent 49%,#F9FAFB 50%)}
+.hero-bg-orb{position:absolute;width:620px;height:620px;background:radial-gradient(circle,rgba(220,38,38,0.16) 0%,transparent 65%);border-radius:50%;top:-35%;right:-10%;animation:orbPulse 8s ease-in-out infinite}
+@keyframes orbPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.06);opacity:1}}
+.hero-lines{position:absolute;top:0;left:0;right:0;bottom:0;opacity:.05;pointer-events:none}.hero-lines svg{width:100%;height:100%}
+.hero-content{position:relative;z-index:2;max-width:1060px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);padding:5px 16px;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:2.5px;margin-bottom:32px}
+.hero h1{font-size:clamp(36px,5vw,56px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px;color:#fff}
+.hero .subtitle{font-size:clamp(15px,1.8vw,19px);font-weight:300;opacity:.82;max-width:640px;margin-bottom:38px;line-height:1.6}
+.hero-meta{display:flex;gap:32px;font-size:13px;opacity:.6;flex-wrap:wrap}.hero-meta-item{display:flex;align-items:center;gap:7px}.hero-meta-item svg{width:15px;height:15px;opacity:.7}
+
+.particles{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}.particle{position:absolute;border-radius:50%;background:var(--pri);opacity:0;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.5}90%{opacity:.15}100%{transform:translateY(-10vh) scale(1.4);opacity:0}}
+
+.container{max-width:1060px;margin:-50px auto 0;padding:0 48px 80px;position:relative;z-index:1}
+
+.section{margin-top:52px;opacity:0;transform:translateY(24px);transition:all .6s ease}.section.visible{opacity:1;transform:translateY(0)}
+.section-header{display:flex;align-items:flex-end;gap:20px;margin-bottom:28px}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:800;line-height:1;color:#000;opacity:.9;flex-shrink:0}
+.section-title-wrap{padding-bottom:4px}
+.section-title{font-size:22px;font-weight:800;color:var(--pri-deep);letter-spacing:-.5px;line-height:1.3}
+.section-sub{font-size:13px;color:var(--pri);font-weight:500;letter-spacing:1px;margin-top:2px}
+
+.card{border-radius:var(--radius-lg);padding:34px;margin-bottom:20px;border:1px solid var(--line);transition:all .3s ease;position:relative;overflow:hidden}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card-white{background:var(--card-white)}.card-red{background:var(--card-red)}.card-blue{background:var(--card-blue)}.card-mint{background:var(--card-mint)}.card-warm{background:var(--card-warm)}
+.card-accent::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--pri),transparent);opacity:0;transition:opacity .4s}.card-accent:hover::after{opacity:.8}
+
+/* ─── Situation Card ─── */
+.sit{border-radius:var(--radius-md);border:1px solid var(--line);padding:24px;margin-bottom:16px;transition:all .3s;position:relative;overflow:hidden}
+.sit:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.sit::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sit:nth-child(1){background:#FEF2F2}.sit:nth-child(1)::before{background:linear-gradient(90deg,#DC2626,#F87171)}
+.sit:nth-child(2){background:#F0F5FF}.sit:nth-child(2)::before{background:linear-gradient(90deg,#1A5FFF,#5C8FFF)}
+.sit:nth-child(3){background:#F0FDF8}.sit:nth-child(3)::before{background:linear-gradient(90deg,#0D9488,#2DD4BF)}
+.sit .sn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--pri);margin-bottom:4px}
+.sit h4{font-size:16px;font-weight:700;margin-bottom:4px}
+.sit:nth-child(1) h4{color:#DC2626}.sit:nth-child(2) h4{color:#1A5FFF}.sit:nth-child(3) h4{color:#0D9488}
+.sit .stg{font-size:10px;padding:2px 8px;border-radius:100px;font-weight:600;display:inline-block;margin-bottom:8px}
+.sit:nth-child(1) .stg{background:rgba(220,38,38,.1);color:#DC2626}
+.sit:nth-child(2) .stg{background:rgba(26,95,255,.1);color:#1A5FFF}
+.sit:nth-child(3) .stg{background:rgba(13,148,136,.1);color:#0D9488}
+
+/* ─── Rule Cards ─── */
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:700px){.rule-grid{grid-template-columns:1fr}}
+.rule-card{border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--line);transition:all .2s}
+.rule-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.rule-card:nth-child(1){background:#FEF2F2}.rule-card:nth-child(2){background:#F0F5FF}.rule-card:nth-child(3){background:#F0FDF8}.rule-card:nth-child(4){background:#F5F0FF}
+.rule-card .rr{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;margin-bottom:4px}
+.rule-card:nth-child(1) .rr{color:#DC2626}.rule-card:nth-child(2) .rr{color:#1A5FFF}.rule-card:nth-child(3) .rr{color:#0D9488}.rule-card:nth-child(4) .rr{color:#6D28D9}
+.rule-card .rl{font-size:12px;font-weight:600;color:#555577;line-height:1.5}
+
+/* ─── Wrong/Right ─── */
+.wrong{background:#FEF2F2;border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;border:1px solid rgba(220,38,38,.12)}
+.wrong .wl{font-size:10px;font-weight:700;letter-spacing:1px;color:#DC2626;margin-bottom:4px}.wrong p{font-size:13px;color:#555577}
+.right{background:#F0FDF8;border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;border:1px solid rgba(13,148,136,.15)}
+.right .rl{font-size:10px;font-weight:700;letter-spacing:1px;color:#0D9488;margin-bottom:4px}.right p{font-size:13px;color:#555577;line-height:1.7}
+
+.frame{border-radius:var(--radius-sm);padding:12px 14px;margin:6px 0;background:rgba(0,0,0,.02);border-left:3px solid}
+.frame .fl{font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:2px}.frame p{font-size:13px;color:#555577;line-height:1.7}
+
+/* ─── Plan Cards ─── */
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+@media(max-width:700px){.plan-grid{grid-template-columns:1fr}}
+.plan-card{border-radius:var(--radius-md);padding:20px;border:1px solid var(--line);transition:all .3s}
+.plan-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.plan-card:nth-child(1){background:#F0F5FF}.plan-card:nth-child(2){background:#F0FDF8}
+.plan-card .pn{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--pri);margin-bottom:2px}
+.plan-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.plan-card:nth-child(1) h4{color:#1A5FFF}.plan-card:nth-child(2) h4{color:#0D9488}
+.plan-card .pd{font-size:12px;color:#555577;line-height:1.6;margin-bottom:6px}
+.plan-card .pt{font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;display:inline-block}
+.plan-card:nth-child(1) .pt{background:rgba(26,95,255,.08);color:#1A5FFF}
+.plan-card:nth-child(2) .pt{background:rgba(13,148,136,.08);color:#0D9488}
+
+.tip{border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;background:#FFFBF0;border:1px solid rgba(245,158,11,.15)}
+.tip .tl{font-size:10px;font-weight:700;letter-spacing:1px;color:#b87a00;text-transform:uppercase;margin-bottom:2px}.tip p{font-size:13px;color:#555577}
+.dv{height:1px;background:linear-gradient(to right,transparent,rgba(220,38,38,.12),transparent);margin:16px 0}
+.tag{display:inline-block;padding:2px 10px;border-radius:6px;font-size:11px;font-weight:500}
+.tag-r{background:rgba(220,38,38,.1);color:#DC2626}
+.tag-b{background:rgba(26,95,255,.1);color:#1A5FFF}
+
+.footer{text-align:center;padding:36px;color:#8e8ea8;font-size:12px;border-top:1px solid var(--line);margin-top:44px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.animate{animation:fadeUp .55s ease forwards;opacity:0}
+.animate:nth-child(1){animation-delay:.03s}.animate:nth-child(2){animation-delay:.07s}.animate:nth-child(3){animation-delay:.11s}.animate:nth-child(4){animation-delay:.15s}.animate:nth-child(5){animation-delay:.19s}.animate:nth-child(6){animation-delay:.23s}
+
+@media(max-width:960px){.hero{padding:44px 24px 90px}.hero h1{font-size:30px}.container{padding:0 20px 60px}.floating-nav{display:none}.section-num{font-size:36px}}
+@media print{body{background:#fff}.particles,.floating-nav,.hero-lines,.hero-bg-orb{display:none}.card{box-shadow:none;break-inside:avoid}.hero{padding:30px}}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<nav class="floating-nav expanded" id="floatingNav">
+  <div class="nav-header">
+    <button class="nav-toggle" id="navToggle" title="展开/折叠"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+  <div class="nav-body">
+    <a class="nav-item active" href="#s1"><span class="nav-dot"></span>典型困局</a>
+    <a class="nav-item" href="#s2"><span class="nav-dot"></span>破局策略</a>
+    <a class="nav-item" href="#s3"><span class="nav-dot"></span>临场话术</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-orb"></div>
+  <div class="hero-lines"><svg viewBox="0 0 1200 600" preserveAspectRatio="none"><line x1="0" y1="120" x2="400" y2="120" stroke="#DC2626" stroke-width=".6"/><line x1="350" y1="120" x2="350" y2="300" stroke="#DC2626" stroke-width=".6"/><line x1="350" y1="300" x2="700" y2="300" stroke="#DC2626" stroke-width=".6"/><circle cx="400" cy="120" r="3.5" fill="#DC2626"/><circle cx="350" cy="300" r="3.5" fill="#DC2626"/></svg></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ 金蝶销售工具箱</div>
+    <h1>谈判困局<br>实战手册</h1>
+    <p class="subtitle">中层认可领导不认、价格谈不拢、工作量不认可——卡住的地方，就是拉开差距的地方。</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>3类典型困局</span>
+      <span class="hero-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>实战话术模板</span>
+      <span class="hero-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>④ 内部公开</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- ─── 01 典型困局 ─── -->
+<section class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-wrap">
+      <div class="section-title">典型困局</div>
+      <div class="section-sub">中层认可，领导卡住——最常见的死法</div>
+    </div>
+  </div>
+  <div class="card card-white card-accent animate">
+    <div class="sit">
+      <div class="sn">典型场景一</div>
+      <h4>采购总认可了，她领导不认可</h4>
+      <span class="stg">中层认可 · 高层不认 · 最难处理</span>
+      <p style="font-size:13px;color:#555577;line-height:1.7;margin-bottom:8px;">你们已经和采购总多轮沟通，从3万降到2万，她也认可了。结果她报给领导，领导认为"这点调整没什么工作量"。采购总夹在中间，项目卡住了。</p>
+      <div class="wrong"><div class="wl">💡 问题本质</div><p>不是客户不认工作量，是客户的领导不认。采购总缺的不是砍价的理由，是说服领导的"弹药"。</p></div>
+    </div>
+    <div class="sit">
+      <div class="sn">典型场景二</div>
+      <h4>技术交流很顺畅，一到商务就卡</h4>
+      <span class="stg">技术认同 · 商务卡壳</span>
+      <p style="font-size:13px;color:#555577;line-height:1.7;margin-bottom:8px;">技术方案汇报时CIO和业务部门都很认可，一到商务环节，采购/财务就开始压价。技术团队想用你们的产品，但采购有采购的KPI。</p>
+      <div class="wrong"><div class="wl">💡 问题本质</div><p>技术认可不等于商务认可。你需要在技术交流阶段就开始铺垫商务价值，不要等到商务环节才临时抱佛脚。</p></div>
+    </div>
+    <div class="sit">
+      <div class="sn">典型场景三</div>
+      <h4>产品好、方案好，但对手靠关系更近</h4>
+      <span class="stg">方案占优 · 客情劣势</span>
+      <p style="font-size:13px;color:#555577;line-height:1.7;margin-bottom:8px;">方案对比下来咱们优势明显，但客户和竞品有多年合作历史，关系深厚。客户态度暧昧，不拒绝也不积极推进。</p>
+      <div class="wrong"><div class="wl">💡 问题本质</div><p>客情关系不是一天建立的。与其正面硬拼关系，不如找突破点——信创政策、新领导上任、现有系统维护成本升高。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 02 破局策略 ─── -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-wrap">
+      <div class="section-title">破局策略</div>
+      <div class="section-sub">四条铁律 · 两个方案 · 一个底线</div>
+    </div>
+  </div>
+  <div class="card card-white card-accent animate">
+    <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">四条铁律（绝对不能做的）</h3>
+    <div class="rule-grid">
+      <div class="rule-card"><div class="rr">①</div><div class="rl">直接降价——破了底价，以后所有项目都跟你砍</div></div>
+      <div class="rule-card"><div class="rr">②</div><div class="rl">免费送——开了这个口子，每个客户都等你"变通"</div></div>
+      <div class="rule-card"><div class="rr">③</div><div class="rl">绕过采购总找她领导——她是你唯一的内部支持者</div></div>
+      <div class="rule-card"><div class="rr">④</div><div class="rl">自己出面去说服领导——你说话的分量不如内部人说</div></div>
+    </div>
+  </div>
+
+  <div class="card card-blue card-accent animate">
+    <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;">🎯 核心思路：给采购总"武装弹药"</h3>
+    <p style="font-size:13px;color:#555577;line-height:1.7;margin-bottom:14px;">采购总认可你，说明你方向对了。她现在缺的不是减价，是帮她领导算清楚这笔账的"翻译工具"。</p>
+    <div class="dv"></div>
+    <h4 style="font-size:13px;font-weight:700;color:var(--pri);margin-bottom:6px;">把"工作量"翻译成"风险"</h4>
+    <div class="frame" style="border-left-color:#DC2626;">
+      <p>"王总，我理解您领导的顾虑。这2万块其实不是在买'干活'，是在买三个保障：一是历史数据迁移不出错（数据错了后面查起来成本更高），二是跟现有系统对接口径一致，三是有金蝶原厂兜底（出了问题有人负责）。这三个保障加起来2万，比您内部团队自己折腾省得多。"</p>
+    </div>
+  </div>
+
+  <div class="card card-white card-accent animate">
+    <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">📋 双方案策略</h3>
+    <p style="font-size:13px;color:#555577;margin-bottom:14px;">带着两套方案去谈，让采购总有选择权，而不是只给一个"同意或不同意"的选项。</p>
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="pn">A计划（优选）</div>
+        <h4>分两笔签</h4>
+        <div class="pd">总金额不变，拆成两笔——第一笔1.5万签核心实施，第二笔0.5万签上线后运维优化。领导看到的是"先办急事"，心理压力小一半。</div>
+        <span class="pt">推荐 · 给采购总有面子的方案</span>
+      </div>
+      <div class="plan-card">
+        <div class="pn">B计划（兜底）</div>
+        <h4>最小方案</h4>
+        <div class="pd">只做数据迁移+接口校验，1.2万。剩下的等上线看到效果了再推，到时候拿数据说话，比现在硬说服容易得多。</div>
+        <span class="pt">备选 · 先见效再用效果换预算</span>
+      </div>
+    </div>
+    <div class="tip"><div class="tl">关键</div><p><strong>两个方案都别直接降价。</strong>A方案是调付款节奏，B方案是调交付范围。价格这条线，能不动就不动。</p></div>
+  </div>
+</section>
+
+<!-- ─── 03 临场话术 ─── -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-wrap">
+      <div class="section-title">临场话术</div>
+      <div class="section-sub">直接拿去用 · 根据场景灵活调整</div>
+    </div>
+  </div>
+  <div class="card card-white card-accent animate">
+    <div style="margin-bottom:14px;">
+      <p style="font-size:12px;font-weight:700;color:var(--pri);margin-bottom:4px;">💬 给采购总的话术 · 帮她说服领导</p>
+      <div class="frame" style="border-left-color:#DC2626;margin-top:6px;">
+        <p>"王总，我理解您领导的角度——他看的是整体预算，咱们看的是项目落地。我有个建议，您看行不行——我出一版分步方案，第一期把最核心的做了，金额控制在1.5万，您领导那边好批。等第一期上线效果出来了，您拿数据说话，推第二期的时候他自然就认可了。"</p>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <p style="font-size:12px;font-weight:700;color:#1A5FFF;margin-bottom:4px;">💬 如果采购总说"领导就是不认可"</p>
+      <div class="frame" style="border-left-color:#1A5FFF;margin-top:6px;">
+        <p>"您看这样行不行——我这边先出一个技术备忘录，把如果不做这几个环节可能出现的风险列清楚，比如数据迁移出错、接口不匹配、后续运维成本增加。您拿着这份备忘录去跟领导汇报，比咱俩在这猜领导的顾虑有效得多。"</p>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:12px;font-weight:700;color:#0D9488;margin-bottom:4px;">💬 领导直接出面的情况</p>
+      <div class="frame" style="border-left-color:#0D9488;margin-top:6px;">
+        <p>"领导，我理解您的顾虑。这10人天我拆给你看——6人天是实施交付，4人天是数据迁移的风险保障。如果您觉得风险保障这块可以内部消化，我出一个6人天的方案，先把核心交付跑起来。"<br><span style="font-size:11px;color:#8e8ea8;">——让他选，别让他砍。选风险自担还是买保险，他自己定。</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="card card-red card-accent animate">
+    <div class="tip" style="background:#FEF2F2;border-color:rgba(220,38,38,.12);">
+      <div class="tl" style="color:#DC2626;">🔑 记住</div>
+      <p><strong>谈判卡住不是你的方案有问题，是你帮内部支持者"翻译"的力度不够。</strong>给采购总弹药，让她去说服领导，而不是你亲自上阵。</p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="footer">金蝶 · 天津 &nbsp;|&nbsp; 销售团队内部工具 &nbsp;|&nbsp; ④ 内部公开 请勿外传</div>
+
+<script>
+(function(){const c=document.getElementById('particles');for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';const s=1+Math.random()*3;p.style.width=s+'px';p.style.height=s+'px';p.style.animationDuration=(10+Math.random()*20)+'s';p.style.animationDelay=Math.random()*15+'s';c.appendChild(p);}})();
+(function(){const items=document.querySelectorAll('.nav-item');const nav=document.getElementById('floatingNav');const toggle=document.getElementById('navToggle');const secs=[];items.forEach(function(item){const id=item.getAttribute('href').slice(1);const el=document.getElementById(id);if(el)secs.push({el,nav:item});});toggle.addEventListener('click',function(){if(nav.classList.contains('expanded')){nav.classList.remove('expanded');nav.classList.add('collapsed');}else{nav.classList.remove('collapsed');nav.classList.add('expanded');}});function update(){let cur=secs[0];const sy=window.scrollY+130;for(let i=0;i<secs.length;i++){if(secs[i].el.offsetTop<=sy)cur=secs[i];}items.forEach(n=>n.classList.remove('active'));if(cur)cur.nav.classList.add('active');}window.addEventListener('scroll',update,{passive:true});items.forEach(function(item){item.addEventListener('click',function(e){e.preventDefault();const el=document.getElementById(this.getAttribute('href').slice(1));if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});});})();
+(function(){const els=document.querySelectorAll('.section');const obs=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible')});},{threshold:.05});els.forEach(el=>obs.observe(el));})();
+</script>
+</body>
+</html>

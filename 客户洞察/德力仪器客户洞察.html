@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客户洞察报告 - 德力仪器</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<style>
+  :root { --primary:#0a1a2f; --accent:#3b82f6; --accent2:#1d4ed8; --red:#ef4444; --amber:#f59e0b; --light:#f8fafc; --gray:#64748b; --border:#e2e8f0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif; color:#1a202c; background:#fff; line-height:1.6; }
+  nav { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(10,26,47,0.95); backdrop-filter:blur(12px); height:56px; display:flex; align-items:center; padding:0 24px; border-bottom:1px solid rgba(255,255,255,0.08); }
+  nav .brand { color:#fff; font-weight:700; font-size:14px; margin-right:24px; white-space:nowrap; } nav .brand span { color:var(--accent); }
+  nav .nav-links { display:flex; gap:2px; overflow-x:auto; flex:1; }
+  nav .nav-links a { color:rgba(255,255,255,0.55); text-decoration:none; font-size:12px; padding:6px 12px; border-radius:6px; transition:all 0.2s; white-space:nowrap; }
+  nav .nav-links a:hover { color:#fff; background:rgba(255,255,255,0.1); }
+  nav .nav-links a.active { color:var(--accent); background:rgba(59,130,246,0.15); font-weight:600; }
+  nav .nav-date { color:rgba(255,255,255,0.3); font-size:11px; margin-left:16px; }
+  @media(max-width:768px){ nav { padding:0 12px; } nav .brand { font-size:13px; margin-right:12px; } nav .nav-date { display:none; } }
+  section { padding:90px 24px 60px; max-width:1200px; margin:0 auto; }
+  section.dark { background:var(--primary); color:#fff; max-width:none; padding-left:calc((100% - 1200px)/2 + 24px); padding-right:calc((100% - 1200px)/2 + 24px); }
+  section.gray { background:var(--light); max-width:none; padding-left:calc((100% - 1200px)/2 + 24px); padding-right:calc((100% - 1200px)/2 + 24px); }
+  .section-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .section-title { font-size:30px; font-weight:800; color:var(--primary); margin-bottom:10px; line-height:1.25; }
+  section.dark .section-title { color:#fff; }
+  .section-sub { font-size:15px; color:var(--gray); margin-bottom:36px; max-width:640px; }
+  section.dark .section-sub { color:rgba(255,255,255,0.55); }
+  #hero { min-height:100vh; max-width:none; background:linear-gradient(135deg,#1d4ed8 0%,#1d4ed8 40%,#1d4ed8 65%,#ef4444 100%); display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; position:relative; overflow:hidden; }
+  #hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(37,99,235,0.06) 0%, transparent 50%); }
+  .hero-content { position:relative; z-index:1; max-width:900px; padding:24px; }
+  .hero-badge { display:inline-block; background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:1.5px; padding:5px 16px; border-radius:20px; margin-bottom:20px; }
+  .hero-title { font-size:clamp(32px,5vw,50px); font-weight:900; line-height:1.15; margin-bottom:16px; color:#fff; } .hero-title span { color:#fff; }
+  .hero-sub { font-size:16px; opacity:0.7; margin-bottom:40px; line-height:1.8; }
+  .hero-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .hero-stat { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:20px 14px; text-align:center; backdrop-filter:blur(8px); transition:all 0.3s; cursor:default; }
+  .hero-stat:hover { background:rgba(59,130,246,0.1); border-color:rgba(59,130,246,0.25); transform:translateY(-3px); }
+  .hero-stat-num { font-size:24px; font-weight:900; color:#fff; display:block; }
+  .hero-stat-label { font-size:11px; color:#fff; opacity:0.8; margin-top:4px; }
+  .hero-scroll { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.35); font-size:11px; animation:bounce 2.5s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+  @media(max-width:768px){ .hero-stats { grid-template-columns:repeat(2,1fr); } }
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; }
+  .card { background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 16px rgba(10,37,64,0.05); border:1px solid var(--border); transition:transform 0.3s,box-shadow 0.3s; cursor:default; }
+  .card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(10,37,64,0.1); }
+  .card-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:14px; }
+  .card h3 { font-size:16px; font-weight:700; color:var(--primary); margin-bottom:6px; }
+  .card p { font-size:13px; color:var(--gray); line-height:1.6; }
+  .info-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .info-table th { text-align:left; padding:8px 12px; background:#f8fafc; color:#64748b; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .info-table td { padding:8px 12px; border-bottom:1px solid #f1f5f9; color:#334155; }
+  .info-table tr:last-child td { border-bottom:none; }
+  .tag { display:inline-block; padding:2px 10px; border-radius:6px; font-size:11px; font-weight:600; margin:2px; }
+  .tag-green { background:#d1fae5; color:#065f46; } .tag-yellow { background:#fef3c7; color:#92400e; }
+  .tag-red { background:#fee2e2; color:#991b1b; } .tag-blue { background:#dbeafe; color:#1e40af; }
+  .tag-purple { background:#ede9fe; color:#5b21b6; } .tag-orange { background:#ffedd5; color:#9a3412; }
+  .tag-gray { background:#f1f5f9; color:#475569; }
+  .kpi-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; }
+  .kpi-box { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px 16px; text-align:center; }
+  .kpi-val { font-size:24px; font-weight:900; color:var(--primary); }
+  .kpi-val.up { color:#16a34a; } .kpi-val.down { color:var(--red); }
+  .kpi-label { font-size:11px; color:var(--gray); margin-top:4px; }
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media(max-width:768px){ .g2 { grid-template-columns:1fr; } }
+  .matrix-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid #f8fafc; }
+  .matrix-item:last-child { border-bottom:none; }
+  .matrix-icon { width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; color:#fff; flex-shrink:0; margin-top:2px; }
+  .matrix-text { font-size:13px; color:#475569; flex:1; line-height:1.6; }
+  section.dark, section.dark .g2, section.dark .g2 div, section.dark .matrix-item, section.dark .matrix-text, section.dark .info-row, section.dark .info-label, section.dark .info-value { color:#ffffff !important; }
+  section.dark .kpi-label { color:#2563eb !important; }
+  section.dark .kpi-val { color:#1a202c !important; } section.dark .kpi-val.up { color:#16a34a !important; } section.dark .kpi-val.down { color:#ef4444 !important; }
+  section.dark .section-label { color:var(--accent) !important; }
+  .comp-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:16px; }
+  .comp-table th { text-align:left; padding:10px 12px; background:#f1f5f9; color:#475569; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .comp-table td { padding:10px 12px; border-bottom:1px solid #f1f5f9; color:#334155; }
+  .cap-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; border-left:4px solid var(--accent); margin-bottom:12px; transition:all 0.2s; }
+  .cap-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.06); transform:translateY(-1px); }
+  .cap-card .c-title { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .cap-card .c-badge { font-size:9px; font-weight:700; letter-spacing:0.5px; padding:2px 8px; border-radius:4px; }
+  .cap-card .c-body { font-size:13px; color:#475569; line-height:1.7; }
+  .cap-card .c-body strong { color:var(--primary); }
+  .verdict-bar { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:20px; }
+  .verdict-badge { padding:5px 18px; border-radius:8px; font-size:14px; font-weight:700; }
+  .verdict-badge.rec { background:#10b981; color:#fff; } .verdict-badge.cau { background:#f59e0b; color:#fff; }
+  .verdict-badge.warn { background:#ef4444; color:#fff; }
+  .verdict-reason { color:rgba(255,255,255,0.75); font-size:14px; }
+  .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s, transform 0.6s; } .reveal.visible { opacity:1; transform:translateY(0); }
+  .step-grid { display:flex; flex-direction:column; gap:10px; }
+  .step-item { display:flex; align-items:center; gap:14px; padding:14px 16px; background:#f8fafc; border-radius:10px; border-left:4px solid #1d4ed8; }
+  .step-num { width:28px; height:28px; border-radius:50%; background:#1d4ed8; color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+  .step-text { font-size:14px; color:#334155; flex:1; line-height:1.6; }
+  footer { background:#060f1a; color:rgba(255,255,255,0.3); padding:28px 24px; text-align:center; font-size:11px; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand">📋 <span>客户洞察</span></div>
+  <div class="nav-links">
+    <a href="#hero" class="active">概览</a><a href="#profile">企业画像</a><a href="#biz">商业模式</a><a href="#pain">需求痛点</a><a href="#solution">AI套件匹配</a><a href="#competition">竞争</a><a href="#opportunity">机会</a><a href="#strategy">策略</a><a href="#summary">总结</a>
+  </div>
+  <div class="nav-date" id="navDate"></div>
+</nav>
+
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">📋 客户洞察报告 · 2026年6月</div>
+    <h1 class="hero-title">天津德力仪器设备<br><span>有限公司</span></h1>
+    <p class="hero-sub">DEVISER · 广电测试+光通信仪器龙头 · 天津滨海高新区 · 金蝶K3老客户</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-num">37年</span><div class="hero-stat-label">行业经验(1989起)</div></div>
+      <div class="hero-stat"><span class="hero-stat-num">150~500人</span><div class="hero-stat-label">员工规模</div></div>
+      <div class="hero-stat"><span class="hero-stat-num">金蝶K3</span><div class="hero-stat-label">当前系统</div></div>
+      <div class="hero-stat"><span class="hero-stat-num">🔥</span><div class="hero-stat-label">上市合规+项目制造</div></div>
+    </div>
+    <div class="verdict-bar">
+      <span class="verdict-badge rec">✅ 重点跟进·A级</span>
+      <span class="verdict-reason">金蝶K3老客户升级，上市合规（硬需求）+项目制造（业务需求），双轮驱动</span>
+    </div>
+  </div>
+  <div class="hero-scroll">↓ 向下滚动</div>
+</section>
+
+<!-- 企业画像 -->
+<section id="profile" class="gray">
+  <div class="section-label reveal">01 · 企业画像</div>
+  <h2 class="section-title reveal">基本信息</h2>
+  <p class="section-sub reveal">钟长干98.6%绝对控股，23,000㎡研发生产基地，国内广电测试第一品牌</p>
+  <div class="g2 reveal">
+    <div class="card">
+      <table class="info-table">
+        <tr><th style="width:30%">项目</th><th>内容</th></tr>
+        <tr><td>公司全称</td><td>天津德力仪器设备有限公司</td></tr>
+        <tr><td>曾用名</td><td>天津市德力电子仪器有限公司（2019年更名）</td></tr>
+        <tr><td>成立</td><td>1999年4月（前身1989年德力无线电技术公司）</td></tr>
+        <tr><td>实际控制人</td><td>钟长干（钟镭）持股98.592%</td></tr>
+        <tr><td>注册资本</td><td>5,000万元</td></tr>
+        <tr><td>地址</td><td>天津市滨海高新区华苑产业园区海泰创新三路8号</td></tr>
+        <tr><td>基地面积</td><td>23,000㎡ 研发生产基地</td></tr>
+        <tr><td>性质</td><td>有限责任公司（民营）</td></tr>
+        <tr><td>子公司</td><td>德力光电科技（天津）有限公司（2022年成立，全资）</td></tr>
+        <tr><td>资质</td><td>高新技术企业·ISO9001·AAA标准化良好行为企业</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:8px;">🏷️ 标签</div>
+      <div>
+        <span class="tag tag-blue">广电测试龙头</span>
+        <span class="tag tag-green">高新技术企业</span>
+        <span class="tag tag-purple">光通信仪器</span>
+        <span class="tag tag-orange">5G通信测试</span>
+        <span class="tag tag-red">金蝶K3老客户</span>
+        <span class="tag tag-yellow">拟上市（德力光电）</span>
+        <span class="tag tag-blue">中国移动/电信/铁塔供应商</span>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin:14px 0 8px;">🧑‍💼 股权与管理</div>
+      <div><div class="info-row"><span class="info-label">实际控制人</span><span class="info-value">钟长干（钟镭）98.592%</span></div>
+      <div class="info-row"><span class="info-label">董事</span><span class="info-value">陈韬（0.768%）——总经理</span></div></div>
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin:14px 0 8px;">💻 当前系统</div>
+      <div><div class="info-row"><span class="info-label">ERP系统</span><span class="info-value">金蝶K3</span></div>
+      <div class="info-row"><span class="info-label">状态</span><span class="info-value" style="color:#ef4444;font-weight:700;">拟上市，K3不满足合规要求</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 商业模式 -->
+<section id="biz">
+  <div class="section-label reveal">02 · 商业模式</div>
+  <h2 class="section-title reveal">他们是做什么的？</h2>
+  <p class="section-sub reveal">国内广电测试第一品牌，从无线电初创到光通信+5G仪器龙头</p>
+
+  <div class="g2 reveal">
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:10px;">🏭 核心业务与产品</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#3b82f6;">1</div><span class="matrix-text"><strong>广电测试仪器（传统核心）</strong>——频谱分析仪、场强仪（全球销量第一）、数字电视测量仪等。广电总局及各省广播电视台核心供应商</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">2</div><span class="matrix-text"><strong>光通信仪器（增长极·德力光电）</strong>——光谱分析仪AE8600/8700、可调谐激光光源TLS1056。光谱仪全球销量领先，布局光通信高端仪器国产替代</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#f59e0b;">3</div><span class="matrix-text"><strong>无线通信测试</strong>——5G便携式频谱分析仪（国内首台）、便携频谱仪、网络分析仪</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#8b5cf6;">4</div><span class="matrix-text"><strong>GNSS/无线电监测</strong>——干扰查找系统、频谱监测设备</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:10px;">📌 产销模式</div>
+      <div class="matrix-item"><span class="matrix-text">🔬 <strong>生产模式：项目型/ETO</strong>——高端仪器按订单设计、定制生产，非流水线。光谱仪、激光光源等产品每台/批需独立BOM管理</span></div>
+      <div class="matrix-item"><span class="matrix-text">📋 <strong>交付模式：项目制</strong>——投标→研发设计→采购→制造→调试→验收，全流程按项目管理</span></div>
+      <div class="matrix-item"><span class="matrix-text">🔧 <strong>研发驱动</strong>——自研光谱仪、激光光源，打破国外垄断。光谱仪95%指标达到可替代国外水平</span></div>
+      <div class="matrix-item"><span class="matrix-text">🔄 <strong>业务策略：母子公司双轨</strong>——德力仪器（广电测试/5G）+ 德力光电（光通信仪器/2022年成立的全资子公司，拟单独上市）</span></div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:8px;">
+    <div class="card" style="background:var(--light);">
+      <div class="g2">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#64748b;margin-bottom:10px;">⬆️ 上游（供应商）</div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#6366f1;">1</div><span class="matrix-text"><strong>电子元器件</strong>——芯片、FPGA、光电探测器、光学器件、精密机械部件等</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#6366f1;">2</div><span class="matrix-text"><strong>高精度光学元件</strong>——光谱仪核心元件、激光光源模块</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#6366f1;">3</div><span class="matrix-text"><strong>精密加工外协</strong>——框架、壳体等机加工件</span></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#64748b;margin-bottom:10px;">⬇️ 下游（客户群体）</div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">📡</div><span class="matrix-text"><strong>广电系统</strong>——广电总局、各省广播电视台、融媒体中心（传统核心客户）</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">📱</div><span class="matrix-text"><strong>通信运营商</strong>——中国移动/电信/联通/铁塔，5G频谱仪集采</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">🔬</div><span class="matrix-text"><strong>光通信产业链</strong>——光器件/光模块厂商、光纤传感、科研院所</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">🏛️</div><span class="matrix-text"><strong>无线电管理</strong>——各省无管局频谱监测</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 营收数据 -->
+  <div class="reveal" style="margin-top:8px;">
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:10px;">📊 营收与业绩（非上市公司，数据为估算）</div>
+      <div class="kpi-strip">
+        <div class="kpi-box"><div class="kpi-val">亿元级</div><div class="kpi-label">年营收规模</div></div>
+        <div class="kpi-box"><div class="kpi-val up">20-25%</div><div class="kpi-label">德力光电年增长率（2023年数据）</div></div>
+        <div class="kpi-box"><div class="kpi-val">千万元级</div><div class="kpi-label">2025年全国中标总额</div></div>
+        <div class="kpi-box"><div class="kpi-val up">170人</div><div class="kpi-label">2023年社保人数</div></div>
+      </div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.6;">
+        ⚠️ 德力仪器为非上市公司，营收数据未公开。基于中标数据（2025年全国中标超千万元）、社保人数170人、23,000㎡基地规模和招聘薪资水平推断，年营业额估算在1-3亿元区间。2023年陈韬总经理预计德力光电继续实现20-25%稳步增长。母公司业务体量大于子公司。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 需求痛点 -->
+<section id="pain" class="dark">
+  <div class="section-label reveal">03 · 核心需求与痛点</div>
+  <h2 class="section-title reveal">上市合规是第一痛点</h2>
+  <p class="section-sub reveal">金蝶K3无法满足上市审计合规要求 + 项目制造业务需求</p>
+
+  <div class="g2 reveal">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fca5a5;margin-bottom:12px;">🔥 第一痛点：上市合规（硬需求）</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">1</div><span class="matrix-text">德力光电科技（天津）有限公司<strong>预计上市</strong>，金蝶K3无法满足上市审计合规要求——财务数据可追溯性、内控留痕、审计对接、关联交易披露等均不达标</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">2</div><span class="matrix-text">上市前需要<strong>IPO合规体系</strong>——收入确认准则自动化、关联交易自动识别、全流程操作留痕、审计机构穿透式核查</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">3</div><span class="matrix-text">母子公司（德力仪器+德力光电）合并报表、内部交易对账、资金集中管理，K3格局太小</span></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fbbf24;margin-bottom:12px;">🏗️ 第二痛点：项目制造与成本</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#f59e0b;">4</div><span class="matrix-text"><strong>项目制造（ETO模式）</strong>——光谱仪、可调谐激光光源等高端仪器按订单设计生产，需要项目型BOM管理</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#f59e0b;">5</div><span class="matrix-text"><strong>项目管理（过程管控）</strong>——投标→研发→采购→制造→调试→验收全过程，交期压力大</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#f59e0b;">6</div><span class="matrix-text"><strong>项目成本核算</strong>——按项目归集料工费，实时核算每个项目毛利。K3只能按期间核算</span></div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;padding:16px;background:rgba(239,68,68,0.08);border-radius:12px;border:1px solid rgba(239,68,68,0.15);" class="reveal">
+    <div style="font-size:12px;font-weight:700;color:#fca5a5;margin-bottom:4px;">⚠️ 金蝶K3的硬伤</div>
+    <div style="font-size:12px;color:#cbd5e1;line-height:1.7;">
+      K3是金蝶早期的ERP产品，技术架构和合规能力已无法满足拟上市企业需求，金蝶自身也早已停止K3大版本更新，推K3客户迁移至金蝶AI套件。<strong>这笔单子不是抢竞品的，是帮K3老客户顺理成章地升级。</strong>
+    </div>
+  </div>
+</section>
+
+<!-- 金蝶AI套件方案匹配 -->
+<section id="solution" class="gray">
+  <div class="section-label reveal">04 · 金蝶AI套件方案匹配</div>
+  <h2 class="section-title reveal">Kingdee AI Suite 精准覆盖</h2>
+  <p class="section-sub reveal">金蝶AI套件产品能力，K3老客户升级的最佳路径</p>
+
+  <div class="reveal">
+    <div class="cap-card" style="border-left-color:#ef4444;">
+      <div class="c-title"><span style="background:#ef4444;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求①</span> 上市合规——金蝶AI套件IPO中心</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·IPO中心</strong>——四大模块全周期合规：<strong>IPO上市智测</strong>（自动导入财务数据，动态测评定位资格硬伤）、<strong>IPO主题分析</strong>（6大主题32+合规分析报表，风险扫描+异常提示）、<strong>IPO项目管理</strong>（内置IPO事项库，任务分配+进度跟踪+整改闭环）、<strong>对标分析</strong>（同行上市公司大数据全维度对标）。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 已服务1500+上市企业，入选Gartner云ERP魔力象限唯一中国厂商。智能审单+AI对账+操作全留痕+审计穿透式核查，上市审计无忧</span>
+      </div>
+    </div>
+    <div class="cap-card" style="border-left-color:#f59e0b;">
+      <div class="c-title"><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求②</span> 项目制造（ETO）</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·制造云</strong>——原生支持ETO/MTO/项目制造模式。项目型BOM管理、边设计边采购边制造（三边工程）协同、长周期物料前置采购。光谱仪/激光光源等定制产品每单独立BOM，研发→生产数据闭环。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 装备制造行业原生方案，无需二开</span>
+      </div>
+    </div>
+    <div class="cap-card" style="border-left-color:#3b82f6;">
+      <div class="c-title"><span style="background:#3b82f6;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求③</span> 项目管理（过程管控）</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·项目云</strong>——WBS甘特图→里程碑管理→进度偏差分析→资源调配。五大管理维度：<strong>进度可视+成本可控+质量可管+风险可防+业财可融</strong>。AI智能风险洞察，主动预警项目延期/超支/付款异常。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 项目经理数字员工：自动推送当天待办、风险预警雷达图</span>
+      </div>
+    </div>
+    <div class="cap-card" style="border-left-color:#8b5cf6;">
+      <div class="c-title"><span style="background:#8b5cf6;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求④</span> 项目成本核算</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·项目云+财务云</strong>——"项目四算"体系：<strong>概算→预算→核算→决算</strong>。多维预算建模+实时预算执行监控+项目成本自动归集。实际成本按订单/工序/工单精细追溯，毛利分析智能体快速定位高低效产品。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 成本核算效率提升10倍，沈阳新松机器人等ETO案例已验证</span>
+      </div>
+    </div>
+    <div class="cap-card" style="border-left-color:#10b981;">
+      <div class="c-title"><span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求⑤</span> K3→AI套件迁移</div>
+      <div class="c-body">
+        <strong>金蝶AI迁移平台（星移平台）</strong>——K/3 WISE → 金蝶AI套件一键迁移。支持基础资料+总账+供应链+固定资产+应收应付等模块初始化迁移和历史数据备查迁移。多账套分步迁移，数据完整率可保证。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 官方迁移工具成熟，非第三方方案，数据迁移有保障</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 竞争 -->
+<section id="competition">
+  <div class="section-label reveal">05 · 竞争格局</div>
+  <h2 class="section-title reveal">竞争分析</h2>
+  <p class="section-sub reveal">K3老客户升级，核心竞品是用友</p>
+  <div class="reveal">
+    <table class="comp-table">
+      <tr><th style="width:18%">情况</th><th style="width:30%">分析</th><th style="width:44%">金蝶策略</th><th>胜算</th></tr>
+      <tr>
+        <td><strong>继续用金蝶升级</strong></td>
+        <td>K3→金蝶AI套件是官方迁移路径，数据有保障，不用换品牌</td>
+        <td>老客户升级，迁移方案成熟+IPO合规+项目制造全覆盖，一条消息就打满</td>
+        <td><span class="tag tag-green">极高</span></td>
+      </tr>
+      <tr>
+        <td><strong>用友介入</strong></td>
+        <td>K3用了多年，用友可能趁此机会撬客户</td>
+        <td>重点防守：K3→金蝶AI套件迁移官方支持，数据不失；金蝶IPO中心已服务1500+上市企业；换品牌成本远高于升级</td>
+        <td><span class="tag tag-yellow">需防守</span></td>
+      </tr>
+      <tr>
+        <td><strong>SAP</strong></td>
+        <td>价格太高，民企不匹配</td>
+        <td>不在同一竞争层面</td>
+        <td><span class="tag tag-green">极低</span></td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- 机会评估 -->
+<section id="opportunity" class="dark">
+  <div class="section-label reveal">06 · 机会与风险</div>
+  <h2 class="section-title reveal">机会评估</h2>
+  <p class="section-sub reveal">老客户升级+上市合规硬需求，与昨天的阿特普科不同</p>
+  <div class="g2 reveal">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#34d399;margin-bottom:12px;">✅ 有利因素</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>金蝶K3老客户</strong>——熟悉金蝶品牌，升级门槛低，不需要品牌教育</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>上市合规=硬需求</strong>——K3不满足IPO要求，不升级就无法过审计</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>金蝶AI套件IPO中心</strong>——1500+上市企业验证，合规能力业界领先</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>K3→AI套件官方迁移</strong>——数据迁移无忧，不需要推倒重来</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>天津本地</strong>——金蝶天津团队覆盖便利</span></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#f87171;margin-bottom:12px;">⚠️ 风险因素</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">钟长干98.6%绝对控股，方案必须打动他本人</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">德力光电2022年才成立，上市时间线不清晰</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">用友可能趁客户考虑升级之际介入</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">上市筹备期预算可能被其他方面挤压</span></div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top:28px;">
+    <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:14px;">📊 商机速评</div>
+    <div class="kpi-strip">
+      <div class="kpi-box"><div class="kpi-val">硬需求</div><div class="kpi-label">上市合规驱动力</div></div>
+      <div class="kpi-box"><div class="kpi-val up">老客户</div><div class="kpi-label">升级路径顺畅</div></div>
+      <div class="kpi-box"><div class="kpi-val up">高</div><div class="kpi-label">方案匹配度</div></div>
+      <div class="kpi-box"><div class="kpi-val">A级</div><div class="kpi-label">商机评级</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 策略 -->
+<section id="strategy">
+  <div class="section-label reveal">07 · 打单策略</div>
+  <h2 class="section-title reveal">行动策略与下一步</h2>
+  <p class="section-sub reveal">K3老客户升级，上市合规切入，项目制造加码</p>
+  <div class="reveal" style="margin-bottom:24px;">
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:14px;">🎯 核心策略</div>
+      <p style="font-size:14px;color:#334155;line-height:1.7;">
+        <strong>以「K3老客户升级+上市合规」为第一突破口，用「项目制造+项目管理」加码业务价值。</strong><br><br>
+        德力光电要上市，K3不满足合规要求——这是最硬的需求，不需要说服。金蝶AI套件IPO中心已服务1500+上市企业，合规能力有数据支撑。同时，公司ETO模式（光谱仪/激光光源按订单生产）需要项目制造和项目管理能力，这是业务层面的抓手。
+      </p>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="step-item" style="border-left-color:#1d4ed8;"><div class="step-num">1</div><div class="step-text"><strong>确认上市时间线</strong>——德力光电预计什么时候上市？是否已选定券商/会计师/律师？关键：上市时间表决定项目紧迫度</div></div>
+    <div class="step-item" style="border-left-color:#10b981;"><div class="step-num" style="background:#10b981;">2</div><div class="step-text"><strong>K3→AI套件升级方案演示</strong>——IPO合规+项目制造+项目管理+项目成本一体化方案演示，突出"老客户升级，数据迁移无忧"</div></div>
+    <div class="step-item" style="border-left-color:#f59e0b;"><div class="step-num" style="background:#f59e0b;">3</div><div class="step-text"><strong>接触钟长干或陈韬</strong>——德力光电上市是战略级决策，必然是钟长干/陈韬亲自抓，需要让他们看到金蝶AI套件的IPO合规价值</div></div>
+    <div class="step-item" style="border-left-color:#8b5cf6;"><div class="step-num" style="background:#8b5cf6;">4</div><div class="step-text"><strong>防守用友</strong>——提前准备"K3官方迁移路径+换品牌成本分析+历史数据迁移风险"三件套，防止用友趁虚而入</div></div>
+    <div class="step-item" style="border-left-color:#ef4444;"><div class="step-num" style="background:#ef4444;">5</div><div class="step-text"><strong>分步实施规划</strong>——一期：财务+供应链+IPO合规基础（快速满足上市要求）；二期：项目云+制造云（业务升级）</div></div>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section id="summary" class="dark">
+  <div class="section-label reveal">08 · 总结</div>
+  <h2 class="section-title reveal">总结与建议</h2>
+  <div class="summary-box reveal">
+    <p>
+      天津德力仪器设备有限公司是<strong>A级商机</strong>——不是抢竞品的单，是金蝶K3老客户的顺理成章升级。
+      <br><br>
+      客户定位：<strong>国内广电测试第一品牌 + 光通信高端仪器国产替代先锋</strong>。2022年成立全资子公司德力光电布局光谱仪/激光光源赛道，光谱仪全球销量领先，<strong>预计单独上市</strong>。
+      <br><br>
+      <strong>第一痛点：上市合规。</strong>金蝶K3不满足IPO审计合规要求，这是硬需求。金蝶AI套件IPO中心已服务1500+上市企业，外加K3→AI套件官方迁移方案，在这条线上几乎没对手。
+      <br><br>
+      <strong>第二痛点：项目制造。</strong>光谱仪/激光光源是ETO模式，需要项目管理+项目成本核算能力，金蝶AI套件项目云+制造云原生覆盖。
+      <br><br>
+      <strong>关键动作：确认上市时间线 + 接触钟长干/陈韬 + 防守用友。</strong>
+    </p>
+    <div class="tags">
+      <span class="tag-item">K3老客户升级</span>
+      <span class="tag-item">上市合规IPO</span>
+      <span class="tag-item">项目制造ETO</span>
+      <span class="tag-item">项目管理</span>
+      <span class="tag-item">项目成本</span>
+      <span class="tag-item">广电测试龙头</span>
+      <span class="tag-item">光通信仪器</span>
+      <span class="tag-item">金蝶AI套件</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>金蝶中国·天津分公司·营销中心 | 数据来源：Boss提供客户沟通+公开调研（2026年6月）</p>
+  <p style="margin-top:6px;">生成时间 <span id="footerDate"></span></p>
+</footer>
+
+<script>
+  const nls=document.querySelectorAll('.nav-links a');const scs=document.querySelectorAll('section');
+  const ob=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;nls.forEach(a=>a.classList.remove('active'));const m=document.querySelector(`.nav-links a[href="#${id}"]`);if(m)m.classList.add('active');}});},{rootMargin:'-40% 0px -50% 0px'});
+  scs.forEach(s=>ob.observe(s));
+  const d=new Date();const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  document.getElementById('navDate').textContent=ds;document.getElementById('footerDate').textContent=ds;
+  const ro=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:.06});
+  document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+  document.querySelectorAll('nav a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});});
+</script>
+</body>
+</html>

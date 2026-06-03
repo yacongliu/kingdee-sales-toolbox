@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子高科技行业深度分析报告 — 金蝶</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --kd-blue: #2971EB;
+  --kd-blueLight: #238EF7;
+  --kd-skyblue: #22AAFE;
+  --kd-skyL: #00CCFE;
+  --kd-teal: #05C8C8;
+  --kd-purple: #A06EFF;
+  --kd-yellow: #FFB61A;
+  --kd-bluePurple: #28235F;
+  --kd-gray: #BFBFBF;
+  --bg-white: #FFFFFF;
+  --bg-card: #F5F7FA;
+  --border: #E5E5E5;
+  --bg-lightBlue: #E7F1FF;
+  --text-primary: #1A1A1A;
+  --text-body: #333333;
+  --text-secondary: #666666;
+  --text-caption: #999999;
+  --text-onBlue: #FFFFFF;
+  --text-grayDark: #3B3838;
+  --font-main: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "Segoe UI", "Roboto", "Helvetica Neue", -apple-system, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-main); color: var(--text-body); background: var(--bg-white); line-height: 1.8; -webkit-font-smoothing: antialiased; }
+
+/* ========== HERO ========== */
+.hero { position: relative; background: var(--bg-white); overflow: hidden; padding: 60px 80px 48px; min-height: 420px; }
+.hero::before { content: ''; position: absolute; top: 0; right: 0; width: 45%; height: 100%; background: linear-gradient(135deg, var(--bg-lightBlue) 0%, rgba(34,170,254,0.08) 100%); border-radius: 0 0 0 60px; }
+.hero-content { position: relative; z-index: 2; }
+.hero-logo { height: 48px; margin-bottom: 48px; }
+.hero-title { font-size: 56px; font-weight: 700; color: var(--kd-blue); line-height: 1.25; margin-bottom: 16px; }
+.hero-subtitle { font-size: 22px; color: var(--text-secondary); margin-bottom: 32px; font-weight: 400; }
+.hero-tags { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-tag { display: inline-flex; align-items: center; padding: 6px 18px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+.tag-blue { background: var(--bg-lightBlue); color: var(--kd-blue); }
+.tag-teal { background: rgba(5,200,200,0.12); color: var(--kd-teal); }
+.hero-meta { position: absolute; bottom: 32px; left: 80px; font-size: 13px; color: var(--text-caption); z-index: 2; }
+.hero-meta span { margin-right: 24px; }
+.hero-bottom { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 80px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-caption); border-top: 1px solid var(--border); z-index: 2; }
+.hero-hero-img { position: absolute; right: 40px; bottom: 60px; z-index: 1; opacity: 0.15; height: 280px; }
+
+/* ========== CONTENT ========== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 60px 60px; }
+.kd-content-logo { position: fixed; top: 24px; right: 32px; height: 40px; opacity: 0.8; z-index: 100; pointer-events: none; }
+
+/* Executive Summary */
+.exec-summary { margin: 48px 0 56px; }
+.exec-card { background: var(--bg-lightBlue); border-radius: 12px; padding: 36px 40px; border-left: 5px solid var(--kd-blue); }
+.exec-title { font-size: 20px; font-weight: 700; color: var(--kd-blue); margin-bottom: 20px; }
+.exec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; }
+.exec-item { display: flex; gap: 12px; align-items: flex-start; }
+.exec-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--kd-blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.exec-text { font-size: 14px; color: var(--text-body); line-height: 1.7; }
+.exec-text strong { color: var(--kd-blue); font-weight: 600; }
+
+/* Chapter */
+.chapter { margin-bottom: 56px; page-break-inside: avoid; }
+.ch-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 3px solid var(--kd-blue); }
+.ch-num { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, var(--kd-blue), var(--kd-blueLight)); color: white; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+.ch-title { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+.ch-body { font-size: 15px; color: var(--text-body); line-height: 1.9; }
+.ch-body p { margin-bottom: 16px; }
+.ch-body h3 { font-size: 17px; font-weight: 600; color: var(--text-primary); margin: 28px 0 12px; }
+.ch-body h3::before { content: '▌'; color: var(--kd-blue); margin-right: 8px; }
+
+/* Card */
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; margin: 20px 0; }
+.card-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
+
+/* Highlight */
+.highlight { background: var(--bg-lightBlue); border-left: 4px solid var(--kd-blue); border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 20px 0; font-size: 14px; }
+
+/* KPI Cards */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 24px 0; }
+.kpi-card { background: var(--bg-card); border-radius: 12px; padding: 24px; text-align: center; border: 1px solid var(--border); }
+.kpi-value { font-size: 36px; font-weight: 700; color: var(--kd-blue); line-height: 1.2; }
+.kpi-unit { font-size: 16px; color: var(--kd-blue); font-weight: 500; }
+.kpi-label { font-size: 13px; color: var(--text-secondary); margin-top: 8px; }
+
+/* Table */
+.kd-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; border-radius: 8px; overflow: hidden; }
+.kd-table thead th { background: linear-gradient(135deg, #2372EF, #238EF7, #22AAFE); color: white; padding: 12px 16px; font-weight: 600; text-align: left; }
+.kd-table thead th:first-child { border-radius: 8px 0 0 0; }
+.kd-table thead th:last-child { border-radius: 0 8px 0 0; }
+.kd-table tbody td { padding: 11px 16px; border-bottom: 1px solid var(--border); }
+.kd-table tbody tr:nth-child(even) { background: var(--bg-card); }
+.kd-table tbody tr:hover { background: var(--bg-lightBlue); }
+
+/* Before-After */
+.ba-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; margin: 28px 0; align-items: stretch; }
+.ba-before, .ba-after { padding: 28px; border-radius: 12px; }
+.ba-before { background: #F0F0F0; border: 1px solid var(--border); }
+.ba-after { background: var(--bg-lightBlue); border: 1px solid rgba(41,113,235,0.2); }
+.ba-label { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+.ba-before .ba-label { color: var(--text-grayDark); }
+.ba-after .ba-label { color: var(--kd-blue); }
+.ba-arrow { display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--kd-blue); padding: 0 8px; }
+.ba-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 14px; }
+.ba-item:last-child { border-bottom: none; }
+.ba-val { font-weight: 700; }
+.ba-after .ba-val { color: var(--kd-blue); }
+.ba-before .ba-val { color: var(--text-grayDark); }
+.ba-improve { font-size: 12px; color: #00B050; font-weight: 600; margin-top: 2px; }
+
+/* Pain Point Cards */
+.pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+.pain-card { background: var(--bg-card); border-radius: 12px; padding: 24px; border-top: 4px solid var(--kd-blue); border: 1px solid var(--border); border-top: 4px solid var(--kd-blue); }
+.pain-card.pain-strategy { border-top-color: var(--kd-bluePurple); }
+.pain-card.pain-manage { border-top-color: var(--kd-blue); }
+.pain-card.pain-ops { border-top-color: var(--kd-teal); }
+.pain-card.pain-tech { border-top-color: var(--kd-purple); }
+.pain-icon { font-size: 28px; margin-bottom: 10px; }
+.pain-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.pain-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+/* Value Cards */
+.value-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+.value-card { background: var(--bg-card); border-radius: 12px; padding: 24px 20px; text-align: center; border: 1px solid var(--border); position: relative; overflow: hidden; }
+.value-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.value-card:nth-child(1)::before { background: var(--kd-blue); }
+.value-card:nth-child(2)::before { background: var(--kd-teal); }
+.value-card:nth-child(3)::before { background: var(--kd-yellow); }
+.value-card:nth-child(4)::before { background: var(--kd-purple); }
+.value-emoji { font-size: 32px; margin-bottom: 10px; }
+.value-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.value-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+/* Kingdee Solution */
+.kd-solution-banner { background: linear-gradient(135deg, #2372EF, #238EF7, #22AAFE); border-radius: 16px; padding: 48px; color: white; margin: 40px 0; position: relative; overflow: hidden; }
+.kd-solution-banner::after { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+.kd-sol-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.kd-sol-sub { font-size: 16px; opacity: 0.85; margin-bottom: 28px; }
+.kd-sol-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.kd-sol-item { background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); border-radius: 12px; padding: 24px; border: 1px solid rgba(255,255,255,0.18); }
+.kd-sol-item-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.kd-sol-item-desc { font-size: 13px; opacity: 0.88; line-height: 1.7; }
+
+/* Recommend */
+.recommend-card { background: var(--bg-white); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin: 20px 0; }
+.recommend-top { padding: 4px; height: 4px; background: linear-gradient(90deg, var(--kd-blue), var(--kd-skyblue), var(--kd-teal)); }
+.recommend-body { padding: 28px; }
+.rec-role { font-size: 13px; font-weight: 600; color: var(--kd-blue); margin-bottom: 6px; text-transform: uppercase; }
+.rec-scenario { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+.rec-items { list-style: none; }
+.rec-items li { padding: 6px 0 6px 24px; font-size: 14px; color: var(--text-body); position: relative; }
+.rec-items li::before { content: '✓'; position: absolute; left: 0; color: #00B050; font-weight: 700; }
+
+/* Chart */
+.chart-wrapper { margin: 28px 0; }
+.chart-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+.chart-box canvas { max-height: 380px; }
+.chart-caption { font-size: 12px; color: var(--text-caption); text-align: center; margin-top: 12px; }
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* Source */
+.sources { background: var(--bg-card); border-radius: 12px; padding: 28px 32px; margin: 40px 0 20px; }
+.sources-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 14px; }
+.sources ul { list-style: none; }
+.sources li { font-size: 13px; color: var(--text-secondary); padding: 4px 0; }
+.sources li a { color: var(--kd-blue); text-decoration: none; }
+
+/* Footer */
+.footer { padding: 24px 80px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--border); font-size: 12px; color: var(--text-caption); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero { padding: 40px; }
+  .container { padding: 0 24px 40px; }
+  .hero-title { font-size: 36px; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .pain-grid { grid-template-columns: 1fr; }
+  .value-grid { grid-template-columns: 1fr 1fr; }
+  .ba-row { grid-template-columns: 1fr; }
+  .ba-arrow { transform: rotate(90deg); padding: 8px 0; }
+  .charts-row { grid-template-columns: 1fr; }
+  .kd-sol-grid { grid-template-columns: 1fr 1fr; }
+  .exec-grid { grid-template-columns: 1fr; }
+  .hero-bottom, .hero-meta { left: 40px; }
+  .footer { padding: 24px 40px; flex-direction: column; gap: 8px; }
+}
+
+/* Print */
+@media print {
+  .hero { min-height: auto; padding: 40px; }
+  .chapter { page-break-inside: avoid; }
+  .kpi-row, .pain-grid, .charts-row { page-break-inside: avoid; }
+  .kd-content-logo { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Content Page Logo -->
+<img src="https://kingdee-cdn.pages.dev/kingdee-blue.png" alt="Kingdee" class="kd-content-logo" onerror="this.style.display='none'">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-content">
+    <img src="https://kingdee-cdn.pages.dev/kingdee-blue.png" alt="Kingdee 金蝶" class="hero-logo" onerror="this.outerHTML='<span style=&quot;font-size:32px;font-weight:700;color:#2971EB&quot;>Kingdee 金蝶</span>'">
+    <h1 class="hero-title">电子高科技行业<br>深度分析报告</h1>
+    <p class="hero-subtitle">数字化转型的战略机遇与价值重塑</p>
+    <div class="hero-tags">
+      <span class="hero-tag tag-blue">电子信息制造</span>
+      <span class="hero-tag tag-teal">半导体 / 消费电子</span>
+      <span class="hero-tag tag-blue">2025-2026</span>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <span>金蝶国际软件集团有限公司</span>
+    <span>2026年5月</span>
+    <span>面向企业CIO/CTO</span>
+  </div>
+  <div class="hero-bottom">
+    <span>版权所有©金蝶国际软件集团有限公司 始创于1993</span>
+    <span>④内部公开 请勿外传</span>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- ============ EXECUTIVE SUMMARY ============ -->
+<section class="exec-summary">
+  <div class="exec-card">
+    <div class="exec-title">执行摘要</div>
+    <div class="exec-grid">
+      <div class="exec-item">
+        <div class="exec-num">1</div>
+        <div class="exec-text"><strong>规模持续扩大：</strong>2025年中国电子信息制造业营收达<strong>17.4万亿元</strong>，同比增长7.4%；利润总额7509亿元，同比大增19.5%，盈利能力显著改善。</div>
+      </div>
+      <div class="exec-item">
+        <div class="exec-num">2</div>
+        <div class="exec-text"><strong>政策驱动加速：</strong>2025年4月，工信部等三部门联合印发《电子信息制造业数字化转型实施方案》，明确2027年关键工序数控化率超85%，2030年建成行业数据体系。</div>
+      </div>
+      <div class="exec-item">
+        <div class="exec-num">3</div>
+        <div class="exec-text"><strong>集成电路亮眼：</strong>集成电路产量4843亿块（+10.9%），出口3495亿个（+17.4%），成为行业增长最强引擎，AI芯片需求持续旺盛。</div>
+      </div>
+      <div class="exec-item">
+        <div class="exec-num">4</div>
+        <div class="exec-text"><strong>数字化转型迫在眉睫：</strong>65%以上电子企业正推动ERP升级，但60%以上项目效果不佳。数据孤岛、多组织协同、全链追溯三大痛点尤为突出。</div>
+      </div>
+      <div class="exec-item">
+        <div class="exec-num">5</div>
+        <div class="exec-text"><strong>AI深度赋能：</strong>AI手机、AI PC渗透率大幅提升，行业级大模型在创成式设计、设备故障预测、质量视觉检测等场景加速落地。</div>
+      </div>
+      <div class="exec-item">
+        <div class="exec-num">6</div>
+        <div class="exec-text"><strong>投资结构分化：</strong>固定资产投资同比下降3.8%，但企业数字化、智能化改造投入持续加大，"重硬轻软"格局正在改变。</div>
+      </div>
+      <div class="exec-item">
+        <div class="exec-num">7</div>
+        <div class="exec-text"><strong>国产替代加速：</strong>自主可控和国产安全背景下，半导体设备、材料、制造各环节国产替代提速，对数字化管理提出更高要求。</div>
+      </div>
+      <div class="exec-item">
+        <div class="exec-num">8</div>
+        <div class="exec-text"><strong>金蝶方案匹配：</strong>金蝶已形成覆盖电子半导体全产业链（Fabless→晶圆→封测→分销）的数字化解决方案，7大核心能力精准匹配行业痛点。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 01 ============ -->
+<section class="chapter">
+  <div class="ch-header">
+    <div class="ch-num">01</div>
+    <h2 class="ch-title">行业全景概览</h2>
+  </div>
+  <div class="ch-body">
+    <p>电子信息制造业是中国国民经济的战略性、基础性、先导性产业。2025年，在AI技术赋能、产品迭代升级、消费高端化三大核心驱动力下，行业延续复苏态势，生产快速增长、效益稳步向好。</p>
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value">17.4<small class="kpi-unit">万亿</small></div>
+        <div class="kpi-label">2025年营业收入</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">10.6<small class="kpi-unit">%</small></div>
+        <div class="kpi-label">增加值同比增速</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">7509<small class="kpi-unit">亿</small></div>
+        <div class="kpi-label">利润总额 (+19.5%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value">4843<small class="kpi-unit">亿块</small></div>
+        <div class="kpi-label">集成电路产量 (+10.9%)</div>
+      </div>
+    </div>
+
+    <h3>市场规模与增长趋势</h3>
+    <p>中国电子信息产业近年来保持稳定增长态势。2024年市场规模达21.59万亿元（含锂电、光伏），同比增长6.1%；2025年规模以上企业营业收入达17.4万亿元，同比增长7.4%。2025年上半年营收8.04万亿元，同比增长9.4%，增速较2024年全年进一步提升。</p>
+
+    <div class="chart-wrapper">
+      <div class="chart-box">
+        <canvas id="chartMarketSize"></canvas>
+        <div class="chart-caption">图1：中国电子信息制造业营业收入及增速趋势（数据来源：工信部）</div>
+      </div>
+    </div>
+
+    <h3>重点产品产量表现</h3>
+    <p>2025年，手机产量15.4亿台（-5.8%），微型计算机3.32亿台（-2.9%），终端产品产量承压。但集成电路产量达4843亿块（+10.9%），出口量3495亿个（+17.4%），成为行业增长最强引擎。这一结构性分化反映了行业从"终端组装"向"核心器件"的价值链升级趋势。</p>
+
+    <div class="charts-row">
+      <div class="chart-box">
+        <canvas id="chartProducts"></canvas>
+        <div class="chart-caption">图2：2025年重点产品产量及同比变化</div>
+      </div>
+      <div class="chart-box">
+        <canvas id="chartRegional"></canvas>
+        <div class="chart-caption">图3：2025年各地区营业收入及增速</div>
+      </div>
+    </div>
+
+    <h3>政策环境：国家级数字化转型方案出台</h3>
+    <p>2025年4月，工信部、国家发改委、国家数据局联合印发《电子信息制造业数字化转型实施方案》（工信部联电子〔2025〕95号），这是行业首部数字化转型专项政策，确立了<strong>2027年</strong>和<strong>2030年</strong>两阶段目标：</p>
+
+    <div class="card">
+      <table class="kd-table">
+        <thead>
+          <tr><th>时间节点</th><th>核心目标</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>2027年</strong></td><td>关键工序数控化率超过85%；形成100+典型场景解决方案；培育100+专业服务商</td></tr>
+          <tr><td><strong>2030年</strong></td><td>建成行业数据基础制度体系；建成工业数据库；形成标志性智能产品；向全球价值链高端延伸</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight">
+      <strong>关键信号：</strong>实施方案部署18项重点任务，覆盖核心技术攻关、典型场景推广、产业链协同、绿色低碳转型、基础设施完善五大方向，同时强调"先进计算与AI深度赋能"——这为电子企业数字化转型提供了明确的时间表和路线图。
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 02 ============ -->
+<section class="chapter">
+  <div class="ch-header">
+    <div class="ch-num">02</div>
+    <h2 class="ch-title">竞争格局分析</h2>
+  </div>
+  <div class="ch-body">
+    <p>中国电子信息制造业已形成较为完整的产业链体系，但在高端芯片和核心算法领域仍存在短板。2025年电子信息百强企业中，华为、比亚迪、联想稳居前三，TOP20企业涵盖消费电子、半导体、通信设备、新型显示等多个细分领域。</p>
+
+    <h3>百强企业格局</h3>
+    <p>根据中国电子信息行业联合会发布的2025年度百强名单，华为连续位居榜首，比亚迪凭借新能源汽车电子业务跃升第二。TOP20企业呈现"通信+消费电子+半导体+新能源"多极并进格局。</p>
+
+    <div class="chart-wrapper">
+      <div class="chart-box">
+        <canvas id="chartTop10"></canvas>
+        <div class="chart-caption">图4：2025年中国电子信息竞争力TOP10企业（来源：中国电子信息行业联合会）</div>
+      </div>
+    </div>
+
+    <h3>细分领域竞争态势</h3>
+    <p>电子高科技行业细分领域众多，竞争格局差异显著：</p>
+
+    <div class="charts-row">
+      <div class="chart-box">
+        <canvas id="chartSegments"></canvas>
+        <div class="chart-caption">图5：电子信息制造业细分领域市场规模分布（估算）</div>
+      </div>
+      <div class="chart-box">
+        <canvas id="chartRadar"></canvas>
+        <div class="chart-caption">图6：主要细分领域竞争强度评估</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <table class="kd-table">
+        <thead>
+          <tr><th>细分领域</th><th>竞争特征</th><th>代表企业</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>通信设备</strong></td><td>寡头竞争，技术壁垒极高</td><td>华为、中兴、爱立信、诺基亚</td></tr>
+          <tr><td><strong>消费电子</strong></td><td>高度集中，品牌与生态竞争</td><td>苹果、三星、小米、OPPO、vivo</td></tr>
+          <tr><td><strong>集成电路</strong></td><td>全球竞争，国产替代加速</td><td>中芯国际、华虹、长电科技</td></tr>
+          <tr><td><strong>新型显示</strong></td><td>中韩竞争，产能向中国大陆转移</td><td>京东方、TCL华星、天马微电子</td></tr>
+          <tr><td><strong>汽车电子</strong></td><td>高速增长，新老玩家竞合</td><td>比亚迪电子、德赛西威、均胜电子</td></tr>
+          <tr><td><strong>基础电子元件</strong></td><td>分散竞争，规模化为王</td><td>三安光电、顺络电子、风华高科</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 03 ============ -->
+<section class="chapter">
+  <div class="ch-header">
+    <div class="ch-num">03</div>
+    <h2 class="ch-title">行业核心痛点</h2>
+  </div>
+  <div class="ch-body">
+    <p>电子高科技行业具有"产品迭代快、物料种类多、质量要求高、供应链全球化"四大特征，这决定了其数字化管理面临独特挑战。根据行业调研和金蝶客户实践，我们将核心痛点归纳为四个层面。</p>
+
+    <div class="chart-wrapper">
+      <div class="chart-box">
+        <canvas id="chartPain"></canvas>
+        <div class="chart-caption">图7：电子高科技行业核心痛点严重度评估（基于行业调研综合评估）</div>
+      </div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card pain-strategy">
+        <div class="pain-icon">🎯</div>
+        <div class="pain-title">战略层：技术迭代与合规压力</div>
+        <div class="pain-desc">电子产品生命周期持续缩短（消费电子6-12个月），AI、5G、物联网等新技术不断催生新品类，企业需持续高强度研发投入。同时，数据安全法、出口管制等合规要求日趋严格，供应链安全成为战略级议题。</div>
+      </div>
+      <div class="pain-card pain-manage">
+        <div class="pain-icon">🏢</div>
+        <div class="pain-title">管理层：多组织协同决策困难</div>
+        <div class="pain-desc">多工厂、多事业部、多区域运营模式下，集团统一管控与一线灵活响应矛盾突出。60%以上企业ERP项目效果不佳，跨部门数据不通导致决策滞后，需求预测准确率普遍低于70%。</div>
+      </div>
+      <div class="pain-card pain-ops">
+        <div class="pain-icon">⚙️</div>
+        <div class="pain-title">运营层：供应链脆弱与成本失控</div>
+        <div class="pain-desc">进口依赖导致"牛鞭效应"显著，齐套缺料率高达25%以上。BOM多层级管理与变更追溯困难，物料缺料与积压并存。订单交付周期受制于供应链不透明，准时交付率普遍不足85%。</div>
+      </div>
+      <div class="pain-card pain-tech">
+        <div class="pain-icon">💻</div>
+        <div class="pain-title">技术层：系统孤岛与智能化缺失</div>
+        <div class="pain-desc">ERP、MES、PLM、WMS等系统割裂，数据孤岛严重。65%企业正推动ERP升级但面临"选错ERP=掉队"困境。AI预测、智能排产、精细化成本管控成为新标配，但传统系统无法支撑。</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>核心洞察：</strong>2025年电子行业的痛点已从"有没有系统"转变为"系统能不能真正跟上业务节奏"。数据打通、灵活响应、智能决策、持续优化——这四大能力是破局的关键。
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 04 ============ -->
+<section class="chapter">
+  <div class="ch-header">
+    <div class="ch-num">04</div>
+    <h2 class="ch-title">数字化价值与ROI分析</h2>
+  </div>
+  <div class="ch-body">
+    <p>数字化转型不再是"可选项"，而是电子高科技企业的"必选项"。国家实施方案的出台为企业提供了明确的方向指引，而行业标杆企业的实践已经验证了数字化转型的巨大价值。</p>
+
+    <h3>四维价值模型</h3>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-emoji">⚡</div>
+        <div class="value-title">效率价值</div>
+        <div class="value-desc">流程自动化节省人工30%+<br>生产排程效率提升50%<br>财务月结时间缩短70%</div>
+      </div>
+      <div class="value-card">
+        <div class="value-emoji">📊</div>
+        <div class="value-title">决策价值</div>
+        <div class="value-desc">数据驱动需求预测准确率提升至85%+<br>库存周转率翻倍<br>实时经营决策能力</div>
+      </div>
+      <div class="value-card">
+        <div class="value-emoji">🚀</div>
+        <div class="value-title">增长价值</div>
+        <div class="value-desc">新产品上市周期缩短30%-50%<br>客户满意度提升15%+<br>新业务模式（服务化）拓展</div>
+      </div>
+      <div class="value-card">
+        <div class="value-emoji">🛡️</div>
+        <div class="value-title">风险规避</div>
+        <div class="value-desc">供应链可视化降低断供风险<br>质量追溯100%覆盖<br>合规审计效率提升60%+</div>
+      </div>
+    </div>
+
+    <h3>数字化转型前后基准对比</h3>
+    <div class="ba-row">
+      <div class="ba-before">
+        <div class="ba-label">转型前</div>
+        <div class="ba-item"><span>订单交付周期</span><span class="ba-val">15-20天</span></div>
+        <div class="ba-item"><span>库存周转率</span><span class="ba-val">4次/年</span></div>
+        <div class="ba-item"><span>财务月结时间</span><span class="ba-val">10-15天</span></div>
+        <div class="ba-item"><span>齐套缺料率</span><span class="ba-val">25%+</span></div>
+        <div class="ba-item"><span>质量追溯覆盖率</span><span class="ba-val">不足40%</span></div>
+      </div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after">
+        <div class="ba-label">转型后（标杆均值）</div>
+        <div class="ba-item"><span>订单交付周期</span><span class="ba-val">7-10天</span><div class="ba-improve">-47%~-50%</div></div>
+        <div class="ba-item"><span>库存周转率</span><span class="ba-val">8次/年</span><div class="ba-improve">+100%</div></div>
+        <div class="ba-item"><span>财务月结时间</span><span class="ba-val">3-5天</span><div class="ba-improve">-67%~-70%</div></div>
+        <div class="ba-item"><span>齐套缺料率</span><span class="ba-val">5%-8%</span><div class="ba-improve">-68%~-80%</div></div>
+        <div class="ba-item"><span>质量追溯覆盖率</span><span class="ba-val">95%+</span><div class="ba-improve">+137%</div></div>
+      </div>
+    </div>
+
+    <h3>数字化投入趋势</h3>
+    <p>虽然固定资产投资整体下滑（-3.8%），但企业数字化改造投入逆势增长。行业调研显示，电子制造企业年均IT投入占营收的2%-4%，领先企业已达5%+。投入重点正从"硬件设备采购"向"软件平台+数据治理+AI应用"转移。</p>
+
+    <div class="chart-wrapper">
+      <div class="chart-box">
+        <canvas id="chartITInvest"></canvas>
+        <div class="chart-caption">图8：电子制造企业IT投入结构变化趋势（基于行业综合调研）</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 05 ============ -->
+<section class="chapter">
+  <div class="ch-header">
+    <div class="ch-num">05</div>
+    <h2 class="ch-title">标杆案例与实践</h2>
+  </div>
+  <div class="ch-body">
+    <p>以下案例综合行业公开信息与金蝶客户实践，展示电子高科技企业在数字化转型中的典型路径与成效。</p>
+
+    <h3>案例一：大型消费电子ODM企业 — 从信息孤岛到一体化运营</h3>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">-53%</div>
+          <div style="font-size:12px;color:var(--text-secondary);">订单交付周期</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">+120%</div>
+          <div style="font-size:12px;color:var(--text-secondary);">库存周转率</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">95%+</div>
+          <div style="font-size:12px;color:var(--text-secondary);">质量追溯覆盖</div>
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--text-body);"><strong>企业背景：</strong>国内领先消费电子ODM厂商，年营收超200亿，拥有3个生产基地，服务全球Top5手机品牌。</p>
+      <p style="font-size:14px;color:var(--text-body);"><strong>转型路径：</strong>部署金蝶云·星瀚，打通ERP-PLM-MES-WMS全链路数据，建立统一主数据平台，实现多工厂协同排产与实时质量追溯。</p>
+      <p style="font-size:14px;color:var(--text-body);"><strong>关键成效：</strong>订单交付周期从20天缩短至9天，库存周转率从3.5次/年提升至7.7次/年，齐套率从72%提升至96%，年度降本超8000万元。</p>
+    </div>
+
+    <h3>案例二：半导体封测企业 — 精益化管控与成本精细化</h3>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">2.3pp</div>
+          <div style="font-size:12px;color:var(--text-secondary);">良率提升</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">-40%</div>
+          <div style="font-size:12px;color:var(--text-secondary);">委外管理成本</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">100%</div>
+          <div style="font-size:12px;color:var(--text-secondary);">批次追溯能力</div>
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--text-body);"><strong>企业背景：</strong>国内头部半导体封测企业，拥有多座晶圆级封装工厂，客户涵盖全球知名芯片设计公司。</p>
+      <p style="font-size:14px;color:var(--text-body);"><strong>转型路径：</strong>部署金蝶电子半导体行业方案，实现Wafer/IC多属性全价值链管理、四级精益计划驱动的生产调度、LOT/片号精细化追溯。</p>
+      <p style="font-size:14px;color:var(--text-body);"><strong>关键成效：</strong>整体良率提升2.3个百分点，委外管理成本降低40%，批次追溯从"不可能"到100%覆盖，满足车规级客户的追溯要求。</p>
+    </div>
+
+    <h3>案例三：华普微电子 — 金蝶云·星空赋能成长型电子企业</h3>
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">统一</div>
+          <div style="font-size:12px;color:var(--text-secondary);">主数据平台</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-lightBlue);border-radius:8px;">
+          <div style="font-size:24px;font-weight:700;color:var(--kd-blue);">业财融合</div>
+          <div style="font-size:12px;color:var(--text-secondary);">管控升级</div>
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--text-body);"><strong>企业背景：</strong>华普微电子是国内领先的集成电路设计企业，专注于高性能模拟及混合信号芯片的研发与销售。</p>
+      <p style="font-size:14px;color:var(--text-body);"><strong>转型路径：</strong>选择金蝶云·星空，统一各平台主数据，实现全面信息化与业财融合。</p>
+      <p style="font-size:14px;color:var(--text-body);"><strong>关键成效：</strong>消除信息孤岛、提升应用效能、业财一体化管控升级，为IPO合规打下坚实基础。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 06 ============ -->
+<section class="chapter">
+  <div class="ch-header">
+    <div class="ch-num">06</div>
+    <h2 class="ch-title">趋势研判与行动建议</h2>
+  </div>
+  <div class="ch-body">
+    <h3>六大核心趋势</h3>
+    <div class="chart-wrapper">
+      <div class="chart-box">
+        <canvas id="chartTrend"></canvas>
+        <div class="chart-caption">图9：电子高科技行业数字化成熟度演进路径</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <table class="kd-table">
+        <thead>
+          <tr><th>趋势</th><th>核心内容</th><th>CIO行动建议</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AI深度渗透</strong></td><td>行业级大模型在创成式设计、故障预测、质量检测等场景加速落地</td><td>评估AI应用场景优先级，试点1-2个高价值AI场景</td></tr>
+          <tr><td><strong>国产化替代</strong></td><td>自主可控要求下，国产ERP/PLM/MES等工业软件替代加速</td><td>梳理国产化替代清单，优先选型国产化方案</td></tr>
+          <tr><td><strong>产业链一体化</strong></td><td>从"单企业优化"到"全链协同"，链主企业带动上下游数字化</td><td>构建供应链协同平台，实现采供销信息共享</td></tr>
+          <tr><td><strong>数据驱动决策</strong></td><td>数据要素价值释放，产业大脑、经营分析大屏成为标配</td><td>建立数据治理体系，建设经营决策分析平台</td></tr>
+          <tr><td><strong>绿色低碳</strong></td><td>碳足迹追踪、绿色制造成为合规要求和差异化竞争点</td><td>规划碳管理数字化平台，对接碳足迹数据库</td></tr>
+          <tr><td><strong>云化与SaaS</strong></td><td>云端部署成为主流，低/无代码平台降低定制开发成本</td><td>评估云原生架构迁移路径，试点低代码平台</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>给CIO的行动建议</h3>
+
+    <div class="recommend-card">
+      <div class="recommend-top"></div>
+      <div class="recommend-body">
+        <div class="rec-role">短期行动（0-6个月）</div>
+        <div class="rec-scenario">数字化诊断与优先级确定</div>
+        <ul class="rec-items">
+          <li>对照《实施方案》2027目标，评估企业关键工序数控化率差距</li>
+          <li>梳理现有ERP/PLM/MES/WMS系统功能覆盖度与集成现状</li>
+          <li>识别TOP3高价值数字化场景（建议：供应链协同、质量追溯、智能排产）</li>
+          <li>启动数字化供应商评估，优先考虑国产化、行业化方案</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="recommend-card">
+      <div class="recommend-top"></div>
+      <div class="recommend-body">
+        <div class="rec-role">中期行动（6-18个月）</div>
+        <div class="rec-scenario">核心系统升级与数据打通</div>
+        <ul class="rec-items">
+          <li>升级ERP系统，打通与PLM/MES/WMS的数据链路</li>
+          <li>建设统一主数据平台，消除多系统数据不一致</li>
+          <li>在1-2条产线试点AI质检、智能排产等应用</li>
+          <li>建立数据治理组织，明确数据Owner和质量标准</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="recommend-card">
+      <div class="recommend-top"></div>
+      <div class="recommend-body">
+        <div class="rec-role">长期行动（18-36个月）</div>
+        <div class="rec-scenario">数智化运营与生态协同</div>
+        <ul class="rec-items">
+          <li>建设产业链协同平台，实现与上下游企业的信息共享与联合计划</li>
+          <li>构建行业级AI大模型应用，赋能研发设计、生产优化、质量预测</li>
+          <li>部署碳足迹管理平台，对接行业碳数据库</li>
+          <li>推动智能制造能力成熟度评估，对标行业标杆持续改进</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 07 — KINGDEE SOLUTION ============ -->
+<section class="chapter">
+  <div class="ch-header">
+    <div class="ch-num">07</div>
+    <h2 class="ch-title">金蝶解决方案</h2>
+  </div>
+  <div class="ch-body">
+    <p>金蝶深耕电子高科技行业多年，已形成覆盖<strong>Fabless设计→晶圆制造→封装测试→渠道分销</strong>全产业链的数字化解决方案。方案基于金蝶云·星瀚（大型企业）和金蝶云·星空（成长型企业）两大平台，精准匹配不同规模电子企业的核心诉求。</p>
+
+    <div class="kd-solution-banner">
+      <div class="kd-sol-title">金蝶电子高科技行业解决方案</div>
+      <div class="kd-sol-sub">7大核心能力 × 全产业链覆盖 × AI赋能</div>
+      <div class="kd-sol-grid">
+        <div class="kd-sol-item">
+          <div class="kd-sol-item-title">Wafer/IC多属性管理</div>
+          <div class="kd-sol-item-desc">BOM/工艺标准化治理、多版本管控、全价值链贯穿</div>
+        </div>
+        <div class="kd-sol-item">
+          <div class="kd-sol-item-title">授权分销管控</div>
+          <div class="kd-sol-item-desc">分级分销商管理、渠道库存统筹、智能需求预测</div>
+        </div>
+        <div class="kd-sol-item">
+          <div class="kd-sol-item-title">多组织协同制造</div>
+          <div class="kd-sol-item-desc">集中接单、统一计划、多工厂协同生产</div>
+        </div>
+        <div class="kd-sol-item">
+          <div class="kd-sol-item-title">数智化工厂</div>
+          <div class="kd-sol-item-desc">IT/OT融合、实时采集、防呆防错、智能排程</div>
+        </div>
+        <div class="kd-sol-item">
+          <div class="kd-sol-item-title">全链质量追溯</div>
+          <div class="kd-sol-item-desc">研发试制→来料→生产→委外全链路精细追溯</div>
+        </div>
+        <div class="kd-sol-item">
+          <div class="kd-sol-item-title">成本精细化核算</div>
+          <div class="kd-sol-item-desc">标准/实际作业成本、成本构成分析、降本空间挖掘</div>
+        </div>
+        <div class="kd-sol-item">
+          <div class="kd-sol-item-title">AI智能决策</div>
+          <div class="kd-sol-item-desc">金蝶AI智能体赋能经营分析、预测预警、知识问答</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>产品矩阵与客户匹配</h3>
+    <div class="card">
+      <table class="kd-table">
+        <thead>
+          <tr><th>企业规模</th><th>推荐产品</th><th>定位</th><th>典型客户场景</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>大型/上市企业</strong></td><td>金蝶云·星瀚</td><td>大企业EBC数智化平台</td><td>多组织集团管控、产业链协同、IPO合规支撑</td></tr>
+          <tr><td><strong>中型/成长型企业</strong></td><td>金蝶云·星空</td><td>高成长型企业SaaS</td><td>快速上线、ERP+PLM一体化、成本精细化管理</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>行业专属模块</h3>
+    <div class="charts-row">
+      <div class="card">
+        <div class="card-title">半导体/集成电路</div>
+        <ul class="rec-items">
+          <li>Wafer与IC多属性、多版本BOM管理</li>
+          <li>LOT/片号/Bin全流程精细化追溯</li>
+          <li>四级精益计划与委外实时调度</li>
+          <li>作业成本精细化核算</li>
+          <li>席位制跨系统生产指挥调度</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">消费电子/ODM</div>
+        <ul class="rec-items">
+          <li>多工厂网络化协同计划与制造</li>
+          <li>授权分销与渠道库存管控</li>
+          <li>快速换线与柔性排产</li>
+          <li>序列号全流程质量追溯</li>
+          <li>MRP与采购协同优化</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>方案架构</h3>
+    <div class="chart-wrapper">
+      <div class="chart-box">
+        <canvas id="chartArch"></canvas>
+        <div class="chart-caption">图10：金蝶电子高科技行业解决方案架构</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>金蝶差异化优势：</strong>
+      1）全产业链覆盖 — 从芯片设计到终端分销的一体化方案；
+      2）国产化自主可控 — 完全自主研发，符合信创要求；
+      3）AI原生赋能 — 内置金蝶AI智能体，实现智能决策辅助；
+      4）敏捷云原生 — 支持快速部署、弹性扩展、持续迭代。
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOURCES ============ -->
+<section class="sources">
+  <div class="sources-title">数据来源与参考资料</div>
+  <ul>
+    <li>★ 工信部《2025年电子信息制造业运行情况》（2026年1月30日）<a href="https://www.miit.gov.cn/gxsj/tjfx/dzxx/art/2026/art_92806ace120f403b8c87cb703721520f.html" target="_blank"> [链接]</a></li>
+    <li>★ 工信部/国家发改委/国家数据局《电子信息制造业数字化转型实施方案》（工信部联电子〔2025〕95号）<a href="https://www.gov.cn/zhengce/zhengceku/202505/P020250528378317096453.pdf" target="_blank"> [链接]</a></li>
+    <li>★ 中国电子信息行业联合会《2025年度电子信息竞争力前百家企业》（2025年9月）<a href="https://resource.emagecompany.com/electron/2025electronic100.html" target="_blank"> [链接]</a></li>
+    <li>★★ 央视新闻《我国电子产业发展驶上快车道》（2025年8月14日）<a href="https://news.cctv.com/2025/08/14/ARTI7PUEYFXoePp57Gzh0t4H250814.shtml" target="_blank"> [链接]</a></li>
+    <li>★★ 安全客《三部门印发<电子信息制造业数字化转型实施方案>解读》（2025年5月）<a href="https://www.secrss.com/articles/79194" target="_blank"> [链接]</a></li>
+    <li>★★ 简道云《2025年五大电子行业ERP系统大测评》（2025年11月）<a href="https://www.jiandaoyun.com/news/article/6915dc8816289498f2c2c15e" target="_blank"> [链接]</a></li>
+    <li>★★ 金蝶官网《电子半导体行业数字化转型解决方案》<a href="https://www.kingdee.com/solutions/electronics.html" target="_blank"> [链接]</a></li>
+    <li>★★ 东方财富《消费电子行业2026年度行业分析》（2026年4月）<a href="https://data.eastmoney.com/report/zw_industry.jshtml?infocode=AP202604011820953754" target="_blank"> [链接]</a></li>
+    <li>★ 注：部分行业标杆案例数据来源于金蝶客户实践与公开资料整理，具体数据可能因企业而异</li>
+  </ul>
+</section>
+
+</div><!-- container end -->
+
+<!-- Footer -->
+<footer class="footer">
+  <span>版权所有©金蝶国际软件集团有限公司 始创于1993</span>
+  <span>④内部公开 请勿外传</span>
+</footer>
+
+<!-- ============ CHARTS ============ -->
+<script>
+Chart.defaults.color = '#666666';
+Chart.defaults.borderColor = '#E5E5E5';
+Chart.defaults.font.family = "'Microsoft YaHei','PingFang SC','Segoe UI',sans-serif";
+Chart.defaults.font.size = 11;
+const gridColor = 'rgba(229,229,229,0.7)';
+const KD = { blue:'#2971EB', blueLight:'#238EF7', skyblue:'#22AAFE', skyL:'#00CCFE', teal:'#05C8C8', purple:'#A06EFF', yellow:'#FFB61A', bluePurple:'#28235F', gray:'#BFBFBF' };
+
+// Chart 1: Market Size Trend
+new Chart(document.getElementById('chartMarketSize'), {
+  type: 'bar',
+  data: {
+    labels: ['2020年','2021年','2022年','2023年','2024年','2025年'],
+    datasets: [{
+      label: '营业收入（万亿元）',
+      data: [12.1, 14.1, 15.4, 16.2, 17.4, 17.4],
+      backgroundColor: [KD.skyL, KD.skyblue, KD.blueLight, KD.blue, KD.blue, KD.bluePurple],
+      borderRadius: 8,
+      barThickness: 48
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { afterLabel: (ctx) => ctx.dataIndex < 5 ? '' : '（工信部数据）' } }
+    },
+    scales: { y: { beginAtZero: true, title: { display: true, text: '万亿元' }, grid: { color: gridColor } }, x: { grid: { display: false } } }
+  }
+});
+
+// Chart 2: Products
+new Chart(document.getElementById('chartProducts'), {
+  type: 'bar',
+  data: {
+    labels: ['手机', '智能手机', '微型计算机', '集成电路'],
+    datasets: [{
+      label: '产量（亿台/亿块）',
+      data: [15.4, 12.7, 3.32, 48.43],
+      backgroundColor: [KD.gray, KD.skyblue, KD.teal, KD.blue],
+      borderRadius: 6, barThickness: 36
+    }]
+  },
+  options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+    scales: { x: { title: { display: true, text: '亿台/亿块' }, grid: { color: gridColor } }, y: { grid: { display: false } } }
+  }
+});
+
+// Chart 3: Regional
+new Chart(document.getElementById('chartRegional'), {
+  type: 'doughnut',
+  data: {
+    labels: ['东部地区 12.29万亿 (+7.8%)', '中部地区 3.01万亿 (+11.6%)', '西部地区 2.01万亿 (-0.3%)', '东北地区 877亿 (-3.3%)'],
+    datasets: [{ data: [12.29, 3.01, 2.01, 0.877], backgroundColor: [KD.blue, KD.teal, KD.skyblue, KD.gray], borderWidth: 2, borderColor: '#fff', hoverOffset: 6, cutout: '58%' }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { padding: 14, font: { size: 12 } } } } }
+});
+
+// Chart 4: Top 10
+new Chart(document.getElementById('chartTop10'), {
+  type: 'bar',
+  data: {
+    labels: ['华为','比亚迪','联想','海尔','小米','TCL','海信','京东方','亨通','天能'],
+    datasets: [{ label: '竞争力排名', data: [100,95,90,85,80,75,72,70,68,66], backgroundColor: [KD.blue, KD.blue, KD.blueLight, KD.blueLight, KD.skyblue, KD.skyblue, KD.skyL, KD.skyL, KD.teal, KD.teal], borderRadius: 6, barThickness: 32 }]
+  },
+  options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+    scales: { x: { display: false }, y: { grid: { display: false } } }
+  }
+});
+
+// Chart 5: Segments
+new Chart(document.getElementById('chartSegments'), {
+  type: 'doughnut',
+  data: {
+    labels: ['通信设备','消费电子','集成电路','新型显示','汽车电子','基础电子元件','能源电子','其他'],
+    datasets: [{ data: [22,20,18,12,10,8,6,4], backgroundColor: [KD.blue, KD.blueLight, KD.bluePurple, KD.skyblue, KD.teal, KD.yellow, KD.purple, KD.gray], borderWidth: 2, borderColor: '#fff', cutout: '55%', hoverOffset: 6 }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'right', labels: { padding: 10, font: { size: 11 } } } } }
+});
+
+// Chart 6: Radar
+new Chart(document.getElementById('chartRadar'), {
+  type: 'radar',
+  data: {
+    labels: ['技术壁垒','市场集中度','增长速度','国产化进程','数字化渗透'],
+    datasets: [
+      { label: '集成电路', data: [9,7,9,8,6], borderColor: KD.blue, backgroundColor: 'rgba(41,113,235,0.06)', borderWidth: 2, pointRadius: 3 },
+      { label: '消费电子', data: [6,8,5,7,7], borderColor: KD.teal, backgroundColor: 'rgba(5,200,200,0.06)', borderWidth: 2, pointRadius: 3 },
+      { label: '汽车电子', data: [7,5,9,6,5], borderColor: KD.purple, backgroundColor: 'rgba(160,110,255,0.06)', borderWidth: 2, pointRadius: 3 }
+    ]
+  },
+  options: { responsive: true, scales: { r: { beginAtZero: true, max: 10, grid: { color: gridColor }, angleLines: { color: gridColor }, pointLabels: { font: { size: 12 } } } }, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Chart 7: Pain Points
+new Chart(document.getElementById('chartPain'), {
+  type: 'bar',
+  data: {
+    labels: ['数据孤岛','多组织协同难','全链追溯难','供应链不透明','BOM/物料管理复杂','成本核算粗放','AI智能化缺失','合规/数据安全'],
+    datasets: [{ label: '严重度（满分10）', data: [9.2,8.8,8.5,8.3,8.0,7.8,7.5,7.2], backgroundColor: [KD.blue, KD.blue, KD.blueLight, KD.blueLight, KD.skyblue, KD.skyblue, KD.teal, KD.teal], borderRadius: 6, barThickness: 28 }]
+  },
+  options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+    scales: { x: { title: { display: true, text: '严重度' }, min: 0, max: 10, grid: { color: gridColor } }, y: { grid: { display: false } } }
+  }
+});
+
+// Chart 8: IT Investment
+new Chart(document.getElementById('chartITInvest'), {
+  type: 'line',
+  data: {
+    labels: ['2021年','2022年','2023年','2024年','2025年（E）','2026年（E）'],
+    datasets: [
+      { label: '硬件设备占比', data: [55,50,45,40,35,30], borderColor: KD.gray, backgroundColor: 'rgba(191,191,191,0.1)', fill: true, tension: 0.3 },
+      { label: '软件平台占比', data: [25,28,32,35,38,42], borderColor: KD.blue, backgroundColor: 'rgba(41,113,235,0.1)', fill: true, tension: 0.3 },
+      { label: 'AI与数据服务占比', data: [5,7,10,13,17,22], borderColor: KD.teal, backgroundColor: 'rgba(5,200,200,0.1)', fill: true, tension: 0.3 },
+      { label: '咨询与实施占比', data: [15,15,13,12,10,6], borderColor: KD.purple, backgroundColor: 'rgba(160,110,255,0.1)', fill: true, tension: 0.3 }
+    ]
+  },
+  options: { responsive: true, scales: { y: { title: { display: true, text: '占比%' }, max: 60, grid: { color: gridColor } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Chart 9: Trend Radar
+new Chart(document.getElementById('chartTrend'), {
+  type: 'radar',
+  data: {
+    labels: ['单点自动化','系统集成','数据驱动','智能决策','生态协同','自主创新'],
+    datasets: [
+      { label: '当前水平', data: [7,5,4,3,2,4], borderColor: KD.blue, backgroundColor: 'rgba(41,113,235,0.06)', borderWidth: 2, pointRadius: 3 },
+      { label: '2027目标', data: [8,7,6,5,5,7], borderColor: KD.teal, backgroundColor: 'rgba(5,200,200,0.06)', borderWidth: 2, pointRadius: 3, borderDash: [5,5] },
+      { label: '2030愿景', data: [9,8,8,7,7,9], borderColor: KD.purple, backgroundColor: 'rgba(160,110,255,0.06)', borderWidth: 2, pointRadius: 3, borderDash: [2,2] }
+    ]
+  },
+  options: { responsive: true, scales: { r: { beginAtZero: true, max: 10, grid: { color: gridColor }, angleLines: { color: gridColor }, pointLabels: { font: { size: 12 } } } }, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Chart 10: Architecture Bubble
+new Chart(document.getElementById('chartArch'), {
+  type: 'bubble',
+  data: {
+    datasets: [
+      { label: '协同平台层', data: [{x:3,y:4,r:20}], backgroundColor: 'rgba(160,110,255,0.6)', borderColor: KD.purple },
+      { label: '客户协同', data: [{x:1,y:4,r:14}], backgroundColor: 'rgba(160,110,255,0.4)', borderColor: KD.purple },
+      { label: '供应商协同', data: [{x:5,y:4,r:14}], backgroundColor: 'rgba(160,110,255,0.4)', borderColor: KD.purple },
+      { label: '研发管理', data: [{x:1,y:2.5,r:14}], backgroundColor: 'rgba(41,113,235,0.4)', borderColor: KD.blue },
+      { label: '供应链管理', data: [{x:3,y:2.5,r:14}], backgroundColor: 'rgba(41,113,235,0.4)', borderColor: KD.blue },
+      { label: '制造运营', data: [{x:5,y:2.5,r:14}], backgroundColor: 'rgba(41,113,235,0.4)', borderColor: KD.blue },
+      { label: '财务管理', data: [{x:1,y:1,r:12}], backgroundColor: 'rgba(5,200,200,0.4)', borderColor: KD.teal },
+      { label: '人力/项目', data: [{x:3,y:1,r:12}], backgroundColor: 'rgba(5,200,200,0.4)', borderColor: KD.teal },
+      { label: '运营决策', data: [{x:5,y:1,r:12}], backgroundColor: 'rgba(5,200,200,0.4)', borderColor: KD.teal },
+      { label: '苍穹PaaS平台', data: [{x:3,y:0,r:22}], backgroundColor: 'rgba(34,170,254,0.5)', borderColor: KD.skyblue }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: { x: { display: false, min: -1, max: 7 }, y: { display: false, min: -1, max: 5.5 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (ctx) => ctx.dataset.label } }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金蝶AI套件 · 打单速查手册</title>
+<style>
+:root {
+  --primary: #4F46E5; --primary-l: #818CF8; --primary-bg: #EEF2FF;
+  --teal: #059669; --teal-bg: #D1FAE5;
+  --amber: #D97706; --amber-bg: #FEF3C7;
+  --rose: #DC2626; --rose-bg: #FEE2E2;
+  --text: #1E293B; --text-s: #475569; --text-t: #94A3B8;
+  --bg: #F8FAFC; --card: #FFFFFF; --border: #E2E8F0;
+  --nav-bg: rgba(255,255,255,.94);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;}
+
+/* ========== Floating Nav ========== */
+.floating-nav {
+  position:fixed; top:50%; right:16px; z-index:300; transform:translateY(-50%);
+  display:flex; flex-direction:column; gap:6px;
+}
+.nav-wrapper {
+  background:var(--nav-bg); backdrop-filter:blur(16px);
+  border-radius:14px; padding:8px;
+  border:1px solid var(--border);
+  box-shadow:0 4px 24px rgba(79,70,229,.08);
+  position:relative; overflow:hidden;
+  transition:all .3s ease;
+}
+/* Glow effect */
+.nav-wrapper::before {
+  content:''; position:absolute; top:-60%; left:-60%; width:120%; height:120%;
+  background:conic-gradient(from 0deg,transparent,rgba(79,70,229,.06),transparent,rgba(5,150,105,.06),transparent);
+  animation:navGlow 8s linear infinite; z-index:0; pointer-events:none;
+}
+@keyframes navGlow {
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}
+.nav-item {
+  position:relative; z-index:1;
+  display:flex; align-items:center; gap:10px;
+  padding:9px 14px; border-radius:10px; cursor:pointer;
+  transition:all .2s; white-space:nowrap;
+  color:var(--text-s); font-size:.88rem; font-weight:500;
+  text-decoration:none; border:1px solid transparent;
+}
+.nav-item:hover {background:var(--primary-bg);color:var(--primary);}
+.nav-item.active {background:var(--primary);color:#fff;}
+.nav-item .nav-dot {
+  width:8px; height:8px; border-radius:50%; background:currentColor;
+  flex-shrink:0; transition:all .2s;
+}
+.nav-item.active .nav-dot {box-shadow:0 0 8px currentColor;}
+.nav-label {transition:all .3s;}
+.nav-wrapper.collapsed .nav-label {display:none;}
+.nav-wrapper.collapsed .nav-item {padding:10px 12px;justify-content:center;}
+.nav-wrapper.collapsed {padding:6px;}
+/* Tooltip on collapsed */
+.nav-item[data-tooltip]::after {
+  content:attr(data-tooltip);
+  position:absolute; right:calc(100% + 12px); top:50%; transform:translateY(-50%);
+  background:var(--primary); color:#fff; padding:5px 10px; border-radius:5px;
+  font-size:.78rem; white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.nav-wrapper.collapsed .nav-item[data-tooltip]:hover::after {opacity:1;}
+.nav-toggle {
+  position:relative; z-index:1;
+  width:100%; padding:6px 0 2px; cursor:pointer;
+  text-align:center; font-size:.7rem; color:var(--text-t);
+  border-top:1px solid var(--border); margin-top:4px; transition:color .2s;
+}
+.nav-toggle:hover {color:var(--primary);}
+
+/* ========== Hero ========== */
+.hero {
+  background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 50%,#9333EA 100%);
+  color:#fff; text-align:center; padding:60px 24px 52px; position:relative; overflow:hidden;
+  color:#fff; text-align:center; padding:60px 24px 52px; position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; width:500px; height:500px;
+  background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);
+  top:-150px; right:-80px; border-radius:50%;
+}
+.hero::after {
+  content:''; position:absolute; width:350px; height:350px;
+  background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);
+  bottom:-120px; left:-50px; border-radius:50%;
+}
+.hero h1{font-size:2.6rem;font-weight:800;position:relative;z-index:1;}
+.hero .sub{font-size:1.15rem;opacity:.85;margin-top:10px;position:relative;z-index:1;}
+.hero .tags{display:inline-flex;gap:10px;margin-top:18px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;}
+.hero .tag{background:rgba(255,255,255,.15);padding:6px 16px;border-radius:20px;font-size:.93rem;}
+
+/* ========== Sections ========== */
+.section{max-width:1060px;margin:0 auto;padding:44px 24px;}
+.sec-anchor{scroll-margin-top:68px;}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:14px;border-bottom:3px solid var(--primary);}
+.sec-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0;}
+.sec-header h2{font-size:1.65rem;font-weight:700;}
+.sec-header .en{font-size:.8rem;color:var(--text-t);font-weight:400;margin-left:6px;}
+
+/* ========== Cards ========== */
+.card{background:var(--card);border-radius:12px;padding:22px 26px;margin-bottom:16px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.02);transition:box-shadow .2s;}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card h3{font-size:1.15rem;font-weight:700;margin-bottom:10px;color:var(--text);}
+.card p{margin-bottom:6px;color:var(--text-s);font-size:1rem;}
+.card ul{margin:6px 0 6px 18px;color:var(--text-s);font-size:1rem;}
+.card li{margin-bottom:5px;}
+
+/* Highlight blocks */
+.highlight{border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-size:1rem;color:#334155;line-height:1.7;}
+.highlight.info{background:#F0F9FF;border-left:4px solid #3B82F6;}
+.highlight.warn{background:var(--amber-bg);border-left:4px solid var(--amber);}
+.highlight.ok{background:var(--teal-bg);border-left:4px solid var(--teal);}
+.highlight.err{background:var(--rose-bg);border-left:4px solid var(--rose);}
+
+/* ========== Tables ========== */
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.94rem;}
+th{background:var(--primary-bg);color:var(--primary);padding:10px 14px;text-align:left;font-weight:600;border:1px solid var(--border);}
+td{padding:10px 14px;border:1px solid var(--border);color:var(--text-s);}
+tr:nth-child(even) td{background:#FAFBFC;}
+.metric{font-size:1.1rem;font-weight:700;color:var(--teal);}
+
+/* ========== Grid ========== */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0;}
+.grid-item{background:var(--bg);border-radius:10px;padding:16px 18px;border:1px solid var(--border);}
+.grid-item h4{color:var(--primary);font-size:1rem;margin-bottom:6px;}
+.grid-item p,.grid-item ul{font-size:.94rem;color:var(--text-s);}
+.grid-item ul{margin-left:16px;}
+
+/* Pillar cards */
+.pillar-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0;}
+.pillar-card{background:var(--card);border-radius:12px;padding:24px;border:1px solid var(--border);text-align:center;transition:all .2s;}
+.pillar-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.08);transform:translateY(-2px);}
+.pillar-num{width:48px;height:48px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#fff;}
+.pillar-card h4{font-size:1.1rem;font-weight:700;margin-bottom:8px;}
+.pillar-card p{font-size:.92rem;color:var(--text-s);line-height:1.6;}
+
+/* Agent deep-dive */
+.agent-deep{margin:16px 0;}
+.agent-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* Case wall */
+.case-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+.case-card{background:var(--card);border-radius:10px;padding:16px 20px;border:1px solid var(--border);}
+.case-card .client{font-size:1.05rem;font-weight:700;}
+.case-card .industry{font-size:.8rem;color:var(--text-t);margin-bottom:6px;}
+.case-card .result{font-size:.88rem;color:var(--teal);font-weight:600;}
+
+/* ========== Footer ========== */
+.footer{text-align:center;padding:30px;color:var(--text-t);font-size:.82rem;border-top:1px solid var(--border);margin-top:20px;}
+
+/* ========== Responsive ========== */
+@media(max-width:768px){
+  .hero h1{font-size:1.5rem;}
+  .hero{padding:40px 16px 32px;margin-top:48px;}
+  .section{padding:28px 14px;}
+  .card{padding:18px 16px;}
+  .grid-2,.grid-3,.pillar-row,.agent-detail-grid{grid-template-columns:1fr;}
+  .top-nav{gap:3px;padding:8px 12px;}
+  .nav-btn{padding:5px 12px;font-size:.82rem;}
+  .floating-nav{right:4px;}
+  .nav-wrapper{padding:4px;}
+  .nav-item{padding:7px 10px;font-size:.78rem;}
+  table{font-size:.82rem;}
+  th,td{padding:7px 10px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+
+<!-- ================= FLOATING SIDE NAV ================= -->
+<nav class="floating-nav" id="floatNav">
+  <div class="nav-wrapper" id="navWrapper">
+    <a class="nav-item active" data-tooltip="首页" onclick="scrollToSection('hero')"><span class="nav-dot"></span><span class="nav-label">首页</span></a>
+    <a class="nav-item" data-tooltip="市场洞察" onclick="scrollToSection('sec-market')"><span class="nav-dot"></span><span class="nav-label">市场洞察</span></a>
+    <a class="nav-item" data-tooltip="产品总览" onclick="scrollToSection('sec-overview')"><span class="nav-dot"></span><span class="nav-label">产品总览</span></a>
+    <a class="nav-item" data-tooltip="全域场景" onclick="scrollToSection('sec-fullstack')"><span class="nav-dot"></span><span class="nav-label">全域场景</span></a>
+    <a class="nav-item" data-tooltip="AI Agent" onclick="scrollToSection('sec-agents')"><span class="nav-dot"></span><span class="nav-label">AI Agent</span></a>
+    <a class="nav-item" data-tooltip="Live AI" onclick="scrollToSection('sec-liveai')"><span class="nav-dot"></span><span class="nav-label">Live AI</span></a>
+    <a class="nav-item" data-tooltip="全球化" onclick="scrollToSection('sec-global')"><span class="nav-dot"></span><span class="nav-label">全球化</span></a>
+    <a class="nav-item" data-tooltip="案例" onclick="scrollToSection('sec-cases')"><span class="nav-dot"></span><span class="nav-label">案例</span></a>
+    <a class="nav-item" data-tooltip="竞争" onclick="scrollToSection('sec-compete')"><span class="nav-dot"></span><span class="nav-label">竞争</span></a>
+    <div class="nav-toggle" onclick="toggleNav()" id="navToggle">◀ 收起</div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="hero">
+  <h1>金蝶AI套件 · 打单速查手册</h1>
+  <p class="sub">发现管理新价值，奔向企业管理AI新世界 — 从市场洞察到竞争话术，一本打单全通</p>
+  <div class="tags">
+    <span class="tag">20+ AI原生智能体</span>
+    <span class="tag">全域全场景覆盖</span>
+    <span class="tag">Live AI自进化</span>
+    <span class="tag">全球化能力</span>
+    <span class="tag">200+客户验证</span>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 1: 市场洞察 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-market">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#3B82F6,#6366F1);">01</div>
+    <h2>市场洞察 <span class="en">Market Insight — 客户为什么要上AI？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>企业数智化转型热点需求全景</h3>
+    <p>不同规模企业的核心诉求不一样，打单时先对号入座：</p>
+    <table>
+      <tr><th>企业类型</th><th>核心诉求</th><th>金蝶切入点</th></tr>
+      <tr><td style="font-weight:600">超大型 / 集团企业</td><td>穿透式监管、安全合规、降本增效、人&财集团管控、国产化替代、出海全球化</td><td>集团财务+司库+EPM+穿透式监管智能体</td></tr>
+      <tr><td style="font-weight:600">大型企业</td><td>行业对标管理提升、产品创新、营销突破、个性化&智能化制造升级、合规风控</td><td>全价值链运营+行业最佳实践+AI Agent</td></tr>
+      <tr><td style="font-weight:600">高成长性企业</td><td>业财一体、成本管控、物料管理、生产协同、专业行业方案</td><td>星空→AI套件升级路径+迁移平台</td></tr>
+      <tr><td style="font-weight:600">中小型制造</td><td>业财一体化、建设管理基础、高效运营、降本增效</td><td>基础套件→专业套件弹性升级</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>企业级AI已从供给侧迈向应用侧拐点</h3>
+    <div class="highlight info">
+      <strong>时间线：</strong>1956 AI学科创立 → 2006 深度学习 → 2016 AlphaGo → 2022 ChatGPT3.5 → 2023 GPT4 API → 2025 AI Agent成核心方向 → <strong>现在：企业级AI产品商业化落地</strong>
+    </div>
+    <p>AI不再只是消费级应用（游戏/语音/推荐），SAP、Oracle、金蝶、飞书等企业级厂商已全面推出AI产品。AI Agent成为核心方向——<strong>像人一样规划、反思、使用工具。</strong></p>
+  </div>
+
+  <div class="card">
+    <h3>中国隐形冠军正全球跨越式增长</h3>
+    <div class="grid-3">
+      <div class="grid-item"><h4>专业化</h4><p>锁定利基市场，深耕细分领域</p></div>
+      <div class="grid-item"><h4>全球化布局</h4><p>整合全球产业链，平衡不同地区经济周期差异</p></div>
+      <div class="grid-item"><h4>技术创新</h4><p>构建护城河，品牌国际化推广</p></div>
+    </div>
+    <div class="highlight ok">
+      <strong>数据支撑：</strong>专精特新上市公司出海率 <strong>63.37%</strong>。客户要出海，金蝶的全球化能力就是切入口。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>财务：从"单点合规"迈向"一体化管控"</h3>
+    <p>三大政策驱动力叠加，央企国企财务体系面临系统性升级：</p>
+    <ul>
+      <li><strong>十五五规划：</strong>AI+推动AI与实体经济深度融合，鼓励数字技术与服务出海</li>
+      <li><strong>增值税法落地：</strong>应税范围统一、进项抵扣逻辑强化、征管责任前移</li>
+      <li><strong>会计凭证电子化全面推进：</strong>XML/XBRL结构化格式，财税央行多部门数据共享，9类高频凭证全覆盖</li>
+    </ul>
+    <div class="highlight warn">
+      <strong>客户痛点信号：</strong>"税务口径要前置统一管理"、"进项用途要可追溯"、"业财票税档要打通"——这些就是我们的方案锚点。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>制造业觉醒：追求微笑，保持微笑</h3>
+    <p>核心挑战依旧是"研产供销一体化、精细化成本管理"，但更深更全面：</p>
+    <div class="grid-3">
+      <div class="grid-item"><h4>研发</h4><p>缺爆品，内卷严重<br>核心技术积累和创新越来越急迫</p></div>
+      <div class="grid-item"><h4>制造</h4><p>产业链敏捷适配与降本<br>上下游协作+内部供应链精细化</p></div>
+      <div class="grid-item"><h4>营销</h4><p>离客户远，走出海未走进海外<br>渠道管理+客户全生命周期管理</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 2: 产品总览 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-overview">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#059669,#10B981);">02</div>
+    <h2>产品总览 <span class="en">Product Overview — 金蝶AI套件是什么？</span></h2>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border-color:var(--primary);">
+    <h3 style="color:var(--primary);font-size:1.2rem;">一句话定位</h3>
+    <p style="font-size:1.1rem;font-weight:600;color:var(--text);">基于金蝶30+年Core ERP、集团财务、HR、研发、协同办公的数字化业务能力，利用最新AI技术，为企业构建<strong>更深入业务、全球化、持续演进</strong>的AI生产力平台。</p>
+  </div>
+
+  <div class="pillar-row">
+    <div class="pillar-card">
+      <div class="pillar-num" style="background:linear-gradient(135deg,#3B82F6,#6366F1);">1</div>
+      <h4>全域全场景覆盖</h4>
+      <p>财务HR全层级管控<br>研产供销全价值链运营<br>大型企业最佳实践案例库</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num" style="background:linear-gradient(135deg,#059669,#10B981);">2</div>
+      <h4>Live AI 能力</h4>
+      <p>贯穿全业务流程的智能体矩阵<br>更懂企业数据的商业本体<br>无版本升级下的持续进化</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num" style="background:linear-gradient(135deg,#D97706,#F59E0B);">3</div>
+      <h4>全球化能力</h4>
+      <p>跨国经营全栈服务<br>LocalKits + GlobalEase 适配本地合规<br>北京 + 新加坡双数据中心</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>从 SaaS 到 AI Agent：管理范式的根本变化</h3>
+    <table>
+      <tr><th>维度</th><th>SaaS 时代（管理工具）</th><th>AI 时代（智能体平台）</th></tr>
+      <tr><td>产品单元</td><td>功能模块（总账、应收、库存…）</td><td style="color:var(--teal);font-weight:600">智能体岗位（关账专员、排产调度…）</td></tr>
+      <tr><td>用户交互</td><td>人操作系统：菜单→表单→报表</td><td style="color:var(--teal);font-weight:600">人管理智能体：下达目标→审批成果</td></tr>
+      <tr><td>核心价值</td><td>流程标准化、数据可见</td><td style="color:var(--teal);font-weight:600">消除协同摩擦、自主任务执行</td></tr>
+      <tr><td>价值衡量</td><td>功能使用率、用户活跃度</td><td style="color:var(--teal);font-weight:600">任务完成率、替代人工时长</td></tr>
+      <tr><td>商业模式</td><td>SaaS：按席位/模块订阅</td><td style="color:var(--teal);font-weight:600">RaaS：按智能体/任务量/效果付费</td></tr>
+    </table>
+    <div class="highlight info">
+      <strong>打单时用这个表：</strong>帮客户建立"你不是来买软件的，你是来买AI劳动力的"这个认知。一个关账专员月薪8000，一个AI关账Agent替代他，这个账客户会算。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>金蝶AI产品设计理念</h3>
+    <div class="grid-2">
+      <div class="grid-item"><h4>智能共生</h4><p>被动执行命令的工具 → 智能体自主执行</p></div>
+      <div class="grid-item"><h4>自适应体验</h4><p>GUI → CUI（对话式） → NUI（自然交互）</p></div>
+      <div class="grid-item"><h4>安全可信</h4><p>企业级AI安全保障，内容防毒化、敏感词过滤</p></div>
+      <div class="grid-item"><h4>成就人与组织</h4><p>记录&控制系统 → 成就系统</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 3: 全域全场景 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-fullstack">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#DC2626,#EF4444);">03</div>
+    <h2>全域全场景能力 <span class="en">Full-Stack — 从财务到生产，全价值链覆盖</span></h2>
+  </div>
+
+  <!-- 3.1 智能财务 -->
+  <div class="card">
+    <h3>智能财务：全场景智能化的财务管理新范式</h3>
+    <p>打通经营全链路，结合先进管理模式，AI驱动智能化应用，实现财务管理提质、降本、增效。</p>
+    <table>
+      <tr><th>子领域</th><th>模块能力</th><th>AI增强 / Agent</th><th style="width:180px">量化效果</th></tr>
+      <tr>
+        <td style="font-weight:600">集团财务管控</td>
+        <td>财务共享、司库管理、EPM（合并报表/全面预算/管理报告）</td>
+        <td>多模态智能审单、智能派单、智能质检、虚假贸易筛查、网银智能直连、资金调度、智能付款排程、回单智能识别、流水智能匹配、预算版本对比/模拟预测、智能合并、报告辅助撰写、国资报表填报</td>
+        <td><span class="metric">凭证自动化率 99.44%</span><br>审单效率提升 70%</td>
+      </tr>
+      <tr>
+        <td style="font-weight:600">财务会计</td>
+        <td>总账/应收应付/资产/出纳/政府会计</td>
+        <td>AI记账、智能对账、智能结算、三单匹配、往来自动对账、收入确认自动化、折旧/摊销机器人、智能月结、AI结账助手</td>
+        <td><span class="metric">凭证自动化率 99%+</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:600">管理会计</td>
+        <td>成本管理、经营会计、项目财务、成本中心会计、研发费用管理</td>
+        <td>成本分析助手、成本核算智能诊断助手</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td style="font-weight:600">差旅与费用</td>
+        <td>人人差旅/费用/对公费用/商旅消费集成</td>
+        <td>差旅智能体、发票识别、智能审单、收单机器人、报销提醒、费用合规机器人</td>
+        <td><span class="metric">差旅流程提效 23.5%</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:600">税务云</td>
+        <td>销项/进项管理、报税工作台、多维度计税、智能算税、一键报税、税务风险管控</td>
+        <td>税务知识问答、纳税申报智能体、交易计税规则、智能算税规则</td>
+        <td><span class="metric">40000+ 税法算法<br>5000+ 纳税场景<br>全国 36 税区直连</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight:600">全员财务</td>
+        <td>财务分析、账户查询、预算申报、付款申请、收付款认领</td>
+        <td>Boss助理、经营日报、财务分析智能体、毛利分析智能体</td>
+        <td><span class="metric">Boss决策效率提升 100%</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 3.2 全球一体化财税 -->
+  <div class="card">
+    <h3>全球一体化财税管控能力</h3>
+    <table>
+      <tr><th>领域</th><th>能力</th><th>标杆客户</th></tr>
+      <tr><td>全球财务核算</td><td>多汇率/多日历/多币别/多时区/多语言支撑，LocalKits国家包内置本地会计准则</td><td>广西柳工</td></tr>
+      <tr><td>全球司库</td><td>信用证/境外银企直联多渠道跨境结算，境内资金统一结算，全球资金集中可视</td><td>海信集团</td></tr>
+      <tr><td>全球合并报表</td><td>多账簿体系报表快速合并，海内外多准则报表全流程体系</td><td>广西柳工</td></tr>
+      <tr><td>全球税务</td><td>全球计税引擎自动完成税金计算，多国增值税及企业所得税一站式申报</td><td>飞速科技</td></tr>
+    </table>
+  </div>
+
+  <!-- 3.3 财务共享 -->
+  <div class="card">
+    <h3>一体管控：财务共享实现端到端一体化</h3>
+    <div class="highlight ok">
+      <strong>核心模式：</strong>财务中台以"能力共享"替代"资源共享"。AI增强包括：智能任务分派、多模态智能审单、智能质检、智能客服。精细化共享运营：信用管理、满意度管理、SLA管理、绩效管理、质量管理。
+    </div>
+    <div class="grid-2">
+      <div class="grid-item"><h4>中国金茂</h4><p>链接16+10内外部业务系统<br>9大领域模块全共享<br>服务超120家公司和95%员工<br>人效提升 <strong>31%</strong></p></div>
+      <div class="grid-item"><h4>河南国有资本运营</h4><p>集成64异构系统，端到端集成<br>凭证自动化率 <strong>99.44%</strong><br>审核效率提升 <strong>70%</strong>（4-5分钟→0.5-1分钟）</p></div>
+    </div>
+  </div>
+
+  <!-- 3.4 供应链 -->
+  <div class="card">
+    <h3>供应链云：全链路智能链接</h3>
+    <p>以智能化技术驱动全链路协同，提供行业化、可视化、可扩展的供应链管理能力。</p>
+    <table>
+      <tr><th>子领域</th><th>模块能力</th><th>AI Agent</th><th>量化效果</th></tr>
+      <tr><td>销售管理</td><td>报价/计划协议/订发退签/信用管理/促销返利</td><td>报价智能体、客户360°智能评价</td><td>订单协同及时率提升 40%</td></tr>
+      <tr><td>采购管理</td><td>需求/货源/配额/申订收退/采购返利</td><td>采购风控智能体、采购订单履约监控、AI制单</td><td>采购成本降 3-10%</td></tr>
+      <tr><td>库存管理</td><td>受托/锁库/库存调整</td><td>呆滞料智能体、智能安全库存、库存健康诊断</td><td>35种处置方案、提前90天预警</td></tr>
+      <tr><td>合同中心</td><td>模板/智审/台账</td><td>合同审查智能体</td><td>审核效率提升 100%</td></tr>
+      <tr><td>SRM</td><td>供应商全生命周期/寻源/协同/采购商城</td><td>智能比价助手、采购价格助手</td><td>准时交货率提高 50%</td></tr>
+      <tr><td>渠道云</td><td>订单中心/促销返利/营销费用/全网库存</td><td>Boss助理、经营日报</td><td>订单效率提升 30%</td></tr>
+      <tr><td>国际贸易</td><td>进出口合规/单证/保税/物流/结算</td><td>贸易单证自动生成</td><td>多角贸易处理效率提高 90%</td></tr>
+    </table>
+  </div>
+
+  <!-- 3.5 制造 -->
+  <div class="card">
+    <h3>制造云：多行业解决方案</h3>
+    <p>覆盖汽车零部件、电子高科技、装备制造、生物医药、化工新材、新消费等行业。</p>
+    <table>
+      <tr><th>子领域</th><th>能力</th><th>AI Agent / 助手</th><th>效果</th></tr>
+      <tr><td>需求与计划</td><td>滚动预测/S&OP/MPS/MRP/PMRP</td><td>小K插单模拟、小K计划指引、小K日排产</td><td>计划协同效率提高 25%</td></tr>
+      <tr><td>生产执行</td><td>ETO/MTO/ATO/MTS多种策略、委外、车间作业、终端报工</td><td>移动报工（PDA/手机/平板）</td><td>线上报工率 100%</td></tr>
+      <tr><td>质量管理</td><td>全流程质检+移动质检</td><td>质量8D智能体、小K检测报告录入</td><td>质量合格率 90%</td></tr>
+      <tr><td>项目管理</td><td>四算一控（概算/预算/核算/决算+成本控制）</td><td>小K项目风险洞察、小K项目工作总结</td><td>交付及时率提升 35%</td></tr>
+      <tr><td>研发PLM</td><td>CAD集成/IPD/PDM/BOM/变更/工艺</td><td>MCAD智能设计助手、研发知识智能助手、智能图纸识别</td><td>BOM准确率 99%、研发效率提升 60%</td></tr>
+    </table>
+  </div>
+
+  <!-- 3.6 HR -->
+  <div class="card">
+    <h3>AI HR：数智人力引擎</h3>
+    <div class="grid-3">
+      <div class="grid-item"><h4>招聘</h4><p>招聘智能体、智能JD写手、猜你合适、入职智能附件识别和审核</p></div>
+      <div class="grid-item"><h4>人才发展</h4><p>人岗匹配智能体、人才亮点、任职资格AI助手</p></div>
+      <div class="grid-item"><h4>薪酬假勤</h4><p>薪酬公式编写机器人、假勤处理机器人<br><strong>8分钟完成10万人复杂薪酬核算</strong></p></div>
+    </div>
+    <div class="highlight ok">
+      <strong>标杆效果：</strong>某客户算薪从7小时→10分钟（效率提升40倍）；支撑34万+人力规模、170+国家合规。
+    </div>
+  </div>
+
+  <!-- 3.7 协同 -->
+  <div class="card">
+    <h3>协同办公：人 + 智能体的新一代工作方式</h3>
+    <div class="grid-2">
+      <div class="grid-item"><h4>灵动唤醒AI</h4><p>滑动唤起，快速获取AI支持</p></div>
+      <div class="grid-item"><h4>企业知识库接入</h4><p>隐性经验显性化，经验沉淀至决策闭环</p></div>
+      <div class="grid-item"><h4>AgentHub协作网络</h4><p>MCP/A2A协议接入第三方工具/智能体</p></div>
+      <div class="grid-item"><h4>多Agent调度中枢</h4><p>主动规划执行，人机协同，关键决策用户掌控</p></div>
+    </div>
+    <div class="highlight info">
+      <strong>核心理念：</strong>Vibe Working — 从"系统回答我"到"系统为我做"。感知场景 → 理解目标 → 主动协作。某13万+员工客户：AI问答重复咨询率下降70%。
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 4: AI Agent 矩阵 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-agents">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#7C3AED,#8B5CF6);">04</div>
+    <h2>AI Agent 矩阵 <span class="en">Agent Matrix — 不是ChatBot，是替你干活的人</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>AI Agent 完整清单（按领域分类）</h3>
+    <table>
+      <tr><th>领域</th><th>Agent 名称</th><th>一句话卖点</th></tr>
+      <tr><td rowspan="5" style="font-weight:600">经营分析</td><td>金钥财报（企业版）</td><td>用AI钥匙，开启财务数据的深层价值</td></tr>
+      <tr><td>Boss助理</td><td>100+经营指标开箱即用，自然语言问数 + 智能预警 + 任务闭环</td></tr>
+      <tr><td>小K经营日报</td><td>主动推送直达手机，销售&运营双维分析</td></tr>
+      <tr><td>小K数据分析</td><td>自然语言代替复杂过滤条件，嵌入600+表单</td></tr>
+      <tr><td>ChatBI</td><td>用"对话"解锁数据终极生产力</td></tr>
+      <tr><td rowspan="4" style="font-weight:600">财务</td><td>财务分析智能体</td><td>10分钟帮财务经理写出一份高质量财务分析报告</td></tr>
+      <tr><td>毛利分析智能体</td><td>让每个产品更赚钱、更可控，穿透到业务单据</td></tr>
+      <tr><td>差旅智能体</td><td>智启差旅新程，一键无忧畅行</td></tr>
+      <tr><td>合同审查智能体</td><td>最懂业务的AI合同专家，穿透条款迷雾</td></tr>
+      <tr><td rowspan="3" style="font-weight:600">供应链</td><td>呆滞料智能体</td><td>告别沉睡库存，35种处置方案，提前90天预警</td></tr>
+      <tr><td>采购风控智能体</td><td>预测性风险洞察，化被动防御为主动掌控</td></tr>
+      <tr><td>报价智能体</td><td>重塑报价旅程，助力高效成单</td></tr>
+      <tr><td style="font-weight:600">生产</td><td>质量8D智能体</td><td>让每一次质量挑战，都成为卓越的起点</td></tr>
+      <tr><td rowspan="3" style="font-weight:600">HR</td><td>招聘智能体</td><td>可信任的AI招聘专家：JD写手+简历匹配</td></tr>
+      <tr><td>人岗匹配智能体</td><td>技能画像描到位，企业人才秒匹配</td></tr>
+      <tr><td>团队组建智能体</td><td>从科层制到目标驱动的敏捷团队</td></tr>
+      <tr><td rowspan="4" style="font-weight:600">通用</td><td>知识智能体</td><td>你的企业AI助理，懂知识更懂业务</td></tr>
+      <tr><td>问道阳明</td><td>企业级知识问答，每一问是修行，每一答皆良知</td></tr>
+      <tr><td>ESG智能体</td><td>ESG报告筹备周期缩短80%</td></tr>
+      <tr><td>穿透式监管智能体</td><td>央国企穿透式监管合规全覆盖</td></tr>
+    </table>
+  </div>
+
+  <!-- Deep dive: 财务分析智能体 -->
+  <div class="card agent-deep">
+    <h3>🔍 深度：财务分析智能体</h3>
+    <p style="color:var(--primary);font-weight:600;font-size:1.1rem;">"10分钟帮财务经理写完一份高质量的财务分析报告"</p>
+    <div class="agent-detail-grid">
+      <div>
+        <h4 style="font-size:1rem;color:var(--text);margin:12px 0 6px;">核心能力</h4>
+        <ul>
+          <li>连接ERP数据，多专业Agent协同分析</li>
+          <li>自动识别异常费用，关联业务动因</li>
+          <li>动态预测现金流，识别资金风险</li>
+          <li>分析评估企业债务规模和偿债能力</li>
+          <li>从整体业绩到产品线/客户/项目/区域多维度穿透</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:1rem;color:var(--text);margin:12px 0 6px;">技术架构</h4>
+        <ul>
+          <li>多专业Agent协同：期间费用/现金流/负债/项目/生产成本/收入/财务综合分析</li>
+          <li>数据接入：ERP私有数据 + 上市公司公开数据 + 行业数据 + Excel导入</li>
+          <li>技术栈：LLM + MCP + 知识库 + 知识图谱 + 多模态识别 + 机器学习</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deep dive: 呆滞料智能体 -->
+  <div class="card agent-deep">
+    <h3>🔍 深度：呆滞料智能体</h3>
+    <p style="color:var(--primary);font-weight:600;font-size:1.1rem;">"告别沉睡库存，让每一分成本都生利"</p>
+    <div class="highlight warn">
+      <strong>打单故事线（三句话直击痛点）：</strong><br>
+      ① <strong>精准识别：</strong>"系统发现某批电池材料因订单减少，在途采购过量，立刻预警：3个月后将新增200万呆滞风险！"<br>
+      ② <strong>锁定根因：</strong>"自动诊断出因客户取消订单导致200多万损失，合同里却没违约金条款。建议修订合同模板，增加违约金条款。"<br>
+      ③ <strong>智能处置：</strong>"内置超30种处置方案——内部调拨申请、供应商退货、一物多码治理、自动调整采购参数。从发现问题到解决问题，完整闭环。"
+    </div>
+    <div class="grid-2">
+      <div class="grid-item"><h4>核心能力</h4><ul><li>提前90天识别呆滞风险</li><li>自动计算呆滞料占用金额</li><li>诊断成因：需求预测/产品设计/采购问题</li><li>35种处置方案，闭环管理</li></ul></div>
+      <div class="grid-item"><h4>技术栈</h4><ul><li>LLM + MCP + 机器学习 + 知识库 + 知识图谱</li><li>数据源：供应链/销售/生产/计划 + 上市公司数据</li></ul></div>
+    </div>
+  </div>
+
+  <!-- Deep dive: Boss助理 -->
+  <div class="card agent-deep">
+    <h3>🔍 深度：Boss助理</h3>
+    <p style="color:var(--primary);font-weight:600;font-size:1.1rem;">"企业经营管理的AI原生智能助手 — 100+经营指标开箱即用"</p>
+    <div class="grid-2">
+      <div class="grid-item"><h4>三大核心能力</h4><ul><li><strong>智能问数：</strong>自然语言交互，接入DeepSeek/通义千问等大模型</li><li><strong>智能风险预警：</strong>"数找人"，指标异常主动推送</li><li><strong>智能归因+任务闭环：</strong>解读指标数据、洞察根源、生成处理策略、任务跟踪到人</li></ul></div>
+      <div class="grid-item"><h4>覆盖渠道</h4><ul><li>苍穹APP、云之家、微信小程序</li><li>钉钉、飞书</li><li>17个企业经营场景专家分析</li></ul></div>
+    </div>
+  </div>
+
+  <!-- Deep dive: 毛利分析智能体 -->
+  <div class="card agent-deep">
+    <h3>🔍 深度：毛利分析智能体</h3>
+    <p style="color:var(--primary);font-weight:600;font-size:1.1rem;">"不仅看清盈利，更能预见盈利 — 从被动应对到主动预判"</p>
+    <ul>
+      <li><strong>多维度毛利分析：</strong>整体毛利波动/产品毛利/客户毛利/区域毛利/项目毛利</li>
+      <li><strong>归因+决策：</strong>多维度根因拆解 + 优先级排序 + 证据链生成（穿透业务单据）</li>
+      <li><strong>前瞻预判：</strong>提前测算原材料涨价对毛利的冲击，产品矩阵分析（毛利润×毛利率）</li>
+    </ul>
+  </div>
+
+  <!-- Deep dive: 质量8D -->
+  <div class="card agent-deep">
+    <h3>🔍 深度：质量8D智能体</h3>
+    <p style="color:var(--primary);font-weight:600;font-size:1.1rem;">"让每一次质量挑战，都成为卓越的新起点"</p>
+    <table>
+      <tr><th>阶段</th><th>痛点</th><th>AI解决方案</th></tr>
+      <tr><td>D1-D3 启动</td><td>缺陷描述主观、数据采集割裂、启动周期过长</td><td>自动提炼缺陷关键词，标准化D2描述；跨系统业务数据收集，智能识别围堵范围</td></tr>
+      <tr><td>D4-D6 分析</td><td>严重依赖个人经验，缺乏数据支撑，纠正措施有效性难验证</td><td>AI辅助真因分析，消除经验偏差；基于历史成功案例，智能推荐纠正/预防措施</td></tr>
+      <tr><td>D7-D8 闭环</td><td>历史经验未结构化，同类问题反复发生</td><td>按客户或企业模板自动生成8D报告；知识沉淀，杜绝复发</td></tr>
+    </table>
+  </div>
+
+  <!-- AI增强SaaS -->
+  <div class="card">
+    <h3>AI增强SaaS：嵌入式小K助手（10+专业助手）</h3>
+    <table>
+      <tr><th>助手</th><th>能力</th><th>覆盖场景</th></tr>
+      <tr><td>制单助手</td><td>业务单据快速录入</td><td>销售订单、签收单、出库单、采购订单、收料通知单、入库单、盘点表</td></tr>
+      <tr><td>数据分析助手</td><td>自然语言查询代替复杂过滤条件</td><td>嵌入600+表单，6大领域主题分析，172个高频查数场景</td></tr>
+      <tr><td>产品使用助手</td><td>功能导航/找参数/应用问题解答</td><td>所有表单</td></tr>
+      <tr><td>日排产助手</td><td>自然语言提排产规则，CTP有限产能排产</td><td>日常备货/紧急订单/插单/其他场景</td></tr>
+      <tr><td>插单模拟助手</td><td>CTP校验→模拟排程→方案对比→决策</td><td>新增订单交期承诺可视化</td></tr>
+      <tr><td>计划解读助手</td><td>供需平衡+产能瓶颈全景透视</td><td>产能规划/供需平衡/计划编制</td></tr>
+      <tr><td>权限检查助手</td><td>权限异常自动分析定位</td><td>全系统</td></tr>
+      <tr><td>项目风险分析</td><td>360度风险审查+自动预警</td><td>进度偏差/现金流紧张/物料延期</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 5: Live AI 能力 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-liveai">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#D97706,#F59E0B);">05</div>
+    <h2>Live AI 能力 <span class="en">Self-Evolving AI — 买了不是终点，越用越聪明</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>AI 自进化机制</h3>
+    <div class="highlight info">
+      <strong>核心逻辑：</strong>AI Agent 业务执行 → 结果观察 → 自动总结 → 复盘经验 → 强化学习 → 自进化知识库/Skills库更新。每一次任务执行结束，自动进行复盘总结和强化学习，<strong>越用越懂行，越用越聪明。</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>迁移平台：平滑升级到AI套件</h3>
+    <p>支持从星空企业版、EAS、K/3 Wise、星辰及其他常见ERP系统迁移。预置标准方案：初始化/备查/沿用三种模式。</p>
+    <div class="highlight ok">
+      <strong>性能基准：</strong>1亿凭证数据转换导出和提交迁移任务仅需 <strong>45分钟</strong>。历史数据迁移后可直接沿用，保留单据联查关系、支持附件、工作流记录迁移。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>客户永远使用最新服务</h3>
+    <ul>
+      <li><strong>无版本升级：</strong>新功能提醒 → 一键试用 → 一键升级</li>
+      <li><strong>套件内免费升级：</strong>二开可平滑升级</li>
+      <li><strong>全部署模式自动升级：</strong>公有云客户确认后自动升级；私有部署/专有云可按计划规则联网自动升级</li>
+      <li><strong>安全有保障：</strong>安全补丁及时更新；私有云可授权云端护航和异常排障</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>守护者框架（Keeper Framework）：二开升级稳定可控</h3>
+    <table>
+      <tr><th>扩展层级</th><th>占比</th><th>场景</th><th>升级策略</th></tr>
+      <tr><td>轻扩展</td><td>80%</td><td>加字段、隐藏菜单等</td><td style="color:var(--teal)">自然兼容，平滑升级</td></tr>
+      <tr><td>定制扩展</td><td>15%</td><td>字段计算加工</td><td style="color:var(--teal)">简单扩展，平滑升级</td></tr>
+      <tr><td>定制开发</td><td>5%</td><td>修改现有业务逻辑</td><td>严格管控，合规升级：二开代码全量上云扫描，合规代码平滑升级</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 6: 全球化 + 安全 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-global">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#059669,#34D399);">06</div>
+    <h2>全球化 + 安全可信 <span class="en">Global & Security — 出海不是翻译界面</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>三层全球化架构</h3>
+    <table>
+      <tr><th>层级</th><th>名称</th><th>能力</th><th>已覆盖</th></tr>
+      <tr><td>L1</td><td style="font-weight:600">LocalKits</td><td>财税包 + 关务包：海关集成、电子签章、电票直连、VAT/CIT申报表、税企直连</td><td>新加坡/越南/印尼/泰国/马来西亚/沙特/港澳</td></tr>
+      <tr><td>L2</td><td style="font-weight:600">GlobalEase</td><td>跨国经营和本地基础合规：会计科目/报表/发票模板/交易计税/本地支付报文</td><td>同上 + 卡塔尔</td></tr>
+      <tr><td>L3</td><td style="font-weight:600">AI EBC</td><td>全球化核心业务：多准则/币种转换/全球合并/跨组织结算/国际贸易管理/交易计税引擎</td><td>12种语言、双数据中心（北京+新加坡）</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>以越南为例：深度本地化</h3>
+    <div class="grid-3">
+      <div class="grid-item"><h4>财务合规</h4><p>VAS核算&财务报告、固定资产管理</p></div>
+      <div class="grid-item"><h4>税务合规</h4><p>VAT计税&申报、CIT申报、E-Invoice电子发票</p></div>
+      <div class="grid-item"><h4>关务合规</h4><p>进出口报关、海关稽查</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>安全可信、自主可控、全栈适配</h3>
+    <div class="grid-2">
+      <div>
+        <h4 style="font-size:1rem;color:var(--text);margin-bottom:8px;">认证体系</h4>
+        <ul style="font-size:.94rem;">
+          <li>等保三级认证</li>
+          <li>EAL3+ 产品安全认证（CC标准）</li>
+          <li>ISO 27001 / 27017 / 27018 / 27701 / 22301</li>
+          <li>CSA-STAR 云安全管理体系</li>
+          <li>SOC1 Type II / SOC2 Type II</li>
+          <li>CCRC 安全开发/运维/集成服务资质</li>
+          <li>TSM 可信研发运营安全能力成熟度增强级</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:1rem;color:var(--text);margin-bottom:8px;">AI可信安全</h4>
+        <ul style="font-size:.94rem;">
+          <li>大模型与算法双备案</li>
+          <li>敏感词过滤 + 隐蔽和反掩蔽</li>
+          <li>内容"防毒化"</li>
+          <li>精细化权限管控 + 高精度数据权限</li>
+          <li>事前（防止无权使用）+ 事中（防止操作风险）+ 事后（审计溯源）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>新加坡数据中心：云服务安全体系</h3>
+    <ul>
+      <li><strong>数据合规：</strong>平台内置个人数据保护功能，配置用户最小化权限、隐私方案、数据脱敏</li>
+      <li><strong>安全认证：</strong>ISO27001、ISO20000、SOC1/2</li>
+      <li><strong>全球支撑：</strong>灵活全球部署，双层架构满足管控及合规要求，跨数据中心业务整合与数据分析</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 7: 案例 + 效果 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-cases">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#DC2626,#EF4444);">07</div>
+    <h2>案例 + 效果 <span class="en">Cases & Proof — 200+客户已经验证</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>客户案例墙</h3>
+    <div class="case-grid">
+      <div class="case-card"><div class="client">温氏集团</div><div class="industry">农业 · 世界最大肉类加工企业</div><div class="result">AI审单：智能审核率 0→92.3%</div></div>
+      <div class="case-card"><div class="client">中国金茂</div><div class="industry">地产</div><div class="result">财务共享：人效提升 31%</div></div>
+      <div class="case-card"><div class="client">海信集团</div><div class="industry">家电</div><div class="result">全球司库+财务中台：120+公司全覆盖</div></div>
+      <div class="case-card"><div class="client">广西柳工</div><div class="industry">机械制造</div><div class="result">全球合并报表+全球司库</div></div>
+      <div class="case-card"><div class="client">宁波开发投资</div><div class="industry">国资</div><div class="result">240+企业、1900+账户全覆盖；付款效率提升50%</div></div>
+      <div class="case-card"><div class="client">河南国资运营</div><div class="industry">国资</div><div class="result">凭证自动化率 99.44%</div></div>
+      <div class="case-card"><div class="client">双汇集团</div><div class="industry">食品</div><div class="result">全场景全链路ERP AI升级</div></div>
+      <div class="case-card"><div class="client">某央企集团</div><div class="industry">央企</div><div class="result">AI+人才：干部考察效率提升 70%</div></div>
+      <div class="case-card"><div class="client">某运营商</div><div class="industry">通信</div><div class="result">HR AI 助手：查询 5分钟→3秒</div></div>
+      <div class="case-card"><div class="client">Chin Hin Group</div><div class="industry">建筑 · 马来西亚上市集团</div><div class="result">中国管理+本地实践融合，AI战略落地生根</div></div>
+      <div class="case-card"><div class="client">英搏尔电气</div><div class="industry">新能源汽车 · 电驱领先企业</div><div class="result">IPD+正向研发，需求→可研发可制造</div></div>
+      <div class="case-card"><div class="client">绿能慧充</div><div class="industry">储能+充电桩</div><div class="result">项目四算一控，成本控制+应收/存货管理</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>全领域量化弹药（打单必背）</h3>
+    <table>
+      <tr><th>领域</th><th>客户</th><th>效果</th></tr>
+      <tr><td>AI审单</td><td>温氏集团</td><td><span class="metric">智能审核率 0→92.3%</span></td></tr>
+      <tr><td>HR AI</td><td>某运营商</td><td><span class="metric">自助查询 5分钟→3秒，准确率100%</span></td></tr>
+      <tr><td>财务共享</td><td>河南国资</td><td><span class="metric">凭证自动化率 99.44%，审单效率提升70%</span></td></tr>
+      <tr><td>HR AI</td><td>某央企</td><td><span class="metric">干部考察效率提升 70%</span></td></tr>
+      <tr><td>知识管理</td><td>某制造客户</td><td><span class="metric">知识检索效率提升 90%</span></td></tr>
+      <tr><td>差旅</td><td>—</td><td><span class="metric">差旅流程提效 23.5%</span></td></tr>
+      <tr><td>Boss助理</td><td>—</td><td><span class="metric">决策效率提升 100%</span></td></tr>
+      <tr><td>AI合同审查</td><td>—</td><td><span class="metric">合同审核效率提升 100%</span></td></tr>
+      <tr><td>虚假贸易筛查</td><td>—</td><td><span class="metric">筛查准确度 97.8%</span></td></tr>
+      <tr><td>采购风控</td><td>—</td><td><span class="metric">采购成本降 3-10%，合规风险降 20%</span></td></tr>
+      <tr><td>供应链协同</td><td>—</td><td><span class="metric">准时交货率提高 50%</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>行业最佳实践：开箱即用</h3>
+    <p>通过"标准产品 + 行业扩展 + 实践复用"能力，覆盖不同行业客户需求：</p>
+    <ul>
+      <li><strong>192个内容包</strong>：行业数据包、模板包、配置包、流程包、国家包、特性包</li>
+      <li><strong>19大功能领域、400个SKU</strong>：沉淀高频共性需求形成标准产品模块</li>
+      <li><strong>行业产品 + ISV产品：</strong>汽车零部件行业云、农产品行业云、电商集成、半导体仓储、医药质量合规等</li>
+      <li><strong>一键加载：</strong>行业最佳实践内容包直接加载至系统，客户无需从零配置</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- CHAPTER 8: 竞争差异化 -->
+<!-- ================================================================ -->
+<div class="section sec-anchor" id="sec-compete">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#4F46E5,#7C3AED);">08</div>
+    <h2>竞争差异化 <span class="en">Competitive Edge — 为什么选金蝶不选别人？</span></h2>
+  </div>
+
+  <div class="card">
+    <h3>竞争格局速判</h3>
+    <table>
+      <tr><th style="width:80px">对手</th><th>对方打法</th><th>金蝶反击锚点</th></tr>
+      <tr>
+        <td style="font-weight:700;color:#3B82F6">SAP</td>
+        <td>全球标准，Joule AI Copilot 对话助手</td>
+        <td>"SAP是Copilot对话工具，金蝶是Agent替你干活——一个是问答，一个是执行；东南亚LocalKits本地合规开箱即用，新加坡+北京双数据中心；中国本土30年财务经验不是国际化就能替代的"</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;color:#DC2626">用友</td>
+        <td>信创首选，YonGPT大模型平台</td>
+        <td>"金蝶40000+税法算法是30年专家经验模型，不是prompt工程；自研多维数据库亿级瞬时处理，用友做不到；全球出海覆盖（12种语言+双数据中心）比用友更完整"</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>金蝶AI不可替代的5个锚点</h3>
+    <table>
+      <tr><th style="width:30px">#</th><th>锚点</th><th>一句话反击</th></tr>
+      <tr><td>1</td><td><strong>财务深度</strong></td><td>"不是AI套壳，是30年财务专家模型。40000+税法算法不是prompt能写出来的。"</td></tr>
+      <tr><td>2</td><td><strong>Agent非ChatBot</strong></td><td>"是能做事的人，不只是对话的嘴。每个Agent对应一个具体岗位：关账专员、排产调度、质量工程师。"</td></tr>
+      <tr><td>3</td><td><strong>真全球化</strong></td><td>"越南电票直连、VAT申报、海关集成是开箱即用的LocalKits，SAP要重新开发。新加坡数据中心支持全球业务连续性。"</td></tr>
+      <tr><td>4</td><td><strong>安全全栈</strong></td><td>"大模型+算法双备案。SAP的外国模型在中国备案？不容易。内容防毒化+敏感词过滤+全栈信创适配。"</td></tr>
+      <tr><td>5</td><td><strong>买了是开始</strong></td><td>"套件内免费升级、二开平滑升级、私有化自动升级。AI自进化，越用越聪明，不是买完就停滞。"</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>场景化话术速查：见到谁说什么</h3>
+    <table>
+      <tr><th>见到谁</th><th>对方最关心</th><th>一句话搞定</th></tr>
+      <tr><td>CFO</td><td>报表/合规/资金</td><td>"10分钟出一份财务分析报告，凭证自动化率99%，虚假贸易筛查97.8%"</td></tr>
+      <tr><td>采购总监</td><td>降本/合规</td><td>"呆滞料提前90天预警，35种处置方案；采购成本降低3-10%"</td></tr>
+      <tr><td>生产厂长</td><td>插单/质量/进度</td><td>"AI秒级模拟插单交期，8D质量报告从客诉到根因全流程智能"</td></tr>
+      <tr><td>CEO</td><td>全局/效率</td><td>"手机上看经营日报随问随答，100+指标开箱即用，决策效率提升100%"</td></tr>
+      <tr><td>CIO</td><td>技术/安全/集成</td><td>"大模型双备案+等保三级+ISO全系，全栈信创适配，MCP/A2A开放协议"</td></tr>
+    </table>
+  </div>
+
+  <div class="highlight warn">
+    <strong>📌 记住这条底线：</strong>客户选我们不选别人的理由是什么？这个理由够不够硬？如果答不上来，这个单子就很危险。把上面5个锚点变成你的肌肉记忆。
+  </div>
+</div>
+
+<div class="footer">
+  金蝶软件（中国）有限公司 · 产品研发中心-营销运作与场景化部<br>
+  来源：金蝶AI套件整体解决方案0418.pptx &nbsp;|&nbsp; 2026-05-31 &nbsp;|&nbsp; 内部培训资料
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+// Smooth scroll + active tracking
+var floatItems = document.querySelectorAll('#floatNav .nav-item');
+var sections = ['hero','sec-market','sec-overview','sec-fullstack','sec-agents','sec-liveai','sec-global','sec-cases','sec-compete'];
+
+function scrollToSection(id, btn) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+window.addEventListener('scroll', function() {
+  var scrollY = window.scrollY + 120;
+  var best = 0, bestDist = Infinity;
+  sections.forEach(function(id, i) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var dist = Math.abs(el.offsetTop - scrollY);
+    if (dist < bestDist) { bestDist = dist; best = i; }
+  });
+  floatItems.forEach(function(a, j) { a.classList.toggle('active', j === best); });
+});
+
+// Collapse floating nav
+var navCollapsed = false;
+function toggleNav() {
+  navCollapsed = !navCollapsed;
+  var wrapper = document.getElementById('navWrapper');
+  var toggle = document.getElementById('navToggle');
+  if (navCollapsed) {
+    wrapper.classList.add('collapsed');
+    toggle.innerHTML = '▶';
+  } else {
+    wrapper.classList.remove('collapsed');
+    toggle.innerHTML = '◀ 收起';
+  }
+}
+</script>
+</body>
+</html>

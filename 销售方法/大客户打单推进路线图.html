@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大客户打单推进路线图</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pri: #7C3AED;
+  --pri-dark: #6D28D9;
+  --pri-deep: #2E1065;
+  --pri-glow: rgba(124,58,237,0.3);
+  --pri-bg: #F5F0FF;
+  --pri-bg2: #FAF7FF;
+  --card-white: #FFFFFF;
+  --card-purple: #F5F0FF;
+  --card-blue: #F0F5FF;
+  --card-mint: #F0FDF8;
+  --card-warm: #FFFBF0;
+  --text: #111111;
+  --sub: #111111;
+  --line: #E8ECF2;
+  --gold: #F59E0B;
+  --teal: #0D9488;
+  --green: #10B981;
+  --purple: #7C3AED;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans SC',-apple-system,sans-serif;
+  background:#F9FAFB;color:var(--text);
+  line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+
+/* ─── Floating Nav ─── */
+.floating-nav{
+  position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:100;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);
+  border:1px solid var(--line);border-radius:var(--radius-md);
+  box-shadow:var(--shadow-lg);transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden;
+}
+.floating-nav.collapsed{padding:8px;min-width:auto;width:44px}
+.floating-nav.expanded{padding:14px 10px;min-width:160px;width:auto}
+.nav-toggle{
+  display:flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:6px;background:var(--pri-bg);
+  border:none;cursor:pointer;transition:all .2s;
+}
+.nav-toggle:hover{background:var(--pri)}
+.nav-toggle svg{width:16px;height:16px;color:var(--pri);transition:all .2s}
+.nav-toggle:hover svg{color:#fff}
+.nav-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.nav-title{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:2.5px;color:var(--pri);font-family:'JetBrains Mono',monospace;white-space:nowrap;
+}
+.nav-body{overflow:hidden}
+.floating-nav.collapsed .nav-body{max-height:0;opacity:0}
+.floating-nav.expanded .nav-body{max-height:500px;opacity:1;transition:all .35s}
+.nav-item{
+  display:flex;align-items:center;gap:8px;padding:6px 10px;font-size:12px;color:var(--sub);
+  text-decoration:none;border-radius:6px;transition:all .2s;cursor:pointer;font-weight:500;white-space:nowrap;
+}
+.nav-item:hover{background:var(--pri-bg);color:var(--pri)}
+.nav-item.active{background:var(--pri-bg);color:var(--pri);font-weight:700}
+.nav-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--line);flex-shrink:0;transition:all .2s;
+}
+.nav-item:hover .nav-dot,.nav-item.active .nav-dot{background:var(--pri);box-shadow:0 0 10px var(--pri-glow)}
+
+/* ─── Hero ─── */
+.hero{
+  position:relative;
+  background:linear-gradient(155deg,#1E0A3C 0%,#2E1065 25%,#4C1D95 50%,#6D28D9 70%,#7C3AED 100%);
+  padding:86px 64px 120px;overflow:hidden;color:#fff;z-index:1;
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:linear-gradient(to bottom right,transparent 49%,#F9FAFB 50%);
+}
+.hero-bg-orb{
+  position:absolute;width:620px;height:620px;
+  background:radial-gradient(circle,rgba(124,58,237,0.16) 0%,transparent 65%);
+  border-radius:50%;top:-35%;right:-10%;
+  animation:orbPulse 8s ease-in-out infinite;
+}
+@keyframes orbPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.06);opacity:1}}
+.hero-lines{position:absolute;top:0;left:0;right:0;bottom:0;opacity:.05;pointer-events:none}
+.hero-lines svg{width:100%;height:100%}
+.hero-content{position:relative;z-index:2;max-width:1060px;margin:0 auto}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.15);padding:5px 16px;border-radius:100px;
+  font-size:12px;font-weight:500;letter-spacing:2.5px;margin-bottom:32px;
+}
+.hero h1{font-size:clamp(36px,5vw,56px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px;color:#fff}
+.hero .subtitle{
+  font-size:clamp(15px,1.8vw,19px);font-weight:300;opacity:.82;
+  max-width:640px;margin-bottom:38px;line-height:1.6;
+}
+.hero-meta{display:flex;gap:32px;font-size:13px;opacity:.6;flex-wrap:wrap}
+.hero-meta-item{display:flex;align-items:center;gap:7px}
+.hero-meta-item svg{width:15px;height:15px;opacity:.7}
+
+/* ─── Particles ─── */
+.particles{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}
+.particle{
+  position:absolute;border-radius:50%;background:var(--pri);opacity:0;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:.5}90%{opacity:.15}
+  100%{transform:translateY(-10vh) scale(1.4);opacity:0}
+}
+
+/* ─── Container ─── */
+.container{max-width:1060px;margin:-50px auto 0;padding:0 48px 80px;position:relative;z-index:1}
+
+/* ─── Section ─── */
+.section{margin-top:52px;opacity:0;transform:translateY(24px);transition:all .6s ease}
+.section.visible{opacity:1;transform:translateY(0)}
+.section-header{display:flex;align-items:flex-end;gap:20px;margin-bottom:28px}
+.section-num{
+  font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:800;
+  line-height:1;color:#000;opacity:.9;flex-shrink:0;
+}
+.section-title-wrap{padding-bottom:4px}
+.section-title{font-size:22px;font-weight:800;color:var(--pri-deep);letter-spacing:-.5px;line-height:1.3}
+.section-sub{font-size:13px;color:var(--pri);font-weight:500;letter-spacing:1px;margin-top:2px}
+
+/* ─── Cards ─── */
+.card{
+  border-radius:var(--radius-lg);padding:34px;margin-bottom:20px;
+  border:1px solid var(--line);transition:all .3s ease;position:relative;overflow:hidden;
+}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card-white{background:var(--card-white)}
+.card-purple{background:var(--card-purple)}
+.card-blue{background:var(--card-blue)}
+.card-mint{background:var(--card-mint)}
+.card-warm{background:var(--card-warm)}
+.card-accent::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--pri),transparent);
+  opacity:0;transition:opacity .4s;
+}
+.card-accent:hover::after{opacity:.8}
+
+/* ─── Timeline ─── */
+.timeline{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:24px 0;position:relative;
+}
+@media(max-width:700px){.timeline{grid-template-columns:1fr;gap:16px}.timeline::before{display:none}}
+.timeline::before{
+  content:'';position:absolute;top:40px;left:6%;right:6%;
+  height:2px;
+  background:linear-gradient(90deg,var(--pri),#9B5DE5,#A78BFA,#7C3AED,#4C1D95);
+  z-index:0;
+}
+.tl-phase{text-align:center;position:relative;z-index:1;padding:0 6px}
+.tl-dot{
+  width:14px;height:14px;border-radius:50%;
+  margin:0 auto 10px;position:relative;z-index:2;
+  border:3px solid #fff;
+}
+.tl-phase:nth-child(1) .tl-dot{background:var(--pri);box-shadow:0 0 0 4px var(--pri)}
+.tl-phase:nth-child(2) .tl-dot{background:#9B5DE5;box-shadow:0 0 0 4px #9B5DE5}
+.tl-phase:nth-child(3) .tl-dot{background:#A78BFA;box-shadow:0 0 0 4px #A78BFA}
+.tl-phase:nth-child(4) .tl-dot{background:#7C3AED;box-shadow:0 0 0 4px #7C3AED}
+.tl-phase:nth-child(5) .tl-dot{background:#4C1D95;box-shadow:0 0 0 4px #4C1D95}
+.tl-label{font-size:10px;color:var(--sub);margin-bottom:3px}
+.tl-name{font-size:14px;font-weight:700;color:var(--pri-dark);margin-bottom:3px}
+.tl-desc{font-size:10px;color:var(--sub);line-height:1.4}
+
+/* ─── Stage Cards ─── */
+.stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+@media(max-width:900px){.stage-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.stage-grid{grid-template-columns:1fr}}
+.stage-card{
+  border-radius:var(--radius-md);border:1px solid var(--line);
+  padding:24px 20px;position:relative;overflow:hidden;
+  transition:all .3s ease;
+}
+.stage-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.stage-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stage-card:nth-child(1){background:#F0F5FF}
+.stage-card:nth-child(1)::before{background:linear-gradient(90deg,#1A5FFF,#5C8FFF)}
+.stage-card:nth-child(2){background:#F0FDF8}
+.stage-card:nth-child(2)::before{background:linear-gradient(90deg,#0D9488,#2DD4BF)}
+.stage-card:nth-child(3){background:#FFFBF0}
+.stage-card:nth-child(3)::before{background:linear-gradient(90deg,#F59E0B,#FBBF24)}
+.stage-card:nth-child(4){background:#F5F0FF}
+.stage-card:nth-child(4)::before{background:linear-gradient(90deg,#7C3AED,#A78BFA)}
+.stage-card:nth-child(5){background:#FEF2F2}
+.stage-card:nth-child(5)::before{background:linear-gradient(90deg,#DC2626,#F87171)}
+
+.stage-watermark{
+  font-family:'JetBrains Mono',monospace;
+  font-size:36px;font-weight:800;opacity:.15;
+  position:absolute;right:12px;top:4px;color:#000;line-height:1;
+}
+.stage-card h4{font-size:15px;font-weight:700;margin-bottom:5px}
+.stage-card:nth-child(1) h4{color:#1A5FFF}
+.stage-card:nth-child(2) h4{color:#0D9488}
+.stage-card:nth-child(3) h4{color:#B45309}
+.stage-card:nth-child(4) h4{color:#6D28D9}
+.stage-card:nth-child(5) h4{color:#DC2626}
+.stage-time{font-size:10px;margin-bottom:8px;font-weight:600}
+.stage-card:nth-child(1) .stage-time{color:#1A5FFF}
+.stage-card:nth-child(2) .stage-time{color:#0D9488}
+.stage-card:nth-child(3) .stage-time{color:#B45309}
+.stage-card:nth-child(4) .stage-time{color:#6D28D9}
+.stage-card:nth-child(5) .stage-time{color:#DC2626}
+.stage-goal{font-size:12px;font-weight:600;margin-bottom:8px}
+.stage-card:nth-child(1) .stage-goal{color:#1A5FFF}
+.stage-card:nth-child(2) .stage-goal{color:#0D9488}
+.stage-card:nth-child(3) .stage-goal{color:#B45309}
+.stage-card:nth-child(4) .stage-goal{color:#6D28D9}
+.stage-card:nth-child(5) .stage-goal{color:#DC2626}
+.stage-card table{width:100%;font-size:11px;border-collapse:collapse}
+.stage-card table td{padding:4px 4px;border-bottom:1px solid rgba(0,0,0,.04);color:var(--sub);line-height:1.5;vertical-align:top}
+.stage-card table td:first-child{font-weight:600;color:var(--text);white-space:nowrap;width:38%}
+
+/* ─── Decision Chain ─── */
+.chain{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 0}
+.chain-node{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 20px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;white-space:nowrap;transition:all .2s;
+}
+.chain-node:hover{transform:scale(1.02)}
+.chain-node.root{background:var(--pri-deep);color:#fff;font-size:15px;padding:12px 28px;box-shadow:0 4px 18px rgba(46,16,101,.3)}
+.chain-node.mid{background:var(--pri);color:#fff;font-size:14px;padding:10px 24px;box-shadow:0 4px 14px rgba(124,58,237,.25)}
+.chain-node.mid-2{background:#0D9488;color:#fff;font-size:14px;padding:10px 24px;box-shadow:0 4px 14px rgba(13,148,136,.25)}
+.chain-node.mid-3{background:#1A5FFF;color:#fff;font-size:14px;padding:10px 24px;box-shadow:0 4px 14px rgba(26,95,255,.25)}
+.chain-node.leaf{border:1.5px solid var(--pri);color:var(--pri);font-size:12px;padding:8px 16px}
+.chain-node.leaf:hover{background:var(--pri-bg)}
+.chain-node.leaf-2{border:1.5px solid #0D9488;color:#0D9488;font-size:12px;padding:8px 16px}
+.chain-node.leaf-2:hover{background:rgba(13,148,136,.06)}
+.chain-node.leaf-3{border:1.5px solid #1A5FFF;color:#1A5FFF;font-size:12px;padding:8px 16px}
+.chain-node.leaf-3:hover{background:rgba(26,95,255,.06)}
+.chain-conn{width:2px;height:10px;background:var(--line)}
+
+/* ─── Competitor Timeline ─── */
+.comp-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:14px 0}
+@media(max-width:700px){.comp-grid{grid-template-columns:repeat(3,1fr)}}
+.comp-card{
+  border-radius:var(--radius-sm);padding:14px 10px;text-align:center;
+  border:1px solid var(--line);background:#fff;transition:all .2s;
+}
+.comp-card:nth-child(1){background:#F0F5FF}
+.comp-card:nth-child(1) .cc-phase{color:#1A5FFF}
+.comp-card:nth-child(1) .cc-do{background:rgba(26,95,255,.1);color:#1A5FFF}
+.comp-card:nth-child(2){background:#F0FDF8}
+.comp-card:nth-child(2) .cc-phase{color:#0D9488}
+.comp-card:nth-child(2) .cc-do{background:rgba(13,148,136,.1);color:#0D9488}
+.comp-card:nth-child(3){background:#FFFBF0}
+.comp-card:nth-child(3) .cc-phase{color:#B45309}
+.comp-card:nth-child(3) .cc-do{background:rgba(245,158,11,.1);color:#B45309}
+.comp-card:nth-child(4){background:#F5F0FF}
+.comp-card:nth-child(4) .cc-phase{color:#7C3AED}
+.comp-card:nth-child(4) .cc-do{background:rgba(124,58,237,.1);color:#7C3AED}
+.comp-card:nth-child(5){background:#FEF2F2}
+.comp-card:nth-child(5) .cc-phase{color:#DC2626}
+.comp-card:nth-child(5) .cc-do{background:rgba(220,38,38,.1);color:#DC2626}
+.comp-card:nth-child(6){background:#F0F5FF}
+.comp-card:nth-child(6) .cc-phase{color:#1A5FFF}
+.comp-card:nth-child(6) .cc-do{background:rgba(26,95,255,.1);color:#1A5FFF}
+
+/* ─── Checklist ─── */
+.cl{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.cl{grid-template-columns:1fr}}
+.cl-item{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;
+  border-radius:var(--radius-sm);
+  font-size:12px;color:var(--sub);line-height:1.4;
+}
+.cl-item .ck{width:14px;height:14px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:none}
+.cl-item:nth-child(1){background:#F0F5FF}
+.cl-item:nth-child(1) .ck{background:#1A5FFF;color:#fff}
+.cl-item:nth-child(2){background:#F0FDF8}
+.cl-item:nth-child(2) .ck{background:#0D9488;color:#fff}
+.cl-item:nth-child(3){background:#FFFBF0}
+.cl-item:nth-child(3) .ck{background:#F59E0B;color:#fff}
+.cl-item:nth-child(4){background:#F5F0FF}
+.cl-item:nth-child(4) .ck{background:#7C3AED;color:#fff}
+.cl-item:nth-child(5){background:#FEF2F2}
+.cl-item:nth-child(5) .ck{background:#DC2626;color:#fff}
+.cl-item:nth-child(6){background:#F0F5FF}
+.cl-item:nth-child(6) .ck{background:#1A5FFF;color:#fff}
+
+/* ─── Divider ─── */
+.dv{height:1px;background:linear-gradient(to right,transparent,rgba(124,58,237,.12),transparent);margin:16px 0}
+
+/* ─── Tip ─── */
+.tip{border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;background:var(--card-warm);border:1px solid rgba(245,158,11,.15)}
+.tip .tl{font-size:10px;font-weight:700;letter-spacing:1px;color:#b87a00;text-transform:uppercase;margin-bottom:2px}
+.tip p{font-size:13px;color:var(--sub)}
+.warn{border-radius:var(--radius-sm);padding:12px 14px;margin:10px 0;background:#FEF2F2;border:1px solid rgba(220,38,38,.12)}
+.warn .wl{font-size:10px;font-weight:700;letter-spacing:1px;color:#DC2626;text-transform:uppercase;margin-bottom:2px}
+.warn p{font-size:13px;color:var(--sub)}
+
+/* ─── Footer ─── */
+.footer{text-align:center;padding:36px;color:var(--sub);font-size:12px;border-top:1px solid var(--line);margin-top:44px}
+
+/* ─── Animations ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.animate{animation:fadeUp .55s ease forwards;opacity:0}
+.animate:nth-child(1){animation-delay:.03s}.animate:nth-child(2){animation-delay:.07s}
+.animate:nth-child(3){animation-delay:.11s}.animate:nth-child(4){animation-delay:.15s}
+.animate:nth-child(5){animation-delay:.19s}.animate:nth-child(6){animation-delay:.23s}
+
+@media(max-width:960px){
+  .hero{padding:44px 24px 90px}
+  .hero h1{font-size:30px}
+  .container{padding:0 20px 60px}
+  .floating-nav{display:none}
+  .section-num{font-size:36px}
+}
+@media print{
+  body{background:#fff}.particles,.floating-nav,.hero-lines,.hero-bg-orb{display:none}
+  .card{box-shadow:none;break-inside:avoid}.hero{padding:30px}
+}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<nav class="floating-nav expanded" id="floatingNav">
+  <div class="nav-header">
+    <button class="nav-toggle" id="navToggle" title="展开/折叠">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="nav-body">
+    <a class="nav-item active" href="#s1"><span class="nav-dot"></span>总览一张图</a>
+    <a class="nav-item" href="#s2"><span class="nav-dot"></span>五阶段拆解</a>
+    <a class="nav-item" href="#s3"><span class="nav-dot"></span>决策链攻防</a>
+    <a class="nav-item" href="#s4"><span class="nav-dot"></span>竞品节点预警</a>
+    <a class="nav-item" href="#s5"><span class="nav-dot"></span>节奏检查表</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-orb"></div>
+  <div class="hero-lines">
+    <svg viewBox="0 0 1200 600" preserveAspectRatio="none">
+      <line x1="0" y1="120" x2="400" y2="120" stroke="#7C3AED" stroke-width=".6"/>
+      <line x1="350" y1="120" x2="350" y2="300" stroke="#7C3AED" stroke-width=".6"/>
+      <line x1="350" y1="300" x2="700" y2="300" stroke="#7C3AED" stroke-width=".6"/>
+      <circle cx="400" cy="120" r="3.5" fill="#7C3AED"/>
+      <circle cx="350" cy="300" r="3.5" fill="#7C3AED"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ 金蝶销售工具箱</div>
+    <h1>大客户打单<br>推进路线图</h1>
+    <p class="subtitle">从发现商机到签约，每个阶段该干什么、怎么判断往前走、容易死在哪儿。</p>
+    <div class="hero-meta">
+      <span class="hero-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>0528 V3.0 体系融合</span>
+      <span class="hero-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>团队内部使用</span>
+      <span class="hero-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>④ 内部公开</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- ─── 01 总览一张图 ─── -->
+<section class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-wrap">
+      <div class="section-title">总览一张图</div>
+      <div class="section-sub">大客户打单5阶段 · 步步为营</div>
+    </div>
+  </div>
+  <div class="card card-white card-accent animate">
+    <div class="timeline">
+      <div class="tl-phase"><div class="tl-dot"></div><div class="tl-label">初访</div><div class="tl-name">Phase 1</div><div class="tl-desc">了解现状痛点<br>建立初步关系</div></div>
+      <div class="tl-phase"><div class="tl-dot"></div><div class="tl-label">方案</div><div class="tl-name">Phase 2</div><div class="tl-desc">深度调研<br>输出定制方案</div></div>
+      <div class="tl-phase"><div class="tl-dot"></div><div class="tl-label">演示</div><div class="tl-name">Phase 3</div><div class="tl-desc">产品能力验证<br>技术交流</div></div>
+      <div class="tl-phase"><div class="tl-dot"></div><div class="tl-label">商务</div><div class="tl-name">Phase 4</div><div class="tl-desc">报价谈判<br>客情巩固</div></div>
+      <div class="tl-phase"><div class="tl-dot"></div><div class="tl-label">收单</div><div class="tl-name">Phase 5</div><div class="tl-desc">投标/竞争性谈判<br>签约</div></div>
+    </div>
+    <div class="dv"></div>
+    <p style="font-size:13px;color:var(--sub);text-align:center;"><strong style="color:var(--text);">核心逻辑：</strong>每阶段必须有明确的<strong style="color:var(--pri);">晋级标准</strong>，没到标准不进下一阶段。宁丢单，不跳步。</p>
+  </div>
+</section>
+
+<!-- ─── 02 五阶段拆解 ─── -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-wrap">
+      <div class="section-title">五阶段拆解</div>
+      <div class="section-sub">每阶段的目标 · 动作 · 输出 · 判断标准 · 常见死法</div>
+    </div>
+  </div>
+  <div class="stage-grid animate">
+    <div class="stage-card">
+      <div class="stage-watermark">01</div>
+      <h4>初访</h4>
+      <div class="stage-time">目标：建立信任，获取项目基本信息</div>
+      <div class="stage-goal">🎯 客户愿意安排正式交流</div>
+      <table>
+        <tr><td>关键动作</td><td>了解现状痛点、摸清决策链、确认项目时间表</td></tr>
+        <tr><td>核心输出</td><td>15分钟速填表、客户基本信息表</td></tr>
+        <tr><td>晋级标准</td><td>客户主动约下次拜访🌱</td></tr>
+        <tr><td>常见死法</td><td>只听需求不挖痛点、没见到关键人</td></tr>
+      </table>
+    </div>
+    <div class="stage-card">
+      <div class="stage-watermark">02</div>
+      <h4>方案</h4>
+      <div class="stage-time">目标：针对性方案，建立专业信任</div>
+      <div class="stage-goal">🎯 方案汇报完成，客户核心团队认可</div>
+      <table>
+        <tr><td>关键动作</td><td>深入调研、输出定制方案、安排专题汇报</td></tr>
+        <tr><td>核心输出</td><td>定制方案书、ROI测算表</td></tr>
+        <tr><td>晋级标准</td><td>客户主动提"给我们演示一下"</td></tr>
+        <tr><td>常见死法</td><td>方案太通用、没针对客户痛点、决策人没参会</td></tr>
+      </table>
+    </div>
+    <div class="stage-card">
+      <div class="stage-watermark">03</div>
+      <h4>演示</h4>
+      <div class="stage-time">目标：产品能力验证，建立技术信任</div>
+      <div class="stage-goal">🎯 客户认可产品能力，竞品被拉开差距</div>
+      <table>
+        <tr><td>关键动作</td><td>按痛点场景做针对性演示、技术交流、对标竞品</td></tr>
+        <tr><td>核心输出</td><td>演示纪要、技术Q&A清单</td></tr>
+        <tr><td>晋级标准</td><td>客户进入正式选型流程/发出招标书</td></tr>
+        <tr><td>常见死法</td><td>演示功能堆砌不针对痛点、技术问题答不上来</td></tr>
+      </table>
+    </div>
+    <div class="stage-card">
+      <div class="stage-watermark">04</div>
+      <h4>商务</h4>
+      <div class="stage-time">目标：商谈条款，巩固客情，控盘节奏</div>
+      <div class="stage-goal">🎯 客户认可报价，推动进入招标/谈判</div>
+      <table>
+        <tr><td>关键动作</td><td>报价、商务谈判、预约高层回访</td></tr>
+        <tr><td>核心输出</td><td>报价单、商务条款清单</td></tr>
+        <tr><td>晋级标准</td><td>客户发招标书/明确进入谈判</td></tr>
+        <tr><td>常见死法</td><td>过早降价、不清楚竞品报价、高层关系没铺好</td></tr>
+      </table>
+    </div>
+    <div class="stage-card">
+      <div class="stage-watermark">05</div>
+      <h4>收单</h4>
+      <div class="stage-time">目标：以合理价格成单，同时为交付铺路</div>
+      <div class="stage-goal">🎯 合同签订，首付款到账</div>
+      <table>
+        <tr><td>关键动作</td><td>投标/谈判、合同条款确认、交付团队介入</td></tr>
+        <tr><td>核心输出</td><td>合同、实施计划</td></tr>
+        <tr><td>晋级标准</td><td>合同盖章生效💰</td></tr>
+        <tr><td>常见死法</td><td>商务条款让步太大、交付预期没对齐</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 03 决策链攻防 ─── -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-wrap">
+      <div class="section-title">决策链攻防</div>
+      <div class="section-sub">选型小组逐个击破 · 关键决策人怎么拿下</div>
+    </div>
+  </div>
+  <div class="card card-white card-accent animate">
+    <div class="chain">
+      <div class="chain-node root">最终决策人（老板/一把手）</div>
+      <div class="chain-conn"></div>
+      <div class="chain-node mid">选型小组（5-8人核心成员）</div>
+      <div class="chain-conn"></div>
+      <div class="chain-node leaf" style="gap:8px;display:flex;flex-wrap:wrap;justify-content:center;">
+        <span>CIO</span><span>CFO</span><span>业务VP</span><span>采购</span><span>生产总监</span>
+      </div>
+    </div>
+    <div class="dv"></div>
+    <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">各角色攻防策略</h3>
+    <div class="chain">
+      <div class="chain-node mid" style="background:#2E1065;width:100%;max-width:400px;text-align:center;">最终决策人（老板/一把手）</div>
+      <p style="font-size:13px;color:var(--sub);text-align:center;max-width:600px;">老板只看三样：战略价值、行业标杆、投资回报。<br>建议安排<span style="color:#7C3AED;font-weight:600;">金蝶总部参观 + 高层回访</span>，建立战略互信。</p>
+      <div class="chain-conn"></div>
+      <div class="chain-node mid-3" style="width:100%;max-width:400px;text-align:center;">选型小组（5-8人核心成员）</div>
+      <p style="font-size:13px;color:var(--sub);text-align:center;max-width:600px;">选型小组里要找到你的<span style="color:#7C3AED;font-weight:600;">"内线"（Champion）</span>。通常是业务部门的人，不是IT。</p>
+    </div>
+  </div>
+  <div class="card card-purple card-accent animate">
+    <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">🎯 常用打单话术·按角色</h3>
+    <div style="margin:10px 0;">
+      <p style="font-size:12px;font-weight:700;color:var(--pri);">对一把手：</p>
+      <p style="font-size:13px;color:var(--sub);">"王总，我发现您的同行XX集团最近也遇到了类似的挑战，他们选择跟我们合作后，项目利润率提升了15个百分点。要不我安排一次您和他们的CIO直接交流？"</p>
+    </div>
+    <div style="margin:10px 0;">
+      <p style="font-size:12px;font-weight:700;color:var(--pri);">对CFO：</p>
+      <p style="font-size:13px;color:var(--sub);">"这次投入不仅是买系统，更是买未来3年的财务合规保障。我们XX家同体量客户的TCO测算显示，3年总成本比现有模式节省30%。"</p>
+    </div>
+    <div style="margin:10px 0;">
+      <p style="font-size:12px;font-weight:700;color:var(--pri);">对业务VP：</p>
+      <p style="font-size:13px;color:var(--sub);">"您刚才提到的项目成本算不准的问题，我们的方案上线后，每个项目的实时利润一屏可见。某某公司用了之后，超支率从25%降到了8%。"</p>
+    </div>
+    <div style="margin:10px 0;">
+      <p style="font-size:12px;font-weight:700;color:var(--pri);">对CIO：</p>
+      <p style="font-size:13px;color:var(--sub);">"现有系统是.NET架构，信创这块迟早要过。我们苍穹是云原生全栈国产化，而且跟你们现有的Rosetta系统做过接口验证，无缝对接。"</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 04 竞品节点预警 ─── -->
+<section class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title-wrap">
+      <div class="section-title">竞品节点预警</div>
+      <div class="section-sub">用友通常在哪个阶段出现？怎么应对？</div>
+    </div>
+  </div>
+  <div class="card card-white card-accent animate">
+    <p style="font-size:14px;color:var(--sub);margin-bottom:14px;">你可能觉得竞品最危险是在收单阶段，其实竞品的<strong style="color:var(--text);">发力点</strong>在更早的阶段。</p>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="cc-phase">初访</div>
+        <div class="cc-what">用友可能在客户那已有布局</div>
+        <span class="cc-do">尽早确认竞品是否已介入</span>
+      </div>
+      <div class="comp-card">
+        <div class="cc-phase">方案</div>
+        <div class="cc-what">竞品出低价方案搅局</div>
+        <span class="cc-do">用ROI对比守住价值定位</span>
+      </div>
+      <div class="comp-card">
+        <div class="cc-phase">演示</div>
+        <div class="cc-what">竞品针对性演示重点功能</div>
+        <span class="cc-do">差异化场景演示建立壁垒</span>
+      </div>
+      <div class="comp-card">
+        <div class="cc-phase">商务</div>
+        <div class="cc-what">竞品大幅降价抢单</div>
+        <span class="cc-do">TCO对比+信创牌+服务牌</span>
+      </div>
+      <div class="comp-card">
+        <div class="cc-phase">收单</div>
+        <div class="cc-what">竞品最后时刻压价</div>
+        <span class="cc-do">高层回访稳盘，不跟低价</span>
+      </div>
+      <div class="comp-card">
+        <div class="cc-phase">每个阶段</div>
+        <div class="cc-what">用友都在强调"品牌"和"合作年限"</div>
+        <span class="cc-do">用行业案例+信创+交付质量回应</span>
+      </div>
+    </div>
+  </div>
+  <div class="card card-purple card-accent animate">
+    <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:12px;">🛡️ 竞品反击三连</h3>
+    <div class="tip" style="background:var(--pri-bg2);border-color:rgba(124,58,237,.1);">
+      <p><strong style="color:var(--pri);">第一招：信创牌</strong><br>"用友的YonBIP在信创适配深度上还在追赶，我们苍穹已经全栈通过国家信创认证，贵司的合规时间表不等人。"</p>
+    </div>
+    <div class="tip" style="background:var(--pri-bg2);border-color:rgba(124,58,237,.1);margin-top:8px;">
+      <p><strong style="color:var(--pri);">第二招：交付牌</strong><br>"我们在这个行业有XX个同等体量的交付案例，平均上线周期比用友短30%。交付质量是我们的核心指标。"</p>
+    </div>
+    <div class="tip" style="background:var(--pri-bg2);border-color:rgba(124,58,237,.1);margin-top:8px;">
+      <p><strong style="color:var(--pri);">第三招：TCO牌</strong><br>"我们的TCO测算显示，3年总拥有成本比用友低20-30%。价格差异不仅是软件费，更是实施+运维+升级的隐性成本。"</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 05 节奏检查表 ─── -->
+<section class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title-wrap">
+      <div class="section-title">节奏检查表</div>
+      <div class="section-sub">跑完一个阶段打一个勾 · 达标再晋级</div>
+    </div>
+  </div>
+  <div class="card card-white card-accent animate">
+    <p style="font-size:14px;color:var(--sub);margin-bottom:14px;">每个阶段跑完，对照这个清单检查。<strong style="color:var(--text);">全部打勾</strong>再进下一阶段。</p>
+    <h3 style="font-size:14px;font-weight:700;color:var(--pri);margin-bottom:8px;">☐ Phase 1 初访 → 晋级检查</h3>
+    <div class="cl">
+      <div class="cl-item"><span class="ck">✓</span>是否见到了关键决策人？</div>
+      <div class="cl-item"><span class="ck">✓</span>是否挖出了≥1个真痛点？</div>
+      <div class="cl-item"><span class="ck">✓</span>是否确认了项目时间表？</div>
+      <div class="cl-item"><span class="ck">✓</span>15分钟速填表填了吗？</div>
+      <div class="cl-item"><span class="ck">✓</span>客户愿意再约一次？</div>
+      <div class="cl-item"><span class="ck">✓</span>竞品动态了解了吗？</div>
+    </div>
+    <div class="dv"></div>
+    <h3 style="font-size:14px;font-weight:700;color:var(--pri);margin-bottom:8px;">☐ Phase 2 方案 → 晋级检查</h3>
+    <div class="cl">
+      <div class="cl-item"><span class="ck">✓</span>方案是否针对客户痛点定制？</div>
+      <div class="cl-item"><span class="ck">✓</span>是否有ROI/案例数据支撑？</div>
+      <div class="cl-item"><span class="ck">✓</span>方案汇报时决策人在场吗？</div>
+      <div class="cl-item"><span class="ck">✓</span>客户是否主动要求演示？</div>
+      <div class="cl-item"><span class="ck">✓</span>竞品方案是否已对标？</div>
+      <div class="cl-item"><span class="ck">✓</span>内部是否已找好Champion？</div>
+    </div>
+    <div class="dv"></div>
+    <h3 style="font-size:14px;font-weight:700;color:var(--pri);margin-bottom:8px;">☐ Phase 3 演示 → 晋级检查</h3>
+    <div class="cl">
+      <div class="cl-item"><span class="ck">✓</span>演示是否针对痛点场景？</div>
+      <div class="cl-item"><span class="ck">✓</span>技术Q&A是否应对充分？</div>
+      <div class="cl-item"><span class="ck">✓</span>客户是否认可产品能力？</div>
+      <div class="cl-item"><span class="ck">✓</span>竞品演示时间/内容是否了解？</div>
+      <div class="cl-item"><span class="ck">✓</span>是否进入正式选型/招标流程？</div>
+      <div class="cl-item"><span class="ck">✓</span>高层关系是否已铺垫？</div>
+    </div>
+    <div class="dv"></div>
+    <h3 style="font-size:14px;font-weight:700;color:var(--pri);margin-bottom:8px;">☐ Phase 4 商务 → 晋级检查</h3>
+    <div class="cl">
+      <div class="cl-item"><span class="ck">✓</span>报价是否合理（不超预算太多）？</div>
+      <div class="cl-item"><span class="ck">✓</span>商务条款是否已谈妥？</div>
+      <div class="cl-item"><span class="ck">✓</span>竞品报价是否已摸底？</div>
+      <div class="cl-item"><span class="ck">✓</span>高层回访是否安排？</div>
+      <div class="cl-item"><span class="ck">✓</span>客户是否发招标书/明确进入谈判？</div>
+      <div class="cl-item"><span class="ck">✓</span>交付经理是否已介入评估？</div>
+    </div>
+    <div class="dv"></div>
+    <h3 style="font-size:14px;font-weight:700;color:var(--pri);margin-bottom:8px;">☐ Phase 5 收单 → 晋级检查</h3>
+    <div class="cl">
+      <div class="cl-item"><span class="ck">✓</span>投标/谈判是否准备充分？</div>
+      <div class="cl-item"><span class="ck">✓</span>合同条款是否确认无误？</div>
+      <div class="cl-item"><span class="ck">✓</span>交付预期是否与客户对齐？</div>
+      <div class="cl-item"><span class="ck">✓</span>首付款条件是否明确？</div>
+      <div class="cl-item"><span class="ck">✓</span>交付团队是否已介入？</div>
+      <div class="cl-item"><span class="ck">✓</span>客户是否已有明确签意愿？</div>
+    </div>
+  </div>
+  <div class="card card-purple card-accent animate">
+    <div class="tip" style="background:var(--pri-bg2);border-color:rgba(124,58,237,.1);">
+      <div class="tl">使用建议</div>
+      <p>跑完一个阶段翻出这份检查表，逐项打勾。<strong>有任何一个没打勾就回去了，补齐再往前走。</strong>宁丢单不跳步——跳步赢的单，迟早会在交付上还回去。</p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="footer">金蝶 · 天津 &nbsp;|&nbsp; 销售团队内部工具 &nbsp;|&nbsp; ④ 内部公开 请勿外传</div>
+
+<script>
+(function(){const c=document.getElementById('particles');for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';const s=1+Math.random()*3;p.style.width=s+'px';p.style.height=s+'px';p.style.animationDuration=(10+Math.random()*20)+'s';p.style.animationDelay=Math.random()*15+'s';c.appendChild(p);}})();
+(function(){const items=document.querySelectorAll('.nav-item');const nav=document.getElementById('floatingNav');const toggle=document.getElementById('navToggle');const secs=[];items.forEach(function(item){const id=item.getAttribute('href').slice(1);const el=document.getElementById(id);if(el)secs.push({el,nav:item});});toggle.addEventListener('click',function(){if(nav.classList.contains('expanded')){nav.classList.remove('expanded');nav.classList.add('collapsed');}else{nav.classList.remove('collapsed');nav.classList.add('expanded');}});function update(){let cur=secs[0];const sy=window.scrollY+130;for(let i=0;i<secs.length;i++){if(secs[i].el.offsetTop<=sy)cur=secs[i];}items.forEach(n=>n.classList.remove('active'));if(cur)cur.nav.classList.add('active');}window.addEventListener('scroll',update,{passive:true});items.forEach(function(item){item.addEventListener('click',function(e){e.preventDefault();const el=document.getElementById(this.getAttribute('href').slice(1));if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});});})();
+(function(){const els=document.querySelectorAll('.section');const obs=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible')});},{threshold:.05});els.forEach(el=>obs.observe(el));})();
+</script>
+</body>
+</html>

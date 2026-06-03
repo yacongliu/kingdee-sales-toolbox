@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>立联信（Linxens）企业洞察报告</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <style>
+    :root {
+      --primary: #0a2540;
+      --primary-light: #1a4a7a;
+      --accent: #00d4aa;
+      --accent-dark: #00a888;
+      --bg-dark: #061828;
+      --bg-light: #f4f7fb;
+      --text-dark: #1a2a3a;
+      --text-mid: #5a6a7a;
+      --text-light: #ffffff;
+      --border: #e0e8f0;
+      --gold: #f5a623;
+      --red: #e74c3c;
+      --green: #27ae60;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif; color: var(--text-dark); background: #fff; line-height: 1.6; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(6,24,40,0.95); backdrop-filter: blur(12px);
+      padding: 0 24px; height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(0,212,170,0.2);
+    }
+    nav .logo { color: var(--accent); font-weight: 700; font-size: 16px; letter-spacing: 1px; }
+    nav .nav-links { display: flex; gap: 4px; list-style: none; overflow-x: auto; max-width: 70vw; }
+    nav .nav-links a {
+      color: rgba(255,255,255,0.7); text-decoration: none; font-size: 12px;
+      padding: 6px 10px; border-radius: 6px; white-space: nowrap; transition: all 0.2s;
+    }
+    nav .nav-links a:hover { color: var(--accent); background: rgba(0,212,170,0.1); }
+    .section { padding: 80px 24px 60px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* Hero */
+    #hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--bg-dark) 100%);
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; top: -50%; right: -20%;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+    }
+    #hero .hero-inner { position: relative; z-index: 2; }
+    .hero-badge {
+      display: inline-block; background: rgba(0,212,170,0.15);
+      border: 1px solid rgba(0,212,170,0.3); color: var(--accent);
+      padding: 4px 14px; border-radius: 20px; font-size: 12px; margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    #hero h1 { color: var(--text-light); font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+    #hero h1 span { color: var(--accent); }
+    #hero .subtitle { color: rgba(255,255,255,0.6); font-size: 16px; margin-bottom: 40px; }
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+      max-width: 500px;
+    }
+    .hero-stat {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 18px 20px;
+    }
+    .hero-stat .num { color: var(--accent); font-size: 28px; font-weight: 800; }
+    .hero-stat .label { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 4px; }
+    .hero-scroll { margin-top: 48px; color: rgba(255,255,255,0.4); font-size: 12px; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+    /* Section headers */
+    .section-label {
+      display: inline-block; background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.25);
+      color: var(--accent); padding: 3px 12px; border-radius: 20px; font-size: 11px;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+    }
+    h2 { color: var(--primary); font-size: clamp(24px, 4vw, 34px); font-weight: 700; margin-bottom: 8px; }
+    .section-intro { color: var(--text-mid); font-size: 15px; margin-bottom: 40px; max-width: 600px; }
+
+    /* Cards */
+    .card {
+      background: #fff; border-radius: 16px; padding: 28px;
+      box-shadow: 0 4px 24px rgba(10,37,64,0.07);
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .card:hover { box-shadow: 0 8px 40px rgba(10,37,64,0.12); transform: translateY(-2px); }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .card-icon { font-size: 32px; margin-bottom: 14px; }
+    .card h3 { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .card p, .card li { font-size: 14px; color: var(--text-mid); }
+    .card ul { list-style: none; padding: 0; }
+    .card ul li { padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .card ul li:last-child { border-bottom: none; }
+    .card ul li::before { content: '›'; color: var(--accent); font-weight: 700; margin-right: 8px; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), var(--primary)); border-radius: 2px; }
+    .timeline-item { position: relative; margin-bottom: 28px; opacity: 0; transform: translateX(-20px); transition: all 0.5s; }
+    .timeline-item.visible { opacity: 1; transform: translateX(0); }
+    .timeline-dot { position: absolute; left: -28px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--accent); }
+    .timeline-year { color: var(--accent); font-size: 13px; font-weight: 700; }
+    .timeline-title { font-size: 15px; font-weight: 600; color: var(--primary); margin: 4px 0; }
+    .timeline-desc { font-size: 13px; color: var(--text-mid); }
+
+    /* Info table */
+    .info-table { width: 100%; border-collapse: collapse; }
+    .info-table tr:nth-child(odd) { background: var(--bg-light); }
+    .info-table td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid var(--border); }
+    .info-table td:first-child { font-weight: 600; color: var(--primary); width: 38%; }
+    .info-table td:last-child { color: var(--text-mid); }
+
+    /* Progress bars */
+    .prog-item { margin-bottom: 20px; }
+    .prog-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .prog-label { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+    .prog-value { font-size: 14px; font-weight: 700; color: var(--accent); }
+    .prog-bar { height: 10px; background: var(--bg-light); border-radius: 6px; overflow: hidden; }
+    .prog-fill { height: 100%; border-radius: 6px; transition: width 1.2s ease; width: 0; }
+
+    /* Charts */
+    .chart-container { position: relative; height: 300px; margin-bottom: 20px; }
+    .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; }
+    @media(max-width:600px){ .chart-grid { grid-template-columns: 1fr; } }
+
+    /* Dark section */
+    .section-dark { background: var(--primary); }
+    .section-dark h2 { color: #fff; }
+    .section-dark .section-intro { color: rgba(255,255,255,0.55); }
+    .section-dark .section-label { background: rgba(0,212,170,0.2); border-color: rgba(0,212,170,0.35); }
+    .section-dark .card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); box-shadow: none; }
+    .section-dark .card:hover { background: rgba(255,255,255,0.08); }
+    .section-dark .card h3 { color: #fff; }
+    .section-dark .card p, .section-dark .card li { color: rgba(255,255,255,0.6); }
+    .section-dark .card ul li { border-color: rgba(255,255,255,0.08); }
+
+    /* Tag badges */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag { background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.2); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+    .tag-dark { background: rgba(0,212,170,0.15); border-color: rgba(0,212,170,0.3); }
+
+    /* Radar legend table */
+    .radar-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .radar-table th { background: var(--primary); color: #fff; padding: 10px 16px; font-size: 13px; text-align: left; }
+    .radar-table td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+    .radar-table tr:nth-child(odd) td { background: var(--bg-light); }
+    .score-bar { display: flex; align-items: center; gap: 8px; }
+    .score-fill { height: 8px; background: var(--accent); border-radius: 4px; }
+
+    /* AI section */
+    .ai-card { display: flex; align-items: flex-start; gap: 16px; padding: 20px; margin-bottom: 16px; }
+    .ai-badge { flex-shrink: 0; background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.25); color: var(--accent); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .ai-badge.hot { background: rgba(245,166,35,0.15); border-color: rgba(245,166,35,0.3); color: var(--gold); }
+    .ai-title { font-size: 15px; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+    .ai-desc { font-size: 13px; color: var(--text-mid); }
+
+    /* Summary */
+    .summary-box {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 20px; padding: 40px; text-align: center; color: #fff;
+    }
+    .summary-box p { font-size: 16px; line-height: 1.8; max-width: 700px; margin: 0 auto 28px; color: rgba(255,255,255,0.85); }
+    .summary-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .summary-tag { background: rgba(0,212,170,0.2); border: 1px solid rgba(0,212,170,0.35); color: var(--accent); padding: 6px 16px; border-radius: 20px; font-size: 13px; }
+
+    /* Footer */
+    footer { background: var(--bg-dark); padding: 32px 24px; text-align: center; color: rgba(255,255,255,0.35); font-size: 12px; }
+    footer p { margin-bottom: 6px; }
+
+    /* Animate on scroll */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* Phase timeline */
+    .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .phase-item { position: relative; padding: 20px; border-radius: 14px; border: 1px solid var(--border); }
+    .phase-num { font-size: 36px; font-weight: 800; color: rgba(10,37,64,0.08); position: absolute; top: 10px; right: 16px; }
+    .phase-item h4 { font-size: 15px; font-weight: 700; color: var(--primary); margin: 8px 0 6px; }
+    .phase-item p { font-size: 13px; color: var(--text-mid); }
+
+    /* Opp cards */
+    .opp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .opp-card { border-radius: 14px; padding: 22px; border-left: 4px solid var(--accent); background: #fff; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .opp-num { font-size: 28px; font-weight: 800; color: rgba(10,37,64,0.1); margin-bottom: 8px; }
+    .opp-card h4 { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+    .opp-card p { font-size: 13px; color: var(--text-mid); }
+
+    /* Footer nav */
+    .section:target { scroll-margin-top: 70px; }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+      nav .nav-links { display: none; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .chart-container { height: 220px; }
+    }
+
+    /* Section divider */
+    .divider { height: 1px; background: linear-gradient(to right, transparent, var(--accent), transparent); margin: 0 24px; opacity: 0.3; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">LINXENS INSIGHT</div>
+  <ul class="nav-links">
+    <li><a href="#hero">首页</a></li>
+    <li><a href="#profile">公司概况</a></li>
+    <li><a href="#industry">行业洞察</a></li>
+    <li><a href="#competitive">竞争格局</a></li>
+    <li><a href="#advantage">核心优势</a></li>
+    <li><a href="#risk">风险挑战</a></li>
+    <li><a href="#opportunity">发展机遇</a></li>
+    <li><a href="#finance">财务健康</a></li>
+    <li><a href="#ai">AI赋能</a></li>
+    <li><a href="#summary">总结</a></li>
+  </ul>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-badge">ENTERPRISE INSIGHT REPORT · 2026</div>
+      <h1>立联信<br><span>Linxens</span></h1>
+      <p class="subtitle">全球智能卡微连接器绝对龙头 · 紫光集团旗下核心资产</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">>90%</div>
+          <div class="label">银行卡芯片模块全球市占率</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">>70%</div>
+          <div class="label">SIM卡模块全球市占率</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">25亿</div>
+          <div class="label">芯片模块封装产能（个/年）</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">22亿€</div>
+          <div class="label">2018年紫光收购价</div>
+        </div>
+      </div>
+      <div class="hero-scroll">↓ 向下滚动查看报告</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROFILE ==================== -->
+<section id="profile" class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-label">01 · 公司概况</div>
+    <h2>公司概况</h2>
+    <p class="section-intro">立联信（Linxens）是一家法国血统的全球智能卡微连接器领军企业，现为紫光集团旗下全资子公司，在全球智能卡微连接器领域占据绝对垄断地位。</p>
+
+    <div class="card-grid" style="margin-bottom: 32px;">
+      <div class="card fade-up">
+        <div class="card-icon">🏢</div>
+        <h3>基本信息</h3>
+        <table class="info-table">
+          <tr><td>公司名称</td><td>立联信（天津）电子元件有限公司</td></tr>
+          <tr><td>英文名称</td><td>Linxens Tianjin Co., Ltd.</td></tr>
+          <tr><td>成立时间</td><td>2019年3月8日</td></tr>
+          <tr><td>公司类型</td><td>外商独资企业</td></tr>
+          <tr><td>总部</td><td>天津滨海高新区</td></tr>
+          <tr><td>员工规模</td><td>137人（2024年）</td></tr>
+          <tr><td>注册资本</td><td>2,740万美元</td></tr>
+        </table>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🏭</div>
+        <h3>天津工厂</h3>
+        <ul>
+          <li>2019年注册，2020年主体验收</li>
+          <li>2021年一期工程落成试生产</li>
+          <li>2021年获国家鼓励外商投资项目设备海关减免税优惠</li>
+          <li>2022年一期工程获评"天津市市级文明工地"</li>
+          <li>2024年9月宣布已完成1,000万欧元增资</li>
+          <li>拟再增资1,500万欧元扩产</li>
+          <li>芯片模块封装产能：25亿个/年</li>
+          <li>智能安全芯片规划产能：1.5亿个/年</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card fade-up" style="margin-bottom: 32px;">
+      <div class="card-icon">📊</div>
+      <h3>股权结构</h3>
+      <table class="info-table">
+        <tr><td>控股股东</td><td>LINXENS SINGAPORE PTE. LTD.（立联信新加坡私人有限公司）</td></tr>
+        <tr><td>实控人</td><td>紫光集团有限公司</td></tr>
+        <tr><td>持股比例</td><td>100%（外商独资）</td></tr>
+      </tr>
+      <tr><td>核心人物</td><td>郑钢（总经理）、BRUNETIERE Arnaud（董事长）</td></tr>
+      </table>
+    </div>
+
+    <div class="card fade-up">
+      <div class="card-icon">📅</div>
+      <h3>发展历程</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2018年</div>
+          <div class="timeline-title">紫光集团22亿欧元收购Linxens</div>
+          <div class="timeline-desc">紫光集团从私募股权公司CVC Capital Partners手中收购Linxens，估值约22亿欧元</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2019年</div>
+          <div class="timeline-title">立联信天津公司成立</div>
+          <div class="timeline-desc">立联信（天津）电子元件有限公司注册成立，紫光联盛控股架构确立</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2020–2021年</div>
+          <div class="timeline-title">天津工厂一期落成投产</div>
+          <div class="timeline-desc">主体验收、产线安装、试生产，获海关减免税优惠</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2023年</div>
+          <div class="timeline-title">紫光集团完成破产重整</div>
+          <div class="timeline-desc">紫光集团经历重整，由北京智路资产+建广资产牵头完成重组</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2023年8月</div>
+          <div class="timeline-title">出售传闻浮出水面</div>
+          <div class="timeline-desc">彭博社报道紫光集团考虑出售Linxens，估值20~30亿欧元，多方有意竞购</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2024年</div>
+          <div class="timeline-title">天津工厂增资扩产</div>
+          <div class="timeline-desc">完成1,000万欧元增资到位，拟再增资1,500万欧元，持续扩大中国产能</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2025–2026年</div>
+          <div class="timeline-title">出售进程持续推进</div>
+          <div class="timeline-desc">紫光集团旗下7家企业实质合并，出售Linxens为战略退出举措之一</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== INDUSTRY ==================== -->
+<section id="industry" class="section">
+  <div class="container">
+    <div class="section-label">02 · 行业洞察</div>
+    <h2>行业洞察</h2>
+    <p class="section-intro">智能卡及RFID行业受益于金融支付数字化、电子身份证推广和物联网爆发，正处于稳健增长阶段。</p>
+
+    <div class="chart-grid" style="margin-bottom: 32px;">
+      <div class="card fade-up">
+        <h3 style="margin-bottom: 16px;">🌍 全球智能卡市场规模趋势（亿美元）</h3>
+        <div class="chart-container">
+          <canvas id="marketChart"></canvas>
+        </div>
+        <div class="tag-row">
+          <span class="tag">CAGR 3.0~5.9%</span>
+          <span class="tag">2024年约32亿美元（IC部分）</span>
+          <span class="tag">2031年预计1766亿元</span>
+        </div>
+      </div>
+      <div class="card fade-up">
+        <h3 style="margin-bottom: 16px;">📈 全球智能卡IC市场规模预测（亿美元）</h3>
+        <div class="chart-container">
+          <canvas id="icChart"></canvas>
+        </div>
+        <div class="tag-row">
+          <span class="tag">CAGR 6.6%</span>
+          <span class="tag">2024年32亿美元</span>
+          <span class="tag">非接触支付驱动</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card fade-up">
+        <div class="card-icon">📋</div>
+        <h3>政策驱动因素</h3>
+        <ul>
+          <li>数字人民币推广带动金融IC卡更新换代</li>
+          <li>第三代居民身份证（JC/CA）换发计划</li>
+          <li>社保卡、金融卡"磁条换芯"政策</li>
+          <li> eID网络电子身份认证加速普及</li>
+          <li>新能源汽车充电桩物联网身份识别</li>
+        </ul>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🚀</div>
+        <h3>技术趋势</h3>
+        <ul>
+          <li>非接触式NFC技术快速渗透（疫情后加速）</li>
+          <li>双界面智能卡（接触+非接触）成为主流</li>
+          <li>5G SIM卡升级带来换卡需求</li>
+          <li>物联网RFID从单一天线向多功能模组演进</li>
+          <li>嵌入式安全芯片在汽车、物联网场景扩展</li>
+        </ul>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🌏</div>
+        <h3>区域分布</h3>
+        <ul>
+          <li>中国：全球最大生产地，份额约31%</li>
+          <li>亚太：增长最快的消费市场</li>
+          <li>欧洲：EMV芯片迁移基本完成，平稳</li>
+          <li>中东/非洲：政府ID项目驱动增长</li>
+          <li>北美：移动支付替代但仍存金融卡需求</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== COMPETITIVE ==================== -->
+<section id="competitive" class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-label">03 · 竞争格局</div>
+    <h2>竞争格局</h2>
+    <p class="section-intro">立联信在智能卡微连接器领域处于全球绝对垄断地位，护城河极深，国内暂无同等量级竞争对手。</p>
+
+    <div class="card-grid" style="margin-bottom: 32px;">
+      <div class="card fade-up" style="text-align: center;">
+        <h3 style="margin-bottom: 16px;">🏆 市场份额（全球）</h3>
+        <div class="chart-container" style="height: 260px;">
+          <canvas id="shareChart"></canvas>
+        </div>
+        <div class="tag-row" style="justify-content: center;">
+          <span class="tag tag-dark">立联信绝对领先</span>
+          <span class="tag">新恒汇 ~5%</span>
+          <span class="tag">其他 极分散</span>
+        </div>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🎯</div>
+        <h3>定位陈述</h3>
+        <p style="font-size: 15px; color: var(--primary); font-weight: 600; line-height: 1.8; margin-top: 8px;">
+          "立联信是全球唯一能同时提供接触式、非接触式、双界面三大品类智能卡微连接器的规模化供应商，在银行卡芯片和SIM卡模块领域拥有不可撼动的绝对主导权。"
+        </p>
+        <div class="prog-item" style="margin-top: 24px;">
+          <div class="prog-header"><span class="prog-label">银行卡芯片模块</span><span class="prog-value">>90%</span></div>
+          <div class="prog-bar"><div class="prog-fill" data-w="90" style="background: linear-gradient(to right, var(--accent), #00f0c0);"></div></div>
+        </div>
+        <div class="prog-item">
+          <div class="prog-header"><span class="prog-label">SIM卡模块</span><span class="prog-value">>70%</span></div>
+          <div class="prog-bar"><div class="prog-fill" data-w="70" style="background: linear-gradient(to right, var(--accent), #00f0c0);"></div></div>
+        </div>
+        <div class="prog-item">
+          <div class="prog-header"><span class="prog-label">RFID天线/嵌体</span><span class="prog-value">全球领先</span></div>
+          <div class="prog-bar"><div class="prog-fill" data-w="60" style="background: linear-gradient(to right, #1a4a7a, #4a8ab8);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <div class="card-icon">⚔️</div>
+      <h3>主要竞争对手对比</h3>
+      <table class="radar-table" style="margin-top: 12px;">
+        <thead>
+          <tr>
+            <th>竞争对手</th>
+            <th>总部</th>
+            <th>核心产品</th>
+            <th>市占率</th>
+            <th>相对优势</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>立联信 Linxens</strong></td>
+            <td>法国→紫光</td>
+            <td>全品类微连接器+RFID</td>
+            <td>SIM>70%, 银行卡>90%</td>
+            <td style="color: var(--accent);">绝对垄断</td>
+          </tr>
+          <tr>
+            <td>新恒汇电子</td>
+            <td>中国</td>
+            <td>柔性引线框架+封测</td>
+            <td>约5%（国内）</td>
+            <td>本土化服务</td>
+          </tr>
+          <tr>
+            <td>Amphenol FCI</td>
+            <td>美国</td>
+            <td>智能卡连接器</td>
+            <td>个位数</td>
+            <td>汽车连接器延伸</td>
+          </tr>
+          <tr>
+            <td>恒宝股份</td>
+            <td>中国</td>
+            <td>智能卡、证件、支付终端</td>
+            <td>卡片层面~8%</td>
+            <td>系统集成能力</td>
+          </tr>
+          <tr>
+            <td>天喻信息</td>
+            <td>中国</td>
+            <td>金融IC卡、通信SIM卡</td>
+            <td>~5%</td>
+            <td>华中市场覆盖</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== ADVANTAGE ==================== -->
+<section id="advantage" class="section">
+  <div class="container">
+    <div class="section-label">04 · 核心优势</div>
+    <h2>核心优势</h2>
+    <p class="section-intro">四大支柱构建立联信难以逾越的护城河。</p>
+    <div class="card-grid">
+      <div class="card fade-up">
+        <div class="card-icon">🏆</div>
+        <h3>全球垄断性市场地位</h3>
+        <p>SIM卡模块全球市占率超70%，银行卡芯片模块超90%，是真正意义上的"隐形冠军"和"卡脖子"技术的掌控者。</p>
+        <div class="tag-row">
+          <span class="tag">绝对垄断</span><span class="tag">全球第一</span><span class="tag">不可替代</span>
+        </div>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🔬</div>
+        <h3>深厚的研发积累</h3>
+        <p>47项专利 + 30项软件著作权，持续推出双界面智能卡模块、UV解粘膜载带等前沿产品，2025年持续有新专利获批。</p>
+        <div class="tag-row">
+          <span class="tag">47项专利</span><span class="tag">30项软著</span><span class="tag">2025持续获批</span>
+        </div>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🏭</div>
+        <h3>全球化产能布局</h3>
+        <p>法国、德国、新加坡、泰国、中国均设有生产基地，天津工厂年产能25亿个芯片模块，规模化优势无与伦比。</p>
+        <div class="tag-row">
+          <span class="tag">25亿产能/年</span><span class="tag">全球布局</span><span class="tag">规模化</span>
+        </div>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🤝</div>
+        <h3>紫光集团战略背书</h3>
+        <p>作为紫光集团"芯片+云"战略的核心资产之一，获得国家鼓励外商投资政策支持，海关税减免优惠加持。</p>
+        <div class="tag-row">
+          <span class="tag">紫光集团</span><span class="tag">政策扶持</span><span class="tag">海关优惠</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== RISK ==================== -->
+<section id="risk" class="section section-dark">
+  <div class="container">
+    <div class="section-label">05 · 挑战与风险</div>
+    <h2>挑战与风险</h2>
+    <p class="section-intro">尽管地位稳固，立联信仍面临多重结构性挑战。</p>
+    <div class="card-grid">
+      <div class="card fade-up">
+        <div class="card-icon">📦</div>
+        <h3>股权不确定性</h3>
+        <p>紫光集团正推进出售Linxens，交易结果未定。控制权变更可能带来战略方向调整、管理层变动和客户信任风险。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🔄</div>
+        <h3>SIM卡市场结构性萎缩</h3>
+        <p>eSIM技术快速渗透，实体SIM卡需求长期面临结构性下降压力，核心收入来源存在被蚕食风险。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🏗️</div>
+        <h3>产能利用率风险</h3>
+        <p>天津工厂规划产能庞大，若市场需求波动或新恒汇等国内竞争对手蚕食市场，产能利用率可能承压。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">🌊</div>
+        <h3>地缘政治风险</h3>
+        <p>作为中资控股的法国企业，在中美科技博弈背景下，欧洲监管审查和出口管制风险不容忽视。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== OPPORTUNITY ==================== -->
+<section id="opportunity" class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-label">06 · 发展机遇</div>
+    <h2>发展机遇</h2>
+    <p class="section-intro">多重利好叠加，为立联信打开了广阔的增长空间。</p>
+    <div class="opp-grid">
+      <div class="opp-card fade-up">
+        <div class="opp-num">01</div>
+        <h4>第三代身份证芯片</h4>
+        <p>中国第三代居民身份证全面换发在即，立联信天津工厂规划承担第三代身份证芯片的研发与制造，潜在市场规模达数十亿元。</p>
+      </div>
+      <div class="opp-card fade-up">
+        <div class="opp-num">02</div>
+        <h4>数字人民币催生金融IC卡升级</h4>
+        <p>数字人民币推广倒逼银行支付系统升级，金融IC卡进入新一轮更新换代周期，直接拉动银行卡芯片模块需求。</p>
+      </div>
+      <div class="opp-card fade-up">
+        <div class="opp-num">03</div>
+        <h4>5G换卡潮</h4>
+        <p>全球5G网络建设加速推进，5G SIM卡对传统SIM卡的替换带来周期性需求爆发，预计持续3-5年。</p>
+      </div>
+      <div class="opp-card fade-up">
+        <div class="opp-num">04</div>
+        <h4>物联网RFID爆发</h4>
+        <p>智慧城市、供应链追踪、智能制造推动RFID嵌体和天线需求快速增长，立联信已具备规模化交付能力。</p>
+      </div>
+      <div class="opp-card fade-up">
+        <div class="opp-num">05</div>
+        <h4>医疗健康ID化</h4>
+        <p>电子健康卡、医保电子凭证加速普及，医疗领域的智能卡需求成为新兴增长点。</p>
+      </div>
+      <div class="opp-card fade-up">
+        <div class="opp-num">06</div>
+        <h4>天津工厂扩产增效</h4>
+        <p>已完成1,000万欧元增资到位，拟再增资1,500万欧元，产能持续扩大，规模效应将进一步降低成本。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== FINANCE ==================== -->
+<section id="finance" class="section">
+  <div class="container">
+    <div class="section-label">07 · 财务健康度</div>
+    <h2>财务健康度</h2>
+    <p class="section-intro">立联信天津公司财务数据稳健，股东持续增资彰显长期信心。</p>
+
+    <div class="card-grid" style="margin-bottom: 24px;">
+      <div class="card fade-up">
+        <div class="card-icon">💰</div>
+        <h3>注册资本与增资</h3>
+        <table class="info-table">
+          <tr><td>注册资本</td><td>2,740.4万美元</td></tr>
+          <tr><td>实缴资本</td><td>1,000万美元</td></tr>
+          <tr><td>2024年增资</td><td>1,000万欧元（已到位）</td></tr>
+          <tr><td>计划增资</td><td>1,500万欧元（待实施）</td></tr>
+          <tr><td>合计增资</td><td>2,500万欧元</td></tr>
+        </table>
+        <div class="tag-row" style="margin-top: 12px;">
+          <span class="tag">股东持续投入</span><span class="tag">扩产明确</span>
+        </div>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon">📊</div>
+        <h3>核心财务指标</h3>
+        <ul>
+          <li>企业规模：小型企业</li>
+          <li>参保员工：137人（2024年）</li>
+          <li>天津工厂年产能：25亿个芯片模块</li>
+          <li>智能安全芯片规划：1.5亿个/年</li>
+          <li>母公司紫光联盛财务并表（紫光国微曾公告）</li>
+          <li>紫光国微曾计划以180亿元收购紫光联盛</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <h3 style="margin-bottom: 20px;">📈 同业财务对比（参考）</h3>
+      <table class="radar-table">
+        <thead>
+          <tr>
+            <th>公司</th>
+            <th>营收规模</th>
+            <th>毛利率估算</th>
+            <th>核心产品</th>
+            <th>竞争位势</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>立联信 Linxens</strong></td>
+            <td>全球领先（紫光并表）</td>
+            <td>~40%+（历史数据）</td>
+            <td>微连接器+RFID</td>
+            <td style="color: var(--green); font-weight:600;">绝对龙头</td>
+          </tr>
+          <tr>
+            <td>新恒汇电子</td>
+            <td>约5~8亿元（2023）</td>
+            <td>~25%</td>
+            <td>引线框架+封测</td>
+            <td>国内第二</td>
+          </tr>
+          <tr>
+            <td>恒宝股份</td>
+            <td>约10~12亿元</td>
+            <td>~30%</td>
+            <td>智能卡+支付终端</td>
+            <td>卡片系统商</td>
+          </tr>
+          <tr>
+            <td>天喻信息</td>
+            <td>约8~10亿元</td>
+            <td>~28%</td>
+            <td>金融IC卡+SIM卡</td>
+            <td>中部市场</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size: 12px; color: var(--text-mid); margin-top: 12px;">* 以上对比数据为估算值，仅供参考。立联信具体营收数据未公开披露，紫光集团并表于紫光联盛（财务数据见紫光国微历史公告）。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== AI ==================== -->
+<section id="ai" class="section" style="background: var(--bg-light);">
+  <div class="container">
+    <div class="section-label">08 · AI/数字化赋能</div>
+    <h2>AI赋能建议</h2>
+    <p class="section-intro">结合立联信业务痛点与金蝶智能体能力，提出分阶段数字化转型建议。</p>
+
+    <div class="card fade-up" style="margin-bottom: 24px;">
+      <h3 style="margin-bottom: 16px;">🎯 公司特征画像</h3>
+      <div class="tag-row">
+        <span class="tag">全球制造型</span>
+        <span class="tag">紫光集团子公司</span>
+        <span class="tag">高出口业务</span>
+        <span class="tag">智能卡封装</span>
+        <span class="tag">天津工厂运营</span>
+        <span class="tag">137人规模</span>
+      </div>
+    </div>
+
+    <div class="card fade-up" style="margin-bottom: 24px;">
+      <h3 style="margin-bottom: 20px;">🤖 金蝶智能体推荐</h3>
+
+      <div class="ai-card" style="border: 1px solid var(--border); border-radius: 14px;">
+        <span class="ai-badge hot">强烈推荐</span>
+        <div>
+          <div class="ai-title">金蝶云·星辰 / 云星瀚 · 智能财务</div>
+          <div class="ai-desc">立联信天津工厂需处理大量出口报关、结算及跨公司往来账务，金蝶财务云可实现多币种自动核算、出口退税智能计算、集团合并报表自动化，大幅降低财务人工核对成本。</div>
+        </div>
+      </div>
+
+      <div class="ai-card" style="border: 1px solid var(--border); border-radius: 14px;">
+        <span class="ai-badge hot">强烈推荐</span>
+        <div>
+          <div class="ai-title">金蝶云·星空 · 智能供应链</div>
+          <div class="ai-desc">天津工厂年产能25亿个芯片模块，涉及上百家供应商。金蝶供应链云可实现RF射频物料追溯、供应商配额自动分配、库存预警与智能补货，降低呆滞库存风险。</div>
+        </div>
+      </div>
+
+      <div class="ai-card" style="border: 1px solid var(--border); border-radius: 14px;">
+        <span class="ai-badge">推荐</span>
+        <div>
+          <div class="ai-title">金蝶AI决策分析 · 经营驾驶舱</div>
+          <div class="ai-desc">将工厂产能利用率、良率、订单交付率等核心KPI可视化，实时推送至管理层，支持与紫光集团总部数据对接，解决子公司数据孤岛问题。</div>
+        </div>
+      </div>
+
+      <div class="ai-card" style="border: 1px solid var(--border); border-radius: 14px;">
+        <span class="ai-badge">推荐</span>
+        <div>
+          <div class="ai-title">金蝶云·星空 · 智能制造MES</div>
+          <div class="ai-desc">芯片模块封装属于精密制造，金蝶MES可实现生产工单全程追踪、SOP电子化、良率实时分析，支持双界面智能卡模块全流程质量管控。</div>
+        </div>
+      </div>
+
+      <div class="ai-card" style="border: 1px solid var(--border); border-radius: 14px;">
+        <span class="ai-badge">适用</span>
+        <div>
+          <div class="ai-title">金蝶HR云 · 智能人事</div>
+          <div class="ai-desc">137人规模工厂的人事、排班、考勤、绩效管理，AI可自动生成培训计划、识别高绩效员工，降低HR事务性工作量。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <h3 style="margin-bottom: 16px;">📅 分阶段实施路线图</h3>
+      <div class="phase-grid">
+        <div class="phase-item" style="border: 1px solid var(--border);">
+          <div class="phase-num">01</div>
+          <div class="section-label" style="margin-bottom:8px;">0-6个月</div>
+          <h4>基础数字化</h4>
+          <p>上线金蝶云星辰财务云+HR云，完成天津工厂基础账务、报销、考勤上线，打通与紫光集团的数据接口。</p>
+        </div>
+        <div class="phase-item" style="border: 1px solid var(--border);">
+          <div class="phase-num">02</div>
+          <div class="section-label" style="margin-bottom:8px;">6-12个月</div>
+          <h4>供应链优化</h4>
+          <p>上线供应链云，实现物料追溯、供应商配额管理、库存预警，降低25亿产能对应的原材料库存风险。</p>
+        </div>
+        <div class="phase-item" style="border: 1px solid var(--border);">
+          <div class="phase-num">03</div>
+          <div class="section-label" style="margin-bottom:8px;">12个月以上</div>
+          <h4>智能制造升级</h4>
+          <p>部署MES系统+AI决策分析，建立工厂数字孪生，实现良率预测、产能智能调度，打造智能工厂标杆。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SUMMARY ==================== -->
+<section id="summary" class="section">
+  <div class="container">
+    <div class="section-label">09 · 总结</div>
+    <h2>战略评估</h2>
+    <p class="section-intro" style="margin-bottom: 32px;">基于深度调研，对立联信进行多维度战略评估。</p>
+
+    <div class="summary-box fade-up">
+      <p>立联信（Linxens）是全球智能卡微连接器领域的绝对霸主，银行卡芯片模块市占率超90%、SIM卡模块超70%，拥有难以撼动的技术壁垒与规模优势。作为紫光集团旗下核心资产，天津工厂正处快速扩张期，已完成1,000万欧元增资并规划持续扩产。尽管面临eSIM技术冲击和股权变动不确定性，但第三代身份证、数字人民币、5G换卡及物联网RFID四大结构性机遇为其打开了广阔增长空间。紫光集团出售传闻（估值20-30亿欧元）若落地，新的战略投资者有望为公司带来更灵活的资本运作空间。</p>
+      <div class="summary-tags">
+        <span class="summary-tag">全球垄断龙头</span>
+        <span class="summary-tag">智能卡微连接器</span>
+        <span class="summary-tag">紫光集团</span>
+        <span class="summary-tag">天津工厂扩产</span>
+        <span class="summary-tag">股权待售</span>
+        <span class="summary-tag">eSIM风险</span>
+        <span class="summary-tag">第三代身份证机遇</span>
+        <span class="summary-tag">数字人民币</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <p><strong>免责声明</strong>：本报告仅供参考，不构成任何投资建议。报告中的数据来源于公开渠道，部分数据为估算值（标注E），实际数据请以官方披露为准。</p>
+  <p>数据来源：百度百科、爱企查、企查查、C114通信网、东方财富网、界面新闻、格隆汇、中研网、恒州诚思、Statista、前瞻产业研究院等 | 报告生成时间：2026年5月</p>
+  <p>© 2026 企业洞察报告 · 立联信（Linxens）</p>
+</footer>
+
+<script>
+  // Scroll animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+        // Animate progress bars
+        el.target.querySelectorAll('.prog-fill[data-w]').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up, .timeline-item').forEach(el => observer.observe(el));
+
+  // Chart.js defaults
+  Chart.defaults.font.family = "-apple-system, 'PingFang SC', Arial, sans-serif";
+  Chart.defaults.color = '#5a6a7a';
+
+  // 1. Market Size Line Chart
+  const marketCtx = document.getElementById('marketChart').getContext('2d');
+  new Chart(marketCtx, {
+    type: 'line',
+    data: {
+      labels: ['2019','2020','2021','2022','2023','2024','2025E','2026E','2027E'],
+      datasets: [{
+        label: '全球智能卡市场（亿美元）',
+        data: [143, 146, 150, 152, 155, 158, 162, 166, 170],
+        borderColor: '#00d4aa',
+        backgroundColor: 'rgba(0,212,170,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#00d4aa',
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw}亿美元` } } },
+      scales: { y: { beginAtZero: false, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
+    }
+  });
+
+  // 2. IC Market Bar Chart
+  const icCtx = document.getElementById('icChart').getContext('2d');
+  new Chart(icCtx, {
+    type: 'bar',
+    data: {
+      labels: ['2020','2021','2022','2023','2024','2025E','2026E','2027E'],
+      datasets: [{
+        label: '智能卡IC市场（亿美元）',
+        data: [26, 27, 28, 30, 32, 34, 36, 39],
+        backgroundColor: 'rgba(26,74,122,0.7)',
+        borderColor: '#1a4a7a',
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw}亿美元` } } },
+      scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
+    }
+  });
+
+  // 3. Market Share Doughnut
+  const shareCtx = document.getElementById('shareChart').getContext('2d');
+  new Chart(shareCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['立联信 Linxens', '新恒汇电子', 'Amphenol FCI', '其他厂商'],
+      datasets: [{
+        data: [75, 5, 4, 16],
+        backgroundColor: ['#00d4aa','#1a4a7a','#f5a623','#e0e8f0'],
+        borderWidth: 0,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '62%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 14, usePointStyle: true, pointStyleWidth: 10 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw}%` } }
+      }
+    }
+  });
+</script>
+</body>
+</html>

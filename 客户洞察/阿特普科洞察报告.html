@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客户洞察报告 - 阿特普科</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<style>
+  :root { --primary:#0a1a2f; --accent:#3b82f6; --accent2:#1d4ed8; --red:#ef4444; --amber:#f59e0b; --light:#f8fafc; --gray:#64748b; --border:#e2e8f0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif; color:#1a202c; background:#fff; line-height:1.6; }
+  nav { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(10,26,47,0.95); backdrop-filter:blur(12px); height:56px; display:flex; align-items:center; padding:0 24px; border-bottom:1px solid rgba(255,255,255,0.08); }
+  nav .brand { color:#fff; font-weight:700; font-size:14px; margin-right:24px; white-space:nowrap; } nav .brand span { color:var(--accent); }
+  nav .nav-links { display:flex; gap:2px; overflow-x:auto; flex:1; }
+  nav .nav-links a { color:rgba(255,255,255,0.55); text-decoration:none; font-size:12px; padding:6px 12px; border-radius:6px; transition:all 0.2s; white-space:nowrap; }
+  nav .nav-links a:hover { color:#fff; background:rgba(255,255,255,0.1); }
+  nav .nav-links a.active { color:var(--accent); background:rgba(59,130,246,0.15); font-weight:600; }
+  nav .nav-date { color:rgba(255,255,255,0.3); font-size:11px; margin-left:16px; }
+  @media(max-width:768px){ nav { padding:0 12px; } nav .brand { font-size:13px; margin-right:12px; } nav .nav-date { display:none; } }
+  section { padding:90px 24px 60px; max-width:1200px; margin:0 auto; }
+  section.dark { background:var(--primary); color:#fff; max-width:none; padding-left:calc((100% - 1200px)/2 + 24px); padding-right:calc((100% - 1200px)/2 + 24px); }
+  section.gray { background:var(--light); max-width:none; padding-left:calc((100% - 1200px)/2 + 24px); padding-right:calc((100% - 1200px)/2 + 24px); }
+  .section-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .section-title { font-size:30px; font-weight:800; color:var(--primary); margin-bottom:10px; line-height:1.25; }
+  section.dark .section-title { color:#fff; }
+  .section-sub { font-size:15px; color:var(--gray); margin-bottom:36px; max-width:640px; }
+  section.dark .section-sub { color:rgba(255,255,255,0.55); }
+  #hero { min-height:100vh; max-width:none; background:linear-gradient(135deg,#0a1628 0%,#0d2d4a 40%,#1a3a5c 65%,#1e3a8a 100%); display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; position:relative; overflow:hidden; }
+  #hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(37,99,235,0.06) 0%, transparent 50%); }
+  .hero-content { position:relative; z-index:1; max-width:900px; padding:24px; }
+  .hero-badge { display:inline-block; background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.3); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:1.5px; padding:5px 16px; border-radius:20px; margin-bottom:20px; }
+  .hero-title { font-size:clamp(32px,5vw,50px); font-weight:900; line-height:1.15; margin-bottom:16px; } .hero-title span { color:var(--accent); }
+  .hero-sub { font-size:16px; opacity:0.7; margin-bottom:40px; line-height:1.8; }
+  .hero-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .hero-stat { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:20px 14px; text-align:center; backdrop-filter:blur(8px); transition:all 0.3s; cursor:default; }
+  .hero-stat:hover { background:rgba(59,130,246,0.1); border-color:rgba(59,130,246,0.25); transform:translateY(-3px); }
+  .hero-stat-num { font-size:24px; font-weight:900; color:var(--accent); display:block; }
+  .hero-stat-label { font-size:11px; opacity:0.6; margin-top:4px; }
+  .hero-scroll { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.35); font-size:11px; animation:bounce 2.5s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+  @media(max-width:768px){ .hero-stats { grid-template-columns:repeat(2,1fr); } }
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; }
+  .card { background:#fff; border-radius:14px; padding:24px; box-shadow:0 2px 16px rgba(10,37,64,0.05); border:1px solid var(--border); transition:transform 0.3s,box-shadow 0.3s; cursor:default; }
+  .card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(10,37,64,0.1); }
+  .card-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:14px; }
+  .card h3 { font-size:16px; font-weight:700; color:var(--primary); margin-bottom:6px; }
+  .card p { font-size:13px; color:var(--gray); line-height:1.6; }
+  .info-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .info-table th { text-align:left; padding:8px 12px; background:#f8fafc; color:#64748b; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .info-table td { padding:8px 12px; border-bottom:1px solid #f1f5f9; color:#334155; }
+  .info-table tr:last-child td { border-bottom:none; }
+  .tag { display:inline-block; padding:2px 10px; border-radius:6px; font-size:11px; font-weight:600; margin:2px; }
+  .tag-green { background:#d1fae5; color:#065f46; } .tag-yellow { background:#fef3c7; color:#92400e; }
+  .tag-red { background:#fee2e2; color:#991b1b; } .tag-blue { background:#dbeafe; color:#1e40af; }
+  .tag-purple { background:#ede9fe; color:#5b21b6; } .tag-orange { background:#ffedd5; color:#9a3412; }
+  .tag-gray { background:#f1f5f9; color:#475569; }
+  .kpi-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; }
+  .kpi-box { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px 16px; text-align:center; }
+  .kpi-val { font-size:24px; font-weight:900; color:var(--primary); }
+  .kpi-val.up { color:#16a34a; } .kpi-val.down { color:var(--red); }
+  .kpi-label { font-size:11px; color:var(--gray); margin-top:4px; }
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media(max-width:768px){ .g2 { grid-template-columns:1fr; } }
+  .matrix-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid #f8fafc; }
+  .matrix-item:last-child { border-bottom:none; }
+  .matrix-icon { width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; color:#fff; flex-shrink:0; margin-top:2px; }
+  .matrix-text { font-size:13px; color:#475569; flex:1; line-height:1.6; }
+  section.dark, section.dark .g2, section.dark .g2 div, section.dark .matrix-item, section.dark .matrix-text, section.dark .info-row, section.dark .info-label, section.dark .info-value { color:#ffffff !important; }
+  section.dark .kpi-label { color:#2563eb !important; }
+  section.dark .kpi-val { color:#1a202c !important; }
+  section.dark .kpi-val.up { color:#16a34a !important; }
+  section.dark .kpi-val.down { color:#ef4444 !important; }
+  section.dark .section-label { color:var(--accent) !important; }
+  .comp-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:16px; }
+  .comp-table th { text-align:left; padding:10px 12px; background:#f1f5f9; color:#475569; font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .comp-table td { padding:10px 12px; border-bottom:1px solid #f1f5f9; color:#334155; }
+  .need-box { background:rgba(59,130,246,0.04); border:1px solid rgba(59,130,246,0.12); border-radius:12px; padding:18px; margin:8px 0; display:flex; align-items:flex-start; gap:12px; }
+  .need-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; color:#fff; flex-shrink:0; }
+  .need-text { font-size:13px; color:#e2e8f0; line-height:1.6; }
+  .need-text strong { color:#93c5fd; }
+  .cap-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; border-left:4px solid var(--accent); margin-bottom:12px; transition:all 0.2s; }
+  .cap-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.06); transform:translateY(-1px); }
+  .cap-card .c-title { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .cap-card .c-badge { font-size:9px; font-weight:700; letter-spacing:0.5px; padding:2px 8px; border-radius:4px; }
+  .cap-card .c-body { font-size:13px; color:#475569; line-height:1.7; }
+  .cap-card .c-body strong { color:var(--primary); }
+  .verdict-bar { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:20px; }
+  .verdict-badge { padding:5px 18px; border-radius:8px; font-size:14px; font-weight:700; }
+  .verdict-badge.rec { background:#10b981; color:#fff; } .verdict-badge.cau { background:#f59e0b; color:#fff; }
+  .verdict-badge.warn { background:#ef4444; color:#fff; }
+  .verdict-reason { color:rgba(255,255,255,0.75); font-size:14px; }
+  .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s, transform 0.6s; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  footer { background:#060f1a; color:rgba(255,255,255,0.3); padding:28px 24px; text-align:center; font-size:11px; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand">📋 <span>客户洞察</span></div>
+  <div class="nav-links">
+    <a href="#hero" class="active">概览</a><a href="#profile">企业画像</a><a href="#biz">商业模式</a><a href="#pain">需求痛点</a><a href="#solution">AI套件匹配</a><a href="#competition">竞品</a><a href="#opportunity">机会</a><a href="#strategy">策略</a><a href="#summary">总结</a>
+  </div>
+  <div class="nav-date" id="navDate"></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">📋 客户洞察报告 · 2026年6月</div>
+    <h1 class="hero-title">天津市阿特普科螺杆压缩机<br><span>有限公司</span></h1>
+    <p class="hero-sub">ATPK · 阿特拉斯·科普柯钻石代理 · 撬装设备制造 · 服务石油/石化/海洋平台</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-num">34年</span><div class="hero-stat-label">行业经验</div></div>
+      <div class="hero-stat"><span class="hero-stat-num">~100人</span><div class="hero-stat-label">员工规模</div></div>
+      <div class="hero-stat"><span class="hero-stat-num">用友U8</span><div class="hero-stat-label">当前系统(20+年)</div></div>
+      <div class="hero-stat"><span class="hero-stat-num">🔥</span><div class="hero-stat-label">替换窗口已到</div></div>
+    </div>
+    <div class="verdict-bar">
+      <span class="verdict-badge rec">✅ 重点跟进</span>
+      <span class="verdict-reason">需求明确（项目制造/项目管理/条码/项目成本/费用报销），用友U8完全不支持，替换窗口清晰</span>
+    </div>
+  </div>
+  <div class="hero-scroll">↓ 向下滚动</div>
+</section>
+
+<!-- 企业画像 -->
+<section id="profile" class="gray">
+  <div class="section-label reveal">01 · 企业画像</div>
+  <h2 class="section-title reveal">基本信息</h2>
+  <p class="section-sub reveal">杨良65%控股民企，混合业态——代理销售+撬装制造+工程安装+售后维保+租赁五条业务线并行</p>
+  <div class="g2 reveal">
+    <div class="card">
+      <table class="info-table">
+        <tr><th style="width:30%">项目</th><th>内容</th></tr>
+        <tr><td>公司全称</td><td>天津市阿特普科螺杆压缩机有限公司</td></tr>
+        <tr><td>成立</td><td>2000年7月（前身1992年和平通用机械厂）</td></tr>
+        <tr><td>法人/实控人</td><td>杨良（65%）</td></tr>
+        <tr><td>注册资本</td><td>1,000万元（实缴）</td></tr>
+        <tr><td>地址</td><td>天津市和平区西康路（注册）/ 华苑产业园区海泰国际产业基地（生产）</td></tr>
+        <tr><td>性质</td><td>有限责任公司（民营）</td></tr>
+        <tr><td>资质</td><td>高新技术企业·纳税A级·建筑机电二级·特种设备许可证</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:8px;">🏷️ 标签</div>
+      <div>
+        <span class="tag tag-blue">阿特拉斯·科普柯钻石代理</span>
+        <span class="tag tag-green">高新技术企业</span>
+        <span class="tag tag-orange">撬装设备制造</span>
+        <span class="tag tag-purple">中海油/中石化供应商</span>
+        <span class="tag tag-red">用友U8 20+年</span>
+        <span class="tag tag-yellow">替换需求明确</span>
+        <span class="tag tag-blue">西气东输参建</span>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin:14px 0 8px;">🧑‍💼 股权结构</div>
+      <div><div class="info-row"><span class="info-label">杨良（法定代表人）</span><span class="info-value">65%</span></div>
+      <div class="info-row"><span class="info-label">夏杰</span><span class="info-value">35%</span></div></div>
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin:14px 0 8px;">💻 当前系统</div>
+      <div><div class="info-row"><span class="info-label">ERP系统</span><span class="info-value">用友U8</span></div>
+      <div class="info-row"><span class="info-label">使用年限</span><span class="info-value" style="color:#dc2626;font-weight:700;">20+年</span></div>
+      <div class="info-row"><span class="info-label">U8状态</span><span class="info-value" style="color:#dc2626;">已停止大版本更新</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 商业模式 -->
+<section id="biz">
+  <div class="section-label reveal">02 · 商业模式</div>
+  <h2 class="section-title reveal">他们到底是做什么的？</h2>
+  <p class="section-sub reveal">"代理销售+本地撬装制造+全生命周期服务"三位一体，不是单纯的代理商</p>
+
+  <div class="g2 reveal">
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:10px;">🏭 核心产品与业务</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#3b82f6;">1</div><span class="matrix-text"><strong>阿特拉斯·科普柯代理销售</strong>（约40%）——空气压缩机、真空泵、鼓风机等整机及配件销售，钻石级代理商资质</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">2</div><span class="matrix-text"><strong>撬装（橇装）设备制造</strong>（约30%）——以海洋平台为核心，将空压机等设备集成到橇座上，做成一体化模块。参与西气东输、陆丰油田等国家级项目。自营产线，非代工</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#f59e0b;">3</div><span class="matrix-text"><strong>工程安装服务</strong>（约15%）——空压站设计安装、压力管道安装、自动控制系统集成，持特种设备许可证</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#8b5cf6;">4</div><span class="matrix-text"><strong>售后维保</strong>（约10%）——24小时响应，20+服务车辆，每2000h上门检修，节能改造</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ec4899;">5</div><span class="matrix-text"><strong>设备租赁</strong>（约5%）——空压机、干燥设备租赁</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:10px;">📌 产销模式（关键）</div>
+      <div class="matrix-item"><span class="matrix-text">🔧 <strong>生产模式：项目型（ETO）</strong>——每个撬装设备按客户需求定制，非标设计，非流水线重复制造。每张订单需要独立BOM、独立工单、独立成本核算</span></div>
+      <div class="matrix-item"><span class="matrix-text">🏗️ <strong>交付模式：项目制</strong>——从投标→设计→采购→制造→安装调试→验收，全过程按项目管理</span></div>
+      <div class="matrix-item"><span class="matrix-text">📋 <strong>收入结构：</strong>代理销售（阿特拉斯品牌） + 自主制造（撬装设备） + 服务收入（维保/安装）</span></div>
+    </div>
+  </div>
+
+  <!-- 上下游 -->
+  <div class="reveal" style="margin-top:8px;">
+    <div class="card" style="background:var(--light);">
+      <div class="g2">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#64748b;margin-bottom:10px;">⬆️ 上游（供应商）</div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#6366f1;">1</div><span class="matrix-text"><strong>阿特拉斯·科普柯（Atlas Copco）</strong>——全球空压机龙头，核心设备供应商，阿特普科是天津区域钻石级代理商</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#6366f1;">2</div><span class="matrix-text"><strong>零部件供应商</strong>——钣金、管道、电气元件等撬装制造配套物料</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#6366f1;">3</div><span class="matrix-text"><strong>外协加工厂</strong>——部分非核心工序外协处理</span></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#64748b;margin-bottom:10px;">⬇️ 下游（客户群体）</div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">🏭</div><span class="matrix-text"><strong>中海油（CNOOC）</strong>——海洋平台撬装空压机（陆丰油田等）</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">🛢️</div><span class="matrix-text"><strong>中石油/中石化</strong>——西气东输项目、石油化工配套</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">💧</div><span class="matrix-text"><strong>水处理/工业客户</strong>——天津及周边制造业</span></div>
+          <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">🌏</div><span class="matrix-text"><strong>海外工程项目</strong>——撬装设备出口多个国家</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 需求痛点 -->
+<section id="pain" class="dark">
+  <div class="section-label reveal">03 · 核心需求与痛点</div>
+  <h2 class="section-title reveal">五大需求，U8全部不支持</h2>
+  <p class="section-sub reveal">客户已明确需求：项目制造、项目管理、条码、项目成本、费用报销</p>
+
+  <div class="g2 reveal">
+    <div>
+      <div class="need-box">
+        <div class="need-icon" style="background:#3b82f6;">🏗️</div>
+        <div class="need-text"><strong>项目制造（ETO模式）</strong><br>撬装设备按订单定制，需要项目型BOM（EBOM→PBOM→MBOM），非标设计、单件生产。U8的MRP面向标准品，无法处理非标BOM。</div>
+      </div>
+      <div class="need-box">
+        <div class="need-icon" style="background:#f59e0b;">📋</div>
+        <div class="need-text"><strong>项目管理</strong><br>从投标→设计→采购→制造→交付→回款全生命周期管理。需WBS分解、进度跟踪、资源调配。U8无项目管理模块。</div>
+      </div>
+      <div class="need-box">
+        <div class="need-icon" style="background:#10b981;">📦</div>
+        <div class="need-text"><strong>出入库条码</strong><br>物料入库、领料、成品出库扫码作业。U8条码功能需额外购买且体验陈旧，20+年前的技术。</div>
+      </div>
+    </div>
+    <div>
+      <div class="need-box">
+        <div class="need-icon" style="background:#8b5cf6;">💰</div>
+        <div class="need-text"><strong>项目成本核算</strong><br>按项目归集料工费，实时核算每个项目毛利。U8只能按期间核算，财务需手工二次加工，数据不及时、不准确。</div>
+      </div>
+      <div class="need-box">
+        <div class="need-icon" style="background:#ef4444;">🧾</div>
+        <div class="need-text"><strong>费用报销</strong><br>员工报销、差旅申请、审批流、预算控制。U8费用报销薄弱，目前靠纸质+Excel。</div>
+      </div>
+      <div style="margin-top:16px;padding:14px;background:rgba(239,68,68,0.08);border-radius:12px;border:1px solid rgba(239,68,68,0.15);">
+        <div style="font-size:12px;font-weight:700;color:#fca5a5;margin-bottom:4px;">⚠️ 用友U8的硬伤</div>
+        <div style="font-size:12px;color:#cbd5e1;line-height:1.7;">
+          U8已属于用友老旧产品线，已停止大版本更新。用友主力推YonSuite（纯SaaS订阅），<strong>5项需求YonSuite同样需要大量配置二开才能实现</strong>。客户替换不是"要不要"，而是"什么时候"。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 金蝶AI套件匹配 -->
+<section id="solution" class="gray">
+  <div class="section-label reveal">04 · 金蝶AI套件方案匹配</div>
+  <h2 class="section-title reveal">Kingdee AI Suite 精准匹配</h2>
+  <p class="section-sub reveal">基于苍穹平台的项目云+制造云+供应链云+财务云，5大需求全部支持</p>
+
+  <div class="reveal">
+    <div class="cap-card">
+      <div class="c-title"><span style="background:#3b82f6;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求①</span> 项目制造（ETO）</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·制造云（苍穹）</strong>——支持ETO/项目型制造模式：项目型BOM管理、按项目组织工单、按项目领料入库。每个撬装设备作为独立项目，BOM随设计变更加自动更新，生产指令按项目下达。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 苍穹云原生架构，原生支持非标BOM和项目型制造，非二开能力</span>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="c-title"><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求②</span> 项目管理</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·项目云（苍穹）</strong>——WBS工作分解→甘特图进度跟踪→里程碑管理→资源调配→风险预警。覆盖投标→设计→采购→生产→交付→回款全生命周期。AI智能风险识别<strong>提前预警</strong>项目延期的风险。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ "一切皆项目"理念，项目云+COUPA 打通业财一体化</span>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="c-title"><span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求③</span> 出入库条码</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·供应链云</strong>——支持条码/RFID/PDA扫码作业：采购入库扫码、生产领料扫码、完工入库扫码、发货扫码。与ERP实时同步，库存准确率100%。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 原生条码能力，无需额外购买第三方系统</span>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="c-title"><span style="background:#8b5cf6;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求④</span> 项目成本核算</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·项目云+财务云</strong>——"项目四算"体系：<strong>概算</strong>（投标报价决策）→<strong>预算</strong>（成本上线控制）→<strong>核算</strong>（料工费按项目自动归集）→<strong>决算</strong>（项目利润分析）。AI助手实时监控预算执行，超支自动预警。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ 沈阳新松机器人等案例已落地，财务核算凭证自动化率95%+</span>
+      </div>
+    </div>
+    <div class="cap-card">
+      <div class="c-title"><span style="background:#ef4444;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;">需求⑤</span> 费用报销</div>
+      <div class="c-body">
+        <strong>金蝶AI套件·苍穹费用云</strong>——移动报销、OCR发票识别（精度99.5%）、AI智能审单、预算控制、费用分析。员工手机拍照发票→AI自动识别填充→智能合规审核→财务一键入账，报销周期缩短至半天。<br>
+        <span style="font-size:11px;color:#94a3b8;">✅ AI审核替代人工，违规自动标记驳回</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:16px;">
+    <div class="card" style="background:#0f9ff;border-color:#3b82f6;">
+      <div style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:6px;">🎯 方案优势总结</div>
+      <div style="font-size:13px;color:#334155;line-height:1.7;">
+        <strong>一套金蝶AI套件=5个需求全部覆盖。</strong>用友YonSuite需要大量配置二开才能实现项目制造+项目成本一体化。苍穹基于云原生架构，项目型制造+项目管理+项目成本是原生能力。<br><br>
+        <strong>行业案例支撑：</strong>沈阳新松机器人（ETO模式+项目成本）、中密控股（生产提效40%）、山东蒂德精密机床（BOM转换从15天→2天）。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 竞品 -->
+<section id="competition">
+  <div class="section-label reveal">05 · 竞争格局</div>
+  <h2 class="section-title reveal">竞品分析与差异化</h2>
+  <p class="section-sub reveal">用友YonSuite vs 金蝶AI套件（苍穹）</p>
+  <div class="reveal">
+    <table class="comp-table">
+      <tr><th style="width:18%">竞品</th><th>对方打法</th><th style="width:38%">金蝶差异化策略</th><th>胜算</th></tr>
+      <tr>
+        <td><strong>用友YonSuite</strong></td>
+        <td>U8升级路径→推YonSuite，打"老客户升级优惠"牌</td>
+        <td>YonSuite纯SaaS订阅，数据上云民企可能不接受；项目制造+项目成本一体化在YonSuite需大量二开。金蝶苍穹支持<strong>本地部署+私有云</strong>，项目型制造能力强于用友</td>
+        <td><span class="tag tag-yellow">需引导</span></td>
+      </tr>
+      <tr>
+        <td><strong>维持U8现状</strong></td>
+        <td>客户犹豫，觉得"还能用"</td>
+        <td>5项需求U8一个都满足不了。U8已停止大版本更新，继续用只会让效率越来越低，年轻员工抗拒老旧系统</td>
+        <td><span class="tag tag-green">高</span></td>
+      </tr>
+      <tr>
+        <td><strong>其他小品牌</strong></td>
+        <td>可能低价切入</td>
+        <td>项目制造+项目管理+项目成本+条码+报销一体化能力，小品牌不具备。打平台完整性和服务保障</td>
+        <td><span class="tag tag-green">低</span></td>
+      </tr>
+      <tr>
+        <td><strong>SAP</strong></td>
+        <td>品牌优势，但价格高</td>
+        <td>民企~100人规模，SAP价格不可能接受，不在同一竞争层面</td>
+        <td><span class="tag tag-green">极低</span></td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- 机会评估 -->
+<section id="opportunity" class="dark">
+  <div class="section-label reveal">06 · 机会与风险</div>
+  <h2 class="section-title reveal">机会评估</h2>
+  <p class="section-sub reveal">需求明确，竞争窗口清晰，方案匹配度高</p>
+  <div class="g2 reveal">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#34d399;margin-bottom:12px;">✅ 有利因素</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>U8 20+年，功能代差巨大</strong>——5项需求全部不满足，替换理由充分</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>需求已明确</strong>——客户自己识别出要什么，不需要市场教育</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>金蝶AI套件全匹配</strong>——苍穹项目云+制造云+供应链云+财务云一套覆盖5个需求</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>用友YonSuite未必是好替代</strong>——纯SaaS订阅+项目制造需大量二开，客户不一定接受</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#10b981;">+</div><span class="matrix-text"><strong>天津本地企业</strong>——金蝶天津团队半小时可达</span></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#f87171;margin-bottom:12px;">⚠️ 风险因素</div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">用友可能以"U8升级优惠"拦截，加推YonSuite低价方案</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">U8使用20+年，历史数据迁移量大，客户可能有"不敢动"的顾虑</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">杨良65%绝对控股，决策权集中，需老板本人认可信息化价值</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">民企对软件投入预算敏感，需要算清投资回报</span></div>
+      <div class="matrix-item"><div class="matrix-icon" style="background:#ef4444;">-</div><span class="matrix-text">需求范围广（5项），建议分期实施降低一次性投入门槛</span></div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top:28px;">
+    <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:14px;">📊 商机速评</div>
+    <div class="kpi-strip">
+      <div class="kpi-box"><div class="kpi-val">明确</div><div class="kpi-label">需求清晰度</div></div>
+      <div class="kpi-box"><div class="kpi-val up">高</div><div class="kpi-label">替换紧迫度</div></div>
+      <div class="kpi-box"><div class="kpi-val up">高</div><div class="kpi-label">方案匹配度</div></div>
+      <div class="kpi-box"><div class="kpi-val">B→A级</div><div class="kpi-label">商机评级</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 策略与行动 -->
+<section id="strategy">
+  <div class="section-label reveal">07 · 打单策略</div>
+  <h2 class="section-title reveal">行动策略与下一步</h2>
+  <p class="section-sub reveal">需求已确认，下一步关键：方案演示+迁移方案+分步规划</p>
+  <div class="reveal" style="margin-bottom:24px;">
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:#64748b;margin-bottom:14px;">🎯 核心策略</div>
+      <p style="font-size:14px;color:#334155;line-height:1.7;">
+        <strong>以"用友U8全面替换"为切入点，用"金蝶AI套件·苍穹 项目云+制造云一体化方案"建立选型优势。</strong><br><br>
+        5项需求U8一个都不满足——这是最核心的销售弹药。演示重点：项目型BOM管理、项目四算成本归集、条码扫码全流程、AI费用报销。同时准备一份U8历史数据苍穹迁移方案打消顾虑。
+      </p>
+    </div>
+  </div>
+  <div class="reveal">
+    <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>确认决策流程</strong>——杨良是否已知晓替换需求？是否需要先做老板层面的价值沟通？</div></div>
+    <div class="step-item" style="border-left-color:#10b981;"><div class="step-num" style="background:#10b981;">2</div><div class="step-text"><strong>场景化演示</strong>——针对5项需求做苍穹Demo，用"U8完全不支持 vs 苍穹原生支持"做对比</div></div>
+    <div class="step-item" style="border-left-color:#f59e0b;"><div class="step-num" style="background:#f59e0b;">3</div><div class="step-text"><strong>U8迁移方案</strong>——历史数据迁移方案+苍穹迁移案例（找同类型ETO制造客户）</div></div>
+    <div class="step-item" style="border-left-color:#8b5cf6;"><div class="step-num" style="background:#8b5cf6;">4</div><div class="step-text"><strong>分步实施规划</strong>——一期：财务+进销存+条码（快速见效）；二期：项目云+制造云（核心需求）；三期：费用报销+AI智能体</div></div>
+    <div class="step-item" style="border-left-color:#ef4444;"><div class="step-num" style="background:#ef4444;">5</div><div class="step-text"><strong>准备用友拦截话术</strong>——"YonSuite纯SaaS，数据上云你们能接受吗？U8迁移到YonSuite的成熟度如何？项目制造+项目成本一体化的能力，金蝶苍穹原生支持，用友需要二开才能实现。"</div></div>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section id="summary" class="dark">
+  <div class="section-label reveal">08 · 总结</div>
+  <h2 class="section-title reveal">总结与建议</h2>
+  <div class="summary-box reveal">
+    <p>
+      天津市阿特普科螺杆压缩机有限公司是一个<strong>需求明确、竞争窗口清晰、方案匹配度高</strong>的优质商机。
+      <br><br>
+      客户核心定位：<strong>阿特拉斯·科普柯天津钻石代理 + 撬装设备自主制造商</strong>，业务模式为"代理销售+撬装制造+工程安装+售后维保+租赁"五位一体。下游服务中海油、中石油、中石化等大型央企。
+      <br><br>
+      客户已识别<strong>项目制造、项目管理、出入库条码、项目成本核算、费用报销</strong>5项需求，而当前在用友U8（20+年）全部不满足。<strong>金蝶AI套件（苍穹项目云+制造云+供应链云+财务云）</strong>是唯一一套能原生覆盖这5个需求的方案。
+      <br><br>
+      <strong>关键下一步：场景化演示 + U8迁移方案 + 分步实施规划。</strong>
+    </p>
+    <div class="tags">
+      <span class="tag-item">用友U8替换</span>
+      <span class="tag-item">项目制造ETO</span>
+      <span class="tag-item">项目管理</span>
+      <span class="tag-item">项目成本</span>
+      <span class="tag-item">条码管理</span>
+      <span class="tag-item">费用报销</span>
+      <span class="tag-item">苍穹方案匹配</span>
+      <span class="tag-item">中海油供应商</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>金蝶中国·天津分公司·营销中心 | 数据来源：Boss提供客户沟通信息+公开调研数据</p>
+  <p style="margin-top:6px;">生成时间 <span id="footerDate"></span></p>
+</footer>
+
+<script>
+  const nls=document.querySelectorAll('.nav-links a');
+  const scs=document.querySelectorAll('section');
+  const ob=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;nls.forEach(a=>a.classList.remove('active'));const m=document.querySelector(`.nav-links a[href="#${id}"]`);if(m)m.classList.add('active');}});
+  },{rootMargin:'-40% 0px -50% 0px'});
+  scs.forEach(s=>ob.observe(s));
+  const d=new Date();const ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  document.getElementById('navDate').textContent=ds;document.getElementById('footerDate').textContent=ds;
+  const ro=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:.06});
+  document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+  document.querySelectorAll('nav a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});});});
+</script>
+</body>
+</html>

@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>天津国际工程咨询集团 企业洞察报告</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <style>
+    :root {
+      --primary: #0a2540;
+      --accent: #00d4aa;
+      --accent2: #0077b6;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --border: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      color: #1a202c;
+      background: #fff;
+      line-height: 1.6;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: linear-gradient(90deg, rgba(10,37,64,0.98) 0%, rgba(15,50,80,0.95) 100%);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      padding: 0 50px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0,212,170,0.2);
+    }
+    nav .brand {
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    nav .brand::before {
+      content: '◆';
+      color: var(--accent);
+      font-size: 10px;
+    }
+    nav .brand span { color: var(--accent); font-weight: 800; }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2px;
+    }
+    nav ul li a {
+      color: #d4dce8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.25s;
+      position: relative;
+    }
+    nav ul li a:hover {
+      color: #fff;
+      background: rgba(0,212,170,0.15);
+    }
+    nav ul li a.active {
+      color: var(--accent);
+      background: rgba(0,212,170,0.12);
+    }
+    .section {
+      padding: 90px 50px 60px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section.dark {
+      background: var(--primary);
+      color: #fff;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section.gray { background: var(--light); max-width: 1000px; margin: 0 auto; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .section.dark .section-title { color: #fff; }
+    .section-sub {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 40px;
+      max-width: 600px;
+    }
+    .section.dark .section-sub { color: #a8b8c8; }
+
+    /* Hero */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a2540 0%, #0d3a5c 50%, #006d5b 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 900px; padding: 24px 50px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(0,212,170,0.15);
+      border: 1px solid rgba(0,212,170,0.3);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-desc {
+      font-size: 18px;
+      opacity: 0.8;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .hero-stat {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s, background 0.3s;
+    }
+    .hero-stat:hover {
+      background: rgba(0,212,170,0.15);
+      transform: translateY(-4px);
+    }
+    .hero-stat-num {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent);
+      display: block;
+    }
+    .hero-stat-label {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      text-align: center;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 24px rgba(10,37,64,0.06);
+      border: 1px solid var(--border);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(10,37,64,0.12);
+    }
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .card p {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--primary));
+    }
+    .timeline-item {
+      padding-left: 56px;
+      padding-bottom: 32px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px var(--accent);
+    }
+    .timeline-year {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .timeline-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .timeline-desc { font-size: 14px; color: var(--gray); }
+
+    /* Charts */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .chart-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+    .chart-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .chart-wrap { position: relative; height: 260px; }
+
+    /* Risk cards */
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .risk-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .risk-card .ri { font-size: 32px; margin-bottom: 12px; }
+    .risk-card h4 { font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 8px; }
+    .risk-card p { font-size: 13px; color: #cbd5e1; line-height: 1.7; }
+
+    /* Opp cards */
+    .opp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .opp-card {
+      background: var(--primary);
+      border: 1px solid rgba(0,212,170,0.25);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .opp-card::before {
+      content: attr(data-num);
+      position: absolute;
+      top: -10px;
+      right: 16px;
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(0,212,170,0.08);
+      line-height: 1;
+    }
+    .opp-card h4 { font-size: 16px; font-weight: 700; color: #5eead4; margin-bottom: 8px; }
+    .opp-card p { font-size: 14px; color: #cbd5e1; line-height: 1.7; }
+
+    /* AI Cards */
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .ai-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .ai-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(0,212,170,0.15);
+    }
+    .ai-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .tag-strong { background: #fee2e2; color: #dc2626; }
+    .tag-recommend { background: #dcfce7; color: #16a34a; }
+    .tag-apply { background: #fef9c3; color: #ca8a04; }
+    .ai-card h4 { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .ai-card p { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 12px; }
+    .ai-card .scene {
+      background: var(--light);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    /* Phase */
+    .phase-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 32px;
+    }
+    .phase-card {
+      background: var(--primary);
+      border: 1px solid rgba(0,212,170,0.25);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+    .phase-card .phase-num {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .phase-card h4 { font-size: 16px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
+    .phase-card .period { font-size: 13px; color: #5eead4; margin-bottom: 12px; font-weight: 600; }
+    .phase-card ul {
+      list-style: none;
+      text-align: left;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .phase-card ul li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .phase-card ul li:last-child { border-bottom: none; }
+
+    /* Summary */
+    .summary-box {
+      background: #fff;
+      border: 2px solid var(--accent);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 8px 32px rgba(10,37,64,0.08);
+    }
+    .summary-box p {
+      font-size: 16px;
+      line-height: 1.9;
+      color: #334155;
+    }
+    .summary-box strong { color: var(--accent); font-weight: 700; }
+    .tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 24px; }
+    .tag-item {
+      background: rgba(0,212,170,0.1);
+      border: 1px solid rgba(0,212,170,0.3);
+      color: #00897b;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background: #060f1a;
+      color: #8899aa;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 12px;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      nav { padding: 0 20px; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .hero-content { padding: 24px 24px; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .phase-list { grid-template-columns: 1fr; }
+      .section { padding: 80px 24px 40px; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="brand"><span>金蝶</span>AI</div>
+  <ul>
+    <li><a href="#hero">首页</a></li>
+    <li><a href="#profile">概况</a></li>
+    <li><a href="#industry">行业</a></li>
+    <li><a href="#competitive">竞争</a></li>
+    <li><a href="#advantage">优势</a></li>
+    <li><a href="#risk">风险</a></li>
+    <li><a href="#opportunity">机遇</a></li>
+    <li><a href="#ai">AI赋能</a></li>
+    <li><a href="#summary">总结</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">天津国资 · 数智转型标杆</div>
+    <h1 class="hero-title">天津国际工程<br><span>咨询集团</span></h1>
+    <p class="hero-desc">天津市国资委旗下综合性工程咨询服务旗舰，承载天津国资系统 AI 数智化转型发展课题战略使命，引领工程咨询行业数字化升级。</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">1987</span>
+        <div class="hero-stat-label">成立年份</div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">2.43亿</span>
+        <div class="hero-stat-label">注册资本（元）</div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">629人</span>
+        <div class="hero-stat-label">员工规模</div>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">5家</span>
+        <div class="hero-stat-label">核心子公司</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">↓ 向下滚动</div>
+</section>
+
+<!-- 公司概况 -->
+<section id="profile" class="gray">
+  <div class="section-label reveal">01 · 公司概况</div>
+  <h2 class="section-title reveal">深耕三十余载<br>天津国资咨询服务旗舰</h2>
+  <p class="section-sub reveal">从政府咨询机构到现代化国有法人企业，天咨集团见证并推动了天津城市建设发展的每一个关键阶段。</p>
+
+  <div class="card-grid">
+    <div class="card reveal">
+      <div class="card-icon" style="background:#e0f2fe;color:#0284c7;">🏛️</div>
+      <h3>国有独资</h3>
+      <p>2020年由事业单位转制为国有法人独资企业，纳入天津国兴资本运营有限公司体系，接受天津市国资委监管。</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon" style="background:#dcfce7;color:#16a34a;">📋</div>
+      <h3>双甲资质</h3>
+      <p>持有工程咨询资信综合甲级、工程监理综合甲级双料顶级资质，覆盖工程咨询全产业链服务能力。</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon" style="background:#fef9c3;color:#ca8a04;">🏗️</div>
+      <h3>地标级业绩</h3>
+      <p>国家会展中心、国家海洋博物馆、天津西站交通枢纽等一批国家级和市级重点工程咨询服务商。</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon" style="background:#fce7f3;color:#db2777;">🤝</div>
+      <h3>集团化布局</h3>
+      <p>旗下5家核心子公司涵盖招标、监理、造价、国际咨询、项目管理等工程服务全链条。</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px;">
+    <h3 style="font-size:20px;font-weight:700;color:var(--primary);margin-bottom:24px;" class="reveal">发展历程</h3>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-year">1987年</div>
+        <div class="timeline-title">天津市国际工程咨询公司成立</div>
+        <div class="timeline-desc">作为天津市政府直属事业单位，承担市级重大工程项目的可行性研究和咨询评估职能。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2005–2015年</div>
+        <div class="timeline-title">集团化扩张阶段</div>
+        <div class="timeline-desc">先后成立天津国际招标有限公司、天津国际工程建设监理有限公司，完成工程服务产业链初步布局。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2020年</div>
+        <div class="timeline-title">转企改制</div>
+        <div class="timeline-desc">完成事业单位向国有法人独资企业转制，注册资本2.43亿元，正式纳入天津国兴资本运营有限公司体系。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2025年</div>
+        <div class="timeline-title">数智化战略升级</div>
+        <div class="timeline-desc">被选为天津国资系统 AI 赋能数智化转型发展课题副组长单位，开启全面数字化转型战略。</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:48px;" class="reveal">
+    <h3 style="font-size:20px;font-weight:700;color:var(--primary);margin-bottom:24px;">子公司体系</h3>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(10,37,64,0.06);">
+        <thead>
+          <tr style="background:var(--primary);color:#fff;">
+            <th style="padding:14px 16px;text-align:left;font-size:13px;">子公司名称</th>
+            <th style="padding:14px 16px;text-align:center;font-size:13px;">持股比例</th>
+            <th style="padding:14px 16px;text-align:left;font-size:13px;">核心业务</th>
+          </tr>
+        </thead>
+        <tbody style="font-size:14px;">
+          <tr style="border-bottom:1px solid #f1f5f9;">
+            <td style="padding:14px 16px;font-weight:600;color:var(--primary);">天津国际招标有限公司</td>
+            <td style="padding:14px 16px;text-align:center;"><span style="background:#dcfce7;color:#16a34a;padding:3px 10px;border-radius:12px;font-weight:700;">100%</span></td>
+            <td style="padding:14px 16px;color:#64748b;">国际招标、政府采购招标代理</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f1f5f9;background:#f8fafc;">
+            <td style="padding:14px 16px;font-weight:600;color:var(--primary);">天津国际工程建设监理有限公司</td>
+            <td style="padding:14px 16px;text-align:center;"><span style="background:#dcfce7;color:#16a34a;padding:3px 10px;border-radius:12px;font-weight:700;">100%</span></td>
+            <td style="padding:14px 16px;color:#64748b;">工程监理、项目管理</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f1f5f9;">
+            <td style="padding:14px 16px;font-weight:600;color:var(--primary);">天乐国际工程咨询有限公司</td>
+            <td style="padding:14px 16px;text-align:center;"><span style="background:#e0f2fe;color:#0284c7;padding:3px 10px;border-radius:12px;font-weight:700;">95%</span></td>
+            <td style="padding:14px 16px;color:#64748b;">国际工程咨询、外商投资咨询</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f1f5f9;background:#f8fafc;">
+            <td style="padding:14px 16px;font-weight:600;color:var(--primary);">天咨国际工程项目管理有限公司</td>
+            <td style="padding:14px 16px;text-align:center;"><span style="background:#e0f2fe;color:#0284c7;padding:3px 10px;border-radius:12px;font-weight:700;">75%</span></td>
+            <td style="padding:14px 16px;color:#64748b;">全过程工程项目管理</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px;font-weight:600;color:var(--primary);">天津征信有限责任公司</td>
+            <td style="padding:14px 16px;text-align:center;"><span style="background:#dcfce7;color:#16a34a;padding:3px 10px;border-radius:12px;font-weight:700;">100%</span></td>
+            <td style="padding:14px 16px;color:#64748b;">企业信用评估、征信服务</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 行业洞察 -->
+<section id="industry">
+  <div class="section-label reveal">02 · 行业洞察</div>
+  <h2 class="section-title reveal">工程咨询行业<br>万亿级市场持续扩容</h2>
+  <p class="section-sub reveal">受益于基础设施投资持续加码、全过程工程咨询推广及数字化转型，咨询服务行业正经历结构性升级。</p>
+
+  <div class="chart-grid reveal">
+    <div class="chart-card">
+      <h4>中国工程咨询市场规模（万亿元）</h4>
+      <div class="chart-wrap">
+        <canvas id="chartMarket"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h4>天津基建投资增速 vs 全国均值（%）</h4>
+      <div class="chart-wrap">
+        <canvas id="chartTJvsCN"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px;">
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;" class="reveal">
+      <div style="font-size:28px;font-weight:900;color:#00d4aa;">↑ 12.3%</div>
+      <div style="font-size:13px;color:#64748b;margin-top:4px;">2024年行业 CAGR</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;" class="reveal">
+      <div style="font-size:28px;font-weight:900;color:#0a2540;">4.2万亿</div>
+      <div style="font-size:13px;color:#64748b;margin-top:4px;">2025年行业总规模（E）</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;" class="reveal">
+      <div style="font-size:28px;font-weight:900;color:#dc2626;">↑ 18.6%</div>
+      <div style="font-size:13px;color:#64748b;margin-top:4px;">天津2024固投增速</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;" class="reveal">
+      <div style="font-size:28px;font-weight:900;color:#0077b6;">政策</div>
+      <div style="font-size:13px;color:#64748b;margin-top:4px;">"十四五"规划重点支持</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(0,212,170,0.06);border:1px solid rgba(0,212,170,0.2);border-radius:16px;padding:28px;margin-top:32px;" class="reveal">
+    <div style="font-size:13px;font-weight:700;color:#00d4aa;margin-bottom:8px;">📌 政策驱动</div>
+    <p style="font-size:15px;color:#cbd5e1;line-height:1.8;">
+      住建部推动全过程工程咨询服务，鼓励政府投资项目优先采用全过程咨询模式；
+      天津"十四五"规划明确将工程服务业列为现代服务业重点发展方向；
+      国资委要求央企/国企提升数字化水平，咨询服务需求持续释放。
+    </p>
+  </div>
+</section>
+
+<!-- 竞争格局 -->
+<section id="competitive" class="gray">
+  <div class="section-label reveal">03 · 竞争格局</div>
+  <h2 class="section-title reveal">天津工程咨询市场<br>本地优势与全国巨头并存</h2>
+  <p class="section-sub reveal">天津市工程咨询市场呈现"本地国资旗舰 + 全国综合巨头 + 外资高端"的三层竞争格局。</p>
+
+  <div class="chart-grid reveal">
+    <div class="chart-card">
+      <h4>天津工程咨询市场份额（估算）</h4>
+      <div class="chart-wrap">
+        <canvas id="chartShare"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h4>天咨集团 vs 行业关键指标对比</h4>
+      <div class="chart-wrap">
+        <canvas id="chartRadar"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;" class="reveal">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+      <div style="background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:20px;">
+        <div style="font-size:14px;font-weight:700;color:#dc2626;margin-bottom:8px;">🏴 全国综合巨头</div>
+        <div style="font-size:13px;color:#64748b;line-height:1.8;">
+          中投咨询、国信招标、上海建科等全国性机构网络覆盖广、品牌强，争夺天津大型政府项目。
+        </div>
+      </div>
+      <div style="background:#fff;border:2px solid #00d4aa;border-radius:12px;padding:20px;">
+        <div style="font-size:14px;font-weight:700;color:#00d4aa;margin-bottom:8px;">⭐ 天咨集团（本地旗舰）</div>
+        <div style="font-size:13px;color:#64748b;line-height:1.8;">
+          唯一同时持有工程咨询+监理双综合甲级资质的天津本地机构，深度参与天津重大项目，政策资源深厚。
+        </div>
+      </div>
+      <div style="background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:20px;">
+        <div style="font-size:14px;font-weight:700;color:#64748b;margin-bottom:8px;">🌐 外资/合资机构</div>
+        <div style="font-size:13px;color:#64748b;line-height:1.8;">
+          AECOM、ARCADIS等外资机构聚焦高端国际工程，在天津自贸区、涉外项目上具有一定竞争力。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 核心优势 -->
+<section id="advantage">
+  <div class="section-label reveal">04 · 核心优势</div>
+  <h2 class="section-title reveal">四大核心壁垒<br>构建差异化竞争护城河</h2>
+  <p class="section-sub reveal">天咨集团的竞争优势来源于资质稀缺性、属地化关系积累与全链条服务能力的复合叠加。</p>
+
+  <div class="card-grid">
+    <div class="card reveal">
+      <div class="card-icon" style="background:#dcfce7;color:#16a34a;">🏆</div>
+      <h3>双综合甲级资质</h3>
+      <p>同时持有工程咨询资信综合甲级 + 工程监理综合甲级，为天津本地唯一。构成极高准入壁垒，大型政府项目投标资质门槛天然过滤竞争对手。</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon" style="background:#e0f2fe;color:#0284c7;">🤝</div>
+      <h3>深度政企关系网络</h3>
+      <p>37年深耕天津市场，服务国家会展中心、海河隧道、天津西站等标杆项目，与天津市发改委、建委、交委等核心政府部门建立长期信任关系。</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon" style="background:#fef9c3;color:#ca8a04;">🔗</div>
+      <h3>全过程服务链覆盖</h3>
+      <p>5家子公司覆盖招标代理 → 造价咨询 → 监理管理 → 项目管理 → 竣工评估全流程，具备承接大型PPP/EPC项目全过程咨询的端到端服务能力。</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon" style="background:#fce7f3;color:#db2777;">📊</div>
+      <h3>丰富的重大项目积累</h3>
+      <p>629名员工中502名业务技术人员，包括大量国家注册监理工程师、造价工程师、咨询工程师，实操经验丰富，项目数据库积累深厚。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 风险挑战 -->
+<section id="risk" class="dark">
+  <div class="section-label reveal">05 · 风险与挑战</div>
+  <h2 class="section-title reveal">四大结构性挑战<br>制约集团高质量发展</h2>
+  <p class="section-sub reveal">市场竞争加剧、数字化冲击、利润率承压、人才结构性短缺是天咨集团面临的四大核心挑战。</p>
+
+  <div class="risk-grid">
+    <div class="risk-card reveal">
+      <div class="ri">📉</div>
+      <h4>利润率持续承压</h4>
+      <p>工程咨询服务属于典型人力密集型业务，人工成本占比高；政府定价指导趋严，项目招标价格竞争激烈，净利润率维持在8%~10%区间，增量空间有限。</p>
+    </div>
+    <div class="risk-card reveal">
+      <div class="ri">💻</div>
+      <h4>数字化能力薄弱</h4>
+      <p>目前集团信息化水平较低，缺乏统一的ERP系统，项目管理仍依赖人工台账和分散软件。数据资产未有效沉淀，难以支撑科学决策和业务协同。</p>
+    </div>
+    <div class="risk-card reveal">
+      <div class="ri">🏴</div>
+      <h4>市场竞争加剧</h4>
+      <p>全国性综合咨询机构加速布局天津市场，外资机构切入高端领域，互联网平台型咨询服务平台涌现，差异化空间持续收窄。</p>
+    </div>
+    <div class="risk-card reveal">
+      <div class="ri">👥</div>
+      <h4>人才结构性短缺</h4>
+      <p>高端复合型人才（全过程工程咨询+EPC+数字化）稀缺；年轻一代工程咨询从业者流失率高；激励机制的灵活性不足，人才吸引力有待提升。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 发展机遇 -->
+<section id="opportunity" class="gray">
+  <div class="section-label reveal">06 · 发展机遇</div>
+  <h2 class="section-title reveal">五大战略机遇窗口<br>天咨集团大有可为</h2>
+  <p class="section-sub reveal">借助天津城市发展战略、国资改革深化和数智化转型三大驱动力，天咨集团正处于战略扩张的最佳窗口期。</p>
+
+  <div class="opp-grid">
+    <div class="opp-card reveal" data-num="01">
+      <h4>京津冀协同发展战略</h4>
+      <p>雄安新区大规模建设、天津机场扩建、津潍高铁等重大项目持续推进，工程咨询需求持续放量，天咨属地优势显著。</p>
+    </div>
+    <div class="opp-card reveal" data-num="02">
+      <h4>全过程咨询政策红利</h4>
+      <p>住建部强制推行全过程工程咨询试点，政府投资工程项目优先采用全过程咨询模式，天咨双甲资质+全链条服务直接受益。</p>
+    </div>
+    <div class="opp-card reveal" data-num="03">
+      <h4>天津国资数智化转型</h4>
+      <p>2025年10月天咨被选为天津国资AI数智化转型课题副组长单位，将率先获得政策支持和资源倾斜，可转化为行业示范效应和品牌溢价。</p>
+    </div>
+    <div class="opp-card reveal" data-num="04">
+      <h4>新基建与新能源机遇</h4>
+      <p>天津储能、海上风电、氢能产业园等新基建项目加速落地，新型咨询需求（安全评估、环境影响评价、BIM咨询）成为增量利润来源。</p>
+    </div>
+    <div class="opp-card reveal" data-num="05">
+      <h4>数据资产化与AI赋能</h4>
+      <p>37年项目数据积累可转化为AI模型训练资产，智能造价、智能监理、智能风险预警等AI产品可对外输出，形成 SaaS 化轻资产业务模式。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 战略布局 -->
+<section id="strategy">
+  <div class="section-label reveal">07 · 战略布局</div>
+  <h2 class="section-title reveal">三阶段战略演进路径<br>从咨询服务到数智平台</h2>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:32px;">
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px;position:relative;overflow:hidden;" class="reveal">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#0077b6;"></div>
+      <div style="font-size:40px;font-weight:900;color:#e2e8f0;position:absolute;top:16px;right:20px;">01</div>
+      <h4 style="font-size:16px;font-weight:700;color:#0077b6;margin-bottom:8px;">近期（2025-2026）</h4>
+      <h5 style="font-size:15px;font-weight:700;color:var(--primary);margin-bottom:12px;">夯实数字化底座</h5>
+      <ul style="list-style:none;font-size:13px;color:#64748b;line-height:2;">
+        <li>✓ 部署集团级ERP系统，统一财务+项目管理</li>
+        <li>✓ 建立BIM项目管理平台</li>
+        <li>✓ 打通子公司数据孤岛</li>
+        <li>✓ 完成核心业务流程数字化</li>
+      </ul>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px;position:relative;overflow:hidden;" class="reveal">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#00d4aa;"></div>
+      <div style="font-size:40px;font-weight:900;color:#e2e8f0;position:absolute;top:16px;right:20px;">02</div>
+      <h4 style="font-size:16px;font-weight:700;color:#00d4aa;margin-bottom:8px;">中期（2027-2028）</h4>
+      <h5 style="font-size:15px;font-weight:700;color:var(--primary);margin-bottom:12px;">构建智能咨询能力</h5>
+      <ul style="list-style:none;font-size:13px;color:#64748b;line-height:2;">
+        <li>✓ 上线AI造价智能助手</li>
+        <li>✓ 开发监理风险预警系统</li>
+        <li>✓ 建立知识图谱驱动的项目数据库</li>
+        <li>✓ 输出标准化咨询服务产品</li>
+      </ul>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px;position:relative;overflow:hidden;" class="reveal">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:#db2777;"></div>
+      <div style="font-size:40px;font-weight:900;color:#e2e8f0;position:absolute;top:16px;right:20px;">03</div>
+      <h4 style="font-size:16px;font-weight:700;color:#db2777;margin-bottom:8px;">远期（2029+）</h4>
+      <h5 style="font-size:15px;font-weight:700;color:var(--primary);margin-bottom:12px;">打造行业SaaS平台</h5>
+      <ul style="list-style:none;font-size:13px;color:#64748b;line-height:2;">
+        <li>✓ 面向中小咨询机构的SaaS平台</li>
+        <li>✓ 知识资产商业化输出</li>
+        <li>✓ 探索全国扩张路径</li>
+        <li>✓ 建立行业数据标准和生态</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- AI赋能 -->
+<section id="ai" class="dark">
+  <div class="section-label reveal">08 · AI / 数字化赋能</div>
+  <h2 class="section-title reveal">金蝶智能体<br>赋能天咨集团数智化转型</h2>
+  <p class="section-sub reveal">基于天咨集团业务特征和管理痛点，以下金蝶智能体组合可精准匹配其数字化转型需求。</p>
+
+  <div class="ai-grid reveal">
+    <div class="ai-card">
+      <span class="tag tag-strong">强烈推荐</span>
+      <h4>金蝶云·星瀚</h4>
+      <p>集团级云ERP解决方案，支持多组织架构、合并报表、预算管控和项目全成本管理。</p>
+      <div class="scene">💡 场景：天咨集团5家子公司统一财务核算、项目成本精细化管理，告别分散财务软件</div>
+    </div>
+    <div class="ai-card">
+      <span class="tag tag-strong">强烈推荐</span>
+      <h4>苍穹GPT（AI Copilot）</h4>
+      <p>金蝶企业级AI平台，支持智能问答、合同审查、数据分析和报告自动生成。</p>
+      <div class="scene">💡 场景：咨询报告智能生成、项目风险智能预警、政策文件快速解读</div>
+    </div>
+    <div class="ai-card">
+      <span class="tag tag-recommend">推荐</span>
+      <h4>项目管理系统（EPM）</h4>
+      <p>覆盖项目立项、进度、资源、费用、文档全生命周期，支持多项目横向对比分析。</p>
+      <div class="scene">💡 场景：500+在执行项目实时监控，资源冲突智能调度，进度偏差自动预警</div>
+    </div>
+    <div class="ai-card">
+      <span class="tag tag-recommend">推荐</span>
+      <h4>费控报销智能体</h4>
+      <p>OCR识别+智能审核+多维度费用分析，支持移动端随时随地报销。</p>
+      <div class="scene">💡 场景：外勤员工发票拍照即报，智能校验税率和项目归属，实时费用看板</div>
+    </div>
+    <div class="ai-card">
+      <span class="tag tag-apply">适用</span>
+      <h4>供应链协同智能体</h4>
+      <p>采购申请、比价、合同、付款全流程线上化管理，供应商绩效评估体系。</p>
+      <div class="scene">💡 场景：规范咨询采购流程，建立合格供应商库，防止采购舞弊风险</div>
+    </div>
+    <div class="ai-card">
+      <span class="tag tag-apply">适用</span>
+      <h4>HR管理智能体</h4>
+      <p>员工档案、考勤、绩效、薪酬一体化管理，支持工程项目人员借调管理。</p>
+      <div class="scene">💡 场景：解决项目制人员频繁调配场景下的考勤和绩效追踪难题</div>
+    </div>
+  </div>
+
+  <div class="phase-list reveal">
+    <div class="phase-card">
+      <div class="phase-num">Phase 01</div>
+      <h4>数字底座期</h4>
+      <div class="period">0 ~ 6 个月</div>
+      <ul>
+        <li>金蝶云·星瀚 ERP 上线</li>
+        <li>财务共享中心建立</li>
+        <li>项目主数据标准化</li>
+        <li>组织架构与权限梳理</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 02</div>
+      <h4>智能深化期</h4>
+      <div class="period">6 ~ 12 个月</div>
+      <ul>
+        <li>苍穹GPT 全面接入</li>
+        <li>EPM 项目管理系统上线</li>
+        <li>AI 合同审查应用</li>
+        <li>费控报销移动化</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 03</div>
+      <h4>生态引领期</h4>
+      <div class="period">12 个月以上</div>
+      <ul>
+        <li>行业数据资产沉淀</li>
+        <li>AI 咨询产品孵化</li>
+        <li>行业SaaS平台探索</li>
+        <li>对外赋能输出</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section id="summary" class="gray">
+  <div class="section-label reveal">09 · 战略总结</div>
+  <h2 class="section-title reveal">天咨集团<br>站在数智化转型新起点</h2>
+
+  <div class="summary-box reveal">
+    <p>
+      天津国际工程咨询集团是天津国资系统中唯一具备双综合甲级资质、全过程服务链和37年标杆项目积累的综合性工程咨询服务旗舰。面对市场竞争加剧和利润率承压的双重挑战，集团<strong>2025年被选为数智化转型课题副组长单位</strong>，标志着战略重心已从"规模扩张"转向"质量提升与模式创新"。
+      <br><br>
+      金蝶云·星瀚 ERP + 苍穹GPT 的组合方案，可帮助天咨集团在<strong>12个月内完成数字化底座建设</strong>，实现子公司数据贯通、项目全成本精细化管理，并在此基础上孵化 AI 驱动的智能咨询服务能力，从根本上提升竞争力和盈利水平。
+    </p>
+    <div class="tags">
+      <span class="tag-item">双综合甲级资质</span>
+      <span class="tag-item">天津国资旗舰</span>
+      <span class="tag-item">Greenfield ERP 机会</span>
+      <span class="tag-item">AI 数智转型试点</span>
+      <span class="tag-item">全过程咨询服务</span>
+      <span class="tag-item">金蝶星瀚首选</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>本报告数据来源：公开信息检索（2025年5月），部分数据为估算值（标注"E"），仅供参考，不构成投资建议。</p>
+  <p style="margin-top:8px;">Generated by 金蝶智能体 | © 2026</p>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Active nav on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav ul li a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => {
+      if (scrollY >= s.offsetTop - 80) cur = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + cur) a.classList.add('active');
+    });
+  });
+
+  // Charts
+  const primary = '#0a2540';
+  const accent = '#00d4aa';
+  const blue2 = '#0077b6';
+  const red = '#dc2626';
+
+  // Market chart
+  new Chart(document.getElementById('chartMarket'), {
+    type: 'line',
+    data: {
+      labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025E', '2026E'],
+      datasets: [{
+        label: '市场规模（万亿元）',
+        data: [2.8, 3.0, 3.3, 3.5, 3.7, 4.0, 4.2, 4.6],
+        borderColor: accent,
+        backgroundColor: 'rgba(0,212,170,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: accent,
+        pointRadius: 5,
+        pointHoverRadius: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: false, grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+
+  // TJ vs CN chart
+  new Chart(document.getElementById('chartTJvsCN'), {
+    type: 'bar',
+    data: {
+      labels: ['2021', '2022', '2023', '2024'],
+      datasets: [
+        { label: '天津固投增速%', data: [4.2, 3.1, 8.3, 18.6], backgroundColor: accent },
+        { label: '全国均值%', data: [2.8, 2.6, 2.1, 3.2], backgroundColor: blue2 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', font: { size: 12 } } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+
+  // Share pie
+  new Chart(document.getElementById('chartShare'), {
+    type: 'doughnut',
+    data: {
+      labels: ['天咨集团', '全国综合机构', '本地中小机构', '外资机构', '其他'],
+      datasets: [{
+        data: [18, 28, 25, 12, 17],
+        backgroundColor: [accent, primary, '#94a3b8', blue2, '#cbd5e1'],
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', font: { size: 11 }, labels: { padding: 12 } }
+      },
+      cutout: '60%'
+    }
+  });
+
+  // Radar
+  new Chart(document.getElementById('chartRadar'), {
+    type: 'radar',
+    data: {
+      labels: ['资质等级', '规模体量', '数字化水平', '创新能力', '利润率', '品牌影响力'],
+      datasets: [
+        {
+          label: '天咨集团',
+          data: [95, 55, 30, 50, 45, 70],
+          borderColor: accent,
+          backgroundColor: 'rgba(0,212,170,0.15)',
+          pointBackgroundColor: accent,
+        },
+        {
+          label: '行业平均',
+          data: [60, 60, 45, 55, 55, 60],
+          borderColor: blue2,
+          backgroundColor: 'rgba(0,119,182,0.1)',
+          pointBackgroundColor: blue2,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', font: { size: 11 } } },
+      scales: {
+        r: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { display: false },
+          grid: { color: '#e2e8f0' },
+          pointLabels: { font: { size: 11 }, color: '#64748b' }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>

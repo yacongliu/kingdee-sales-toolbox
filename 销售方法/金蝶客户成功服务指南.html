@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金蝶客户成功服务指南 | 服务体系全解析</title>
+<style>
+  :root {
+    --primary: #1a56ff;
+    --primary-dark: #0d3bbf;
+    --accent: #ff6b2b;
+    --gold: #f5a623;
+    --bg-dark: #0a0e1a;
+    --bg-card: #111827;
+    --bg-card2: #1a2236;
+    --text-white: #ffffff;
+    --text-light: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border: rgba(255,255,255,0.08);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --premium: #8b5cf6;
+    --gradient-primary: linear-gradient(135deg, #1a56ff 0%, #0d3bbf 100%);
+    --gradient-premium: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    --gradient-gold: linear-gradient(135deg, #f5a623 0%, #e07b00 100%);
+    --nav-height: 64px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ====== NAV (TOP, FIXED) ====== */
+  .nav-wrapper {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: var(--nav-height);
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    gap: 0;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 36px;
+    flex-shrink: 0;
+  }
+  .nav-logo-dot {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--gradient-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: white;
+  }
+  .nav-logo-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-white);
+    white-space: nowrap;
+  }
+  .nav-divider {
+    width: 1px; height: 20px;
+    background: var(--border);
+    margin-right: 24px;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex: 1;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-decoration: none;
+    user-select: none;
+    border: 1px solid transparent;
+  }
+  .nav-link:hover {
+    color: var(--text-light);
+    background: rgba(255,255,255,0.05);
+  }
+  .nav-link.active {
+    color: white;
+    background: rgba(26,86,255,0.15);
+    border-color: rgba(26,86,255,0.35);
+  }
+  .nav-link .nav-emoji { font-size: 14px; }
+
+  /* ====== HERO ====== */
+  .hero {
+    margin-top: var(--nav-height);
+    background: linear-gradient(135deg, #0a0e1a 0%, #0d1f4f 50%, #0a0e1a 100%);
+    padding: 72px 40px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 900px; height: 500px;
+    background: radial-gradient(ellipse, rgba(26,86,255,0.22) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(ellipse, rgba(139,92,246,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(26,86,255,0.12);
+    border: 1px solid rgba(26,86,255,0.35);
+    color: #7ca8ff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 46px;
+    font-weight: 800;
+    color: var(--text-white);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero h1 span {
+    background: linear-gradient(90deg, #5b8fff, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin: 0 auto 40px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-white);
+    display: block;
+    line-height: 1;
+  }
+  .hero-stat .num em { color: #5b8fff; font-style: normal; font-size: 20px; }
+  .hero-stat .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+  /* ====== MAIN LAYOUT ====== */
+  .container {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ====== SECTION ANCHORS ====== */
+  .section-anchor {
+    scroll-margin-top: calc(var(--nav-height) + 24px);
+  }
+
+  /* ====== SECTION HEADER ====== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 48px 0 24px;
+  }
+  .section-header-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .section-header-text {}
+  .section-header-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-white);
+    line-height: 1.2;
+  }
+  .section-header-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(26,86,255,0.4), transparent);
+    margin-bottom: 28px;
+  }
+
+  /* ====== CARDS ====== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title .icon {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  /* ====== PHILOSOPHY GRID ====== */
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .philosophy-card {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .philosophy-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(26,86,255,0.12);
+  }
+  .philosophy-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    border-radius: 12px 12px 0 0;
+  }
+  .philosophy-card:nth-child(1)::before { background: var(--gradient-primary); }
+  .philosophy-card:nth-child(2)::before { background: var(--gradient-premium); }
+  .philosophy-card:nth-child(3)::before { background: linear-gradient(135deg,#10b981,#059669); }
+  .philosophy-card:nth-child(4)::before { background: var(--gradient-gold); }
+  .philo-label { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; }
+  .philo-quote { font-size:14px; font-weight:700; color:var(--text-white); margin-bottom:10px; line-height:1.4; }
+  .philo-desc { font-size:12px; color:var(--text-muted); line-height:1.6; }
+
+  /* ====== LEVEL CARDS ====== */
+  .level-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
+  .level-card {
+    background:var(--bg-card2); border:1px solid var(--border); border-radius:12px;
+    padding:22px; text-align:center; transition:transform 0.2s;
+  }
+  .level-card:hover { transform:translateY(-3px); }
+  .level-badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:1px; padding:3px 12px; border-radius:20px; margin-bottom:12px; }
+  .lv1 .level-badge { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.25); }
+  .lv2 .level-badge { background:rgba(26,86,255,0.12); color:#5b8fff; border:1px solid rgba(26,86,255,0.25); }
+  .lv3 .level-badge { background:rgba(139,92,246,0.12); color:#a78bfa; border:1px solid rgba(139,92,246,0.25); }
+  .lv4 .level-badge { background:rgba(245,166,35,0.12); color:#f5a623; border:1px solid rgba(245,166,35,0.25); }
+  .level-title { font-size:15px; font-weight:700; color:var(--text-white); margin-bottom:8px; }
+  .level-desc { font-size:12px; color:var(--text-muted); line-height:1.6; }
+
+  /* ====== SERVICE GRID ====== */
+  .service-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; }
+  .service-item {
+    background:var(--bg-card2); border:1px solid var(--border); border-radius:12px;
+    padding:18px; transition:transform 0.2s, border-color 0.2s;
+  }
+  .service-item:hover { transform:translateY(-2px); border-color:rgba(91,143,255,0.3); }
+  .service-item-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:10px; }
+  .service-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  .service-name { font-size:14px; font-weight:700; color:var(--text-white); margin-bottom:3px; }
+  .service-category { font-size:11px; color:var(--text-muted); }
+  .service-desc { font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:10px; }
+  .service-meta { display:flex; gap:6px; flex-wrap:wrap; }
+  .meta-tag { font-size:10px; padding:2px 9px; border-radius:20px; font-weight:600; }
+  .meta-time { background:rgba(16,185,129,0.1); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+  .meta-type { background:rgba(26,86,255,0.1); color:#5b8fff; border:1px solid rgba(26,86,255,0.2); }
+  .meta-prem-only { background:rgba(245,166,35,0.1); color:#f5a623; border:1px solid rgba(245,166,35,0.2); }
+  .meta-std { background:rgba(139,92,246,0.1); color:#a78bfa; border:1px solid rgba(139,92,246,0.2); }
+
+  /* ====== COMPARE TABLE ====== */
+  .compare-wrap { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:20px; }
+  .compare-header { display:grid; grid-template-columns:2fr 1fr 1fr; }
+  .compare-header-cell { padding:16px 20px; font-size:13px; font-weight:700; text-align:center; }
+  .compare-header-cell.feature { text-align:left; color:var(--text-muted); font-size:11px; letter-spacing:1px; text-transform:uppercase; padding-left:24px; }
+  .compare-header-cell.standard { background:linear-gradient(135deg,rgba(91,143,255,0.15),rgba(26,86,255,0.08)); color:#5b8fff; border-bottom:2px solid rgba(91,143,255,0.25); }
+  .compare-header-cell.premium { background:linear-gradient(135deg,rgba(139,92,246,0.18),rgba(109,40,217,0.1)); color:#a78bfa; border-bottom:2px solid rgba(139,92,246,0.3); }
+  .compare-row { display:grid; grid-template-columns:2fr 1fr 1fr; border-bottom:1px solid var(--border); transition:background 0.15s; }
+  .compare-row:hover { background:rgba(255,255,255,0.02); }
+  .compare-row:last-child { border-bottom:none; }
+  .compare-cell { padding:12px 20px; font-size:12px; color:var(--text-muted); display:flex; align-items:center; }
+  .compare-cell.feature-name { color:var(--text-light); font-weight:500; gap:7px; padding-left:24px; }
+  .compare-cell.std { background:rgba(91,143,255,0.03); border-left:1px solid rgba(91,143,255,0.08); border-right:1px solid rgba(91,143,255,0.08); justify-content:center; }
+  .compare-cell.prem { background:rgba(139,92,246,0.03); border-left:1px solid rgba(139,92,246,0.08); border-right:1px solid rgba(139,92,246,0.08); justify-content:center; }
+  .check { color:var(--success); font-size:16px; }
+  .cross { color:#ef4444; font-size:16px; }
+  .partial { font-size:11px; font-weight:600; color:var(--warning); text-align:center; }
+  .tag-only { font-size:10px; font-weight:600; padding:2px 7px; border-radius:10px; }
+  .tag-prem { background:rgba(245,166,35,0.12); color:#f5a623; }
+
+  /* ====== PITCH ====== */
+  .pitch-section-title { font-size:14px; font-weight:700; color:var(--text-white); margin:20px 0 14px; padding-left:10px; border-left:3px solid var(--primary); }
+  .pain-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:12px; margin-bottom:20px; }
+  .pain-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:10px; padding:16px 18px; }
+  .pain-title { font-size:13px; font-weight:700; color:var(--text-white); margin-bottom:6px; display:flex; align-items:center; gap:7px; }
+  .pain-desc { font-size:12px; color:var(--text-muted); margin-bottom:8px; line-height:1.5; }
+  .pitch-arrow { font-size:11px; color:#5b8fff; font-weight:600; }
+
+  .talk-track { background:linear-gradient(135deg,rgba(26,86,255,0.07),rgba(139,92,246,0.07)); border:1px solid rgba(91,143,255,0.18); border-radius:12px; padding:18px 22px; margin-bottom:12px; }
+  .talk-track-label { font-size:10px; font-weight:700; letter-spacing:1px; color:#5b8fff; text-transform:uppercase; margin-bottom:7px; }
+  .talk-track-content { font-size:13px; color:var(--text-light); line-height:1.75; font-style:italic; }
+  .talk-track-content strong { color:var(--text-white); font-style:normal; }
+
+  .upgrade-path { display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; margin-bottom:20px; }
+  .upgrade-box { background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .upgrade-box.standard { border-color:rgba(91,143,255,0.2); }
+  .upgrade-box.premium { border-color:rgba(139,92,246,0.3); background:rgba(139,92,246,0.04); }
+  .upgrade-arrow-box { text-align:center; color:#5b8fff; font-size:28px; }
+  .upgrade-title { font-size:13px; font-weight:700; color:var(--text-white); margin-bottom:10px; }
+  .upgrade-list { list-style:none; font-size:12px; color:var(--text-muted); line-height:2; }
+  .upgrade-list li::before { content:'✓ '; color:var(--success); }
+  .upgrade-list li.premium-only::before { content:'★ '; color:#f5a623; }
+  .upgrade-list li.premium-only { color:#f5a623; }
+
+  .key-question-list { list-style:none; counter-reset:q; }
+  .key-question-list li {
+    counter-increment:q; background:var(--bg-card2); border:1px solid var(--border);
+    border-radius:10px; padding:13px 16px 13px 50px; margin-bottom:9px;
+    font-size:13px; color:var(--text-light); position:relative; line-height:1.5;
+  }
+  .key-question-list li::before {
+    content:'Q'counter(q); position:absolute; left:12px; top:12px;
+    font-size:10px; font-weight:700; background:var(--gradient-primary);
+    color:white; padding:2px 6px; border-radius:5px;
+  }
+  .key-question-list li .hint { display:block; font-size:11px; color:var(--text-muted); margin-top:4px; }
+
+  .timeline { position:relative; padding-left:28px; }
+  .timeline::before { content:''; position:absolute; left:9px; top:6px; bottom:0; width:2px; background:linear-gradient(to bottom,var(--primary),var(--premium),transparent); }
+  .timeline-item { position:relative; margin-bottom:22px; }
+  .timeline-dot { position:absolute; left:-24px; top:5px; width:12px; height:12px; border-radius:50%; border:2px solid var(--primary); background:var(--bg-dark); }
+  .timeline-title { font-size:13px; font-weight:700; color:var(--text-white); margin-bottom:5px; }
+  .timeline-desc { font-size:12px; color:var(--text-muted); line-height:1.6; }
+
+  .overview-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-bottom:20px; }
+  .overview-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:22px; text-align:center; }
+  .overview-icon { font-size:28px; margin-bottom:10px; }
+  .overview-num { font-size:26px; font-weight:800; color:var(--text-white); }
+  .overview-num span { color:#5b8fff; }
+  .overview-label { font-size:12px; color:var(--text-muted); margin-top:4px; }
+
+  .sub-label { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin:20px 0 10px; display:flex; align-items:center; gap:8px; }
+  .sub-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .alert-box { background:rgba(245,166,35,0.07); border:1px solid rgba(245,166,35,0.22); border-radius:10px; padding:12px 16px; font-size:12px; color:#f5a623; margin-bottom:14px; display:flex; gap:8px; align-items:flex-start; line-height:1.5; }
+  .info-box { background:rgba(26,86,255,0.07); border:1px solid rgba(91,143,255,0.18); border-radius:10px; padding:12px 16px; font-size:12px; color:#7ca8ff; margin-bottom:14px; display:flex; gap:8px; align-items:flex-start; line-height:1.5; }
+
+  footer { text-align:center; padding:28px 24px; border-top:1px solid var(--border); color:var(--text-muted); font-size:11px; }
+
+  @media(max-width:768px){
+    .hero h1 { font-size:28px; }
+    .hero-stats { gap:24px; }
+    .hero { padding:48px 20px 40px; }
+    .compare-header,.compare-row { grid-template-columns:1.4fr 0.9fr 0.9fr; }
+    .compare-cell.feature-name { padding-left:14px; }
+    .compare-header-cell.feature { padding-left:14px; }
+    .upgrade-path { grid-template-columns:1fr; }
+    .upgrade-arrow-box { transform:rotate(90deg); }
+    .nav-wrapper { padding:0 16px; }
+    .nav-logo-text { display:none; }
+    .container { padding:0 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== FIXED NAV ====== -->
+<nav class="nav-wrapper">
+  <div class="nav-logo">
+    <div class="nav-logo-dot">K</div>
+    <span class="nav-logo-text">客户成功服务指南</span>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-links">
+    <a class="nav-link active" href="#overview" data-section="overview">
+      <span class="nav-emoji">📋</span> 体系概览
+    </a>
+    <a class="nav-link" href="#compare" data-section="compare">
+      <span class="nav-emoji">⚖️</span> 两级对比
+    </a>
+    <a class="nav-link" href="#detail" data-section="detail">
+      <span class="nav-emoji">🔍</span> 服务详解
+    </a>
+    <a class="nav-link" href="#pitch" data-section="pitch">
+      <span class="nav-emoji">💼</span> 推介指南
+    </a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<div class="hero">
+  <div class="hero-badge">KINGDEE · 客户成功体系</div>
+  <h1>金蝶客户成功服务<br><span>全景解析手册</span></h1>
+  <p class="hero-sub">深度梳理服务类别与内容，助力精准推介，让每一个客户感受到价值</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="num">2<em>大</em></span>
+      <div class="label">服务套餐等级</div>
+    </div>
+    <div class="hero-stat">
+      <span class="num">5<em>大</em></span>
+      <div class="label">服务维度</div>
+    </div>
+    <div class="hero-stat">
+      <span class="num">16<em>项</em></span>
+      <div class="label">高级服务权益</div>
+    </div>
+    <div class="hero-stat">
+      <span class="num">4<em>层</em></span>
+      <div class="label">价值递进体系</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MAIN ====== -->
+<div class="container">
+
+  <!-- ========== 体系概览 ========== -->
+  <div id="overview" class="section-anchor">
+    <div class="section-header">
+      <div class="section-header-icon" style="background:linear-gradient(135deg,#1a56ff,#0d3bbf);">📋</div>
+      <div class="section-header-text">
+        <div class="section-header-title">体系概览</div>
+        <div class="section-header-sub">一套哲学 · 两大业务 · 三大体系 · 四大价值</div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="overview-icon">🏢</div>
+        <div class="overview-num">2<span>大</span></div>
+        <div class="overview-label">业务板块<br>客户成功服务 + 产品订阅</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-icon">🎯</div>
+        <div class="overview-num">4<span>套</span></div>
+        <div class="overview-label">哲学理念<br>技术·社区·服务·成功</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-icon">🛡️</div>
+        <div class="overview-num">3<span>大</span></div>
+        <div class="overview-label">支撑体系<br>价值·运营·保障</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-icon">📈</div>
+        <div class="overview-num">4<span>层</span></div>
+        <div class="overview-label">价值递进<br>基础→体验→价值→标杆</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#1a56ff,#0d3bbf);">💡</div>
+        一套哲学 — 客户成功的根基
+      </div>
+      <div class="philosophy-grid">
+        <div class="philosophy-card">
+          <div class="philo-label">技术支持</div>
+          <div class="philo-quote">"我是一缕阳光，时刻在您身旁"</div>
+          <div class="philo-desc">响应客户反馈，解决客户问题，推动产品优化，帮助客户成长。</div>
+        </div>
+        <div class="philosophy-card">
+          <div class="philo-label">社区运营</div>
+          <div class="philo-quote">"相互成就，创见美好未来"</div>
+          <div class="philo-desc">链接全球创见者，传递产品和服务价值，在成就他人中共同成长。</div>
+        </div>
+        <div class="philosophy-card">
+          <div class="philo-label">服务产品化</div>
+          <div class="philo-quote">"需求无止尽，服务有担当"</div>
+          <div class="philo-desc">洞察客户服务需求，设计并开发服务产品，提升客户体验，为客户创造价值。</div>
+        </div>
+        <div class="philosophy-card">
+          <div class="philo-label">客户成功经营</div>
+          <div class="philo-quote">"绝不辜负每一个客户的选择与信任"</div>
+          <div class="philo-desc">与客户建立链接，保障客户权益，持续为客户创造价值，帮助客户成功。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#f5a623,#e07b00);">🚀</div>
+        四大价值层级 — 从基础保障到行业标杆
+      </div>
+      <div class="level-grid">
+        <div class="level-card lv1">
+          <div class="level-badge">Level 1 · 基础保障</div>
+          <div class="level-title">产品应用无忧</div>
+          <div class="level-desc">通过多种服务形式和智能化技术，防范产品应用风险，达成企业产品应用无忧。</div>
+        </div>
+        <div class="level-card lv2">
+          <div class="level-badge">Level 2 · 体验提升</div>
+          <div class="level-title">极致用户体验</div>
+          <div class="level-desc">通过主动服务提升客户服务体验，深入提供系统运营层面服务，保障产品应用权益。</div>
+        </div>
+        <div class="level-card lv3">
+          <div class="level-badge">Level 3 · 价值深化</div>
+          <div class="level-title">持续提升应用价值</div>
+          <div class="level-desc">深入洞察客户环境现状，分析应用存在的问题，提出优化和改进建议。</div>
+        </div>
+        <div class="level-card lv4">
+          <div class="level-badge">Level 4 · 标杆引领</div>
+          <div class="level-title">建设行业标杆</div>
+          <div class="level-desc">通过圈层交流，总结优秀案例，向同行学习，引领客户成长，建设成行业标杆。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#10b981,#059669);">🔧</div>
+        三大支撑体系
+      </div>
+      <div class="service-grid">
+        <div class="service-item">
+          <div class="service-item-header">
+            <div class="service-icon" style="background:rgba(26,86,255,0.15);">💎</div>
+            <div>
+              <div class="service-name">价值体系</div>
+              <div class="service-category">产品·服务·生态 全方位价值整合</div>
+            </div>
+          </div>
+          <div class="service-desc">整合金蝶产品、服务及生态伙伴，共同为客户数字化转型提供全方位服务价值。包括：产品价值（全面数字化管理服务）、服务价值（全方位保驾护航）、生态价值（携手伙伴共创共赢）。</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-header">
+            <div class="service-icon" style="background:rgba(139,92,246,0.15);">⚙️</div>
+            <div>
+              <div class="service-name">运营体系</div>
+              <div class="service-category">客户全旅程链接与体验</div>
+            </div>
+          </div>
+          <div class="service-desc">以帮助客户成功为目标，关注客户全旅程链接及体验，以行业领先的客户成功经营方法服务客户，用专业方法保障客户价值实现。</div>
+        </div>
+        <div class="service-item">
+          <div class="service-item-header">
+            <div class="service-icon" style="background:rgba(245,166,35,0.15);">🏛️</div>
+            <div>
+              <div class="service-name">保障体系</div>
+              <div class="service-category">组织·系统·管理 三重保障</div>
+            </div>
+          </div>
+          <div class="service-desc">
+            <strong style="color:#f5a623;">组织：</strong>全球四大服务基地，3000+ 技术服务中心<br>
+            <strong style="color:#5b8fff;">系统：</strong>金蝶云客服、智能机器人、KSM工单、天梯运维等<br>
+            <strong style="color:#10b981;">管理：</strong>阳光服务规范、首问负责制、信息安全手册等
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#10b981,#059669);">📡</div>
+        服务交付流程 — 高级成功服务
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">① 金蝶云社区（7×24 自助）</div>
+          <div class="timeline-desc">互助问答、帮助中心、在线课程、知识库 — 第一道自助防线，覆盖80%日常操作问题。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">② 智能客服（7×24 全天候）</div>
+          <div class="timeline-desc">在线智能机器人 + 4008-836-836 智能语音热线，实时智能解答，可转人工 IM。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">③ 工单服务（5×8 工作时间）</div>
+          <div class="timeline-desc">处理应用类问题、数据问题，1个工作日内响应，通过产品端 / 官网 / ticket.kingdee.com 提交。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-title">④ 服务预约（高级专属权益）</div>
+          <div class="timeline-desc">专属技术经理协调关键时刻支持、专属服务报告、系统健康检查等深度服务，1对1专家护航。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 两级对比 ========== -->
+  <div id="compare" class="section-anchor">
+    <div class="section-header">
+      <div class="section-header-icon" style="background:linear-gradient(135deg,#1a56ff,#8b5cf6);">⚖️</div>
+      <div class="section-header-text">
+        <div class="section-header-title">两级对比</div>
+        <div class="section-header-sub">标准成功服务 vs 高级成功服务 · 完整权益一览</div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+
+    <div class="info-box">ℹ️ 高级成功服务在标准服务所有权益基础上，新增在线工单、IM人工支持、专属技术经理、关键时刻支持、专属IM服务群、专属服务报告及系统健康检查等深度服务。</div>
+
+    <div class="compare-wrap">
+      <div class="compare-header" style="padding:4px 0;">
+        <div class="compare-header-cell feature">服务内容</div>
+        <div class="compare-header-cell standard">🔵 标准成功服务</div>
+        <div class="compare-header-cell premium">⭐ 高级成功服务</div>
+      </div>
+
+      <div style="padding:0 4px;">
+        <div class="sub-label" style="padding:12px 20px 4px; margin:0;">自助服务</div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">🌐 金蝶云社区（互助问答/课程/知识库）</div>
+          <div class="compare-cell std"><span class="check">✓</span></div>
+          <div class="compare-cell prem"><span class="check">✓</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">🤖 智能客服（机器人 + 语音热线）</div>
+          <div class="compare-cell std"><span class="check">✓</span></div>
+          <div class="compare-cell prem"><span class="check">✓</span></div>
+        </div>
+
+        <div class="sub-label" style="padding:12px 20px 4px; margin:0;">系统运维</div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">☁️ 公有云运维（巡检/监控/安全/升级）</div>
+          <div class="compare-cell std"><span class="check">✓</span></div>
+          <div class="compare-cell prem"><span class="check">✓</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">🖥️ 私有云运维（环境安装/宕机响应）</div>
+          <div class="compare-cell std"><span class="cross">—</span></div>
+          <div class="compare-cell prem"><span class="check">✓</span></div>
+        </div>
+
+        <div class="sub-label" style="padding:12px 20px 4px; margin:0;">持续更新</div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">📦 产品补丁包下载</div>
+          <div class="compare-cell std"><span class="check">✓</span></div>
+          <div class="compare-cell prem"><span class="check">✓</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">💬 需求聆听（功能建议反馈）</div>
+          <div class="compare-cell std"><span class="partial">仅社区</span></div>
+          <div class="compare-cell prem"><span class="partial">多渠道</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">🔑 许可升级（等量最新版本许可）</div>
+          <div class="compare-cell std"><span class="check">✓</span></div>
+          <div class="compare-cell prem"><span class="check">✓</span></div>
+        </div>
+
+        <div class="sub-label" style="padding:12px 20px 4px; margin:0;">服务支持</div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">📞 热线服务</div>
+          <div class="compare-cell std"><span class="partial">仅致命故障<br>≤4次/年</span></div>
+          <div class="compare-cell prem"><span class="check">✓ 全问题</span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">🎫 在线工单（应用问题 + 数据问题）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">高级专属</span></span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">💬 IM人工服务（在线即时沟通）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">高级专属</span></span></div>
+        </div>
+
+        <div class="sub-label" style="padding:12px 20px 4px; margin:0;">价值提升（高级专属）</div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">🛠️ 定制开发维护支持（仅赠首年）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">首年赠</span></span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">⚡ 关键时刻支持（≤2人天/年）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">月结/年结</span></span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">👤 专属技术经理（1对1 中高级专家）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">高级专属</span></span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">👥 专属IM服务群（≤5用户，7×8）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">高级专属</span></span></div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell feature-name">📊 专属服务报告（1次/年）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">年度诊断</span></span></div>
+        </div>
+        <div class="compare-row" style="border-bottom:none;">
+          <div class="compare-cell feature-name">🔬 系统健康检查与建议（1次/年）</div>
+          <div class="compare-cell std"><span class="cross">✗</span></div>
+          <div class="compare-cell prem"><span class="check">✓ <span class="tag-only tag-prem">自动化诊断</span></span></div>
+        </div>
+      </div>
+      <div style="padding:14px 24px 20px;">
+        <div class="alert-box">⚠️ 高级成功服务合同金额低于 5,000 元时，不提供「关键时刻支持」人天服务内容。</div>
+        <div style="font-size:11px; color:var(--text-muted);">服务时间说明：5×8（工作日 8:30–17:30）/ 7×8（含周末 8:30–17:30）/ 7×24（全天候）</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#10b981,#059669);">⏱️</div>
+        关键服务时效快查
+      </div>
+      <div class="service-grid">
+        <div class="service-item">
+          <div class="service-name" style="margin-bottom:10px;">📞 热线服务</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div style="background:rgba(91,143,255,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">标准</div>
+              <div style="font-size:12px; color:#5b8fff; font-weight:700;">7×24</div>
+              <div style="font-size:10px; color:var(--text-muted);">仅致命故障</div>
+            </div>
+            <div style="background:rgba(139,92,246,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">高级</div>
+              <div style="font-size:12px; color:#a78bfa; font-weight:700;">7×24</div>
+              <div style="font-size:10px; color:var(--text-muted);">全类型问题</div>
+            </div>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-name" style="margin-bottom:10px;">🎫 在线工单</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div style="background:rgba(91,143,255,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">标准</div>
+              <div style="font-size:12px; color:#ef4444; font-weight:700;">✗</div>
+              <div style="font-size:10px; color:var(--text-muted);">不含</div>
+            </div>
+            <div style="background:rgba(139,92,246,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">高级</div>
+              <div style="font-size:12px; color:#a78bfa; font-weight:700;">5×8</div>
+              <div style="font-size:10px; color:var(--text-muted);">1日内响应</div>
+            </div>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-name" style="margin-bottom:10px;">💬 IM服务群</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div style="background:rgba(91,143,255,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">标准</div>
+              <div style="font-size:12px; color:#ef4444; font-weight:700;">✗</div>
+              <div style="font-size:10px; color:var(--text-muted);">不含</div>
+            </div>
+            <div style="background:rgba(139,92,246,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">高级</div>
+              <div style="font-size:12px; color:#a78bfa; font-weight:700;">7×8</div>
+              <div style="font-size:10px; color:var(--text-muted);">即时响应</div>
+            </div>
+          </div>
+        </div>
+        <div class="service-item">
+          <div class="service-name" style="margin-bottom:10px;">👤 专属技术经理</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div style="background:rgba(91,143,255,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">标准</div>
+              <div style="font-size:12px; color:#ef4444; font-weight:700;">✗</div>
+              <div style="font-size:10px; color:var(--text-muted);">不含</div>
+            </div>
+            <div style="background:rgba(139,92,246,0.08); border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">高级</div>
+              <div style="font-size:12px; color:#a78bfa; font-weight:700;">5×8</div>
+              <div style="font-size:10px; color:var(--text-muted);">1对1专家</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 服务详解 ========== -->
+  <div id="detail" class="section-anchor">
+    <div class="section-header">
+      <div class="section-header-icon" style="background:linear-gradient(135deg,#10b981,#059669);">🔍</div>
+      <div class="section-header-text">
+        <div class="section-header-title">服务详解</div>
+        <div class="section-header-sub">16项服务内容逐一解析 · 时效 / 方式 / 交付主体全标注</div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+
+    <div class="sub-label">自助服务 · 24小时随时可用</div>
+    <div class="service-grid" style="margin-bottom:24px;">
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(26,86,255,0.15);">🌐</div>
+          <div>
+            <div class="service-name">金蝶云社区</div>
+            <div class="service-category">自助服务 · 标准 + 高级均有</div>
+          </div>
+        </div>
+        <div class="service-desc">互助问答、新手课堂（快速入门/学习路径）、常见问题解答、产品使用课件、官方知识库。<br><br>地址：vip.kingdee.com / www.kingdee.com</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 7×24小时</span>
+          <span class="meta-tag meta-type">自助</span>
+          <span class="meta-tag meta-std">总部交付</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(16,185,129,0.15);">🤖</div>
+          <div>
+            <div class="service-name">智能客服</div>
+            <div class="service-category">自助服务 · 标准 + 高级均有</div>
+          </div>
+        </div>
+        <div class="service-desc">在线智能机器人实时解答 + 4008-836-836 智能语音热线。可在产品端、金蝶云社区、官网入口使用，支持转人工 IM 服务。</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 7×24小时</span>
+          <span class="meta-tag meta-type">智能自动化</span>
+          <span class="meta-tag meta-std">总部交付</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">系统运维 · 稳定运行保障</div>
+    <div class="service-grid" style="margin-bottom:24px;">
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(16,185,129,0.15);">☁️</div>
+          <div>
+            <div class="service-name">公有云运维</div>
+            <div class="service-category">系统运维 · 标准 + 高级均有</div>
+          </div>
+        </div>
+        <div class="service-desc">① 标准化运维保障确保系统持续稳定<br>② 环境健康巡检与监控预警<br>③ 全面安全运维保障<br>④ 标准产品环境版本升级更新<br><br>不含配置调整 / 测试服务 / 定制开发升级</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 7×8小时</span>
+          <span class="meta-tag meta-type">线上</span>
+          <span class="meta-tag meta-std">总部交付</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(245,166,35,0.15);">🖥️</div>
+          <div>
+            <div class="service-name">私有云运维</div>
+            <div class="service-category">系统运维 · 仅高级服务</div>
+          </div>
+        </div>
+        <div class="service-desc">通过在线工单提供：<br>① 标准环境安装指导<br>② 标准产品补丁安装指导<br>③ 产品许可导入协助<br>④ 系统服务启动 / 停止 / 重启<br>⑤ 系统宕机应急响应</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 5×8小时</span>
+          <span class="meta-tag meta-type">线上+远程</span>
+          <span class="meta-tag meta-prem-only">⭐ 高级专属</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">服务支持 · 问题快速处理</div>
+    <div class="service-grid" style="margin-bottom:24px;">
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(26,86,255,0.15);">📞</div>
+          <div>
+            <div class="service-name">热线服务</div>
+            <div class="service-category">服务支持 · 两级有区别</div>
+          </div>
+        </div>
+        <div class="service-desc">拨打 4008-836-836：<br>• <strong style="color:#5b8fff;">标准版</strong>：仅处理致命故障（系统大面积不可用），每年 ≤4次<br>• <strong style="color:#a78bfa;">高级版</strong>：全类型问题，不限次数，7×24全天候</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 7×24小时</span>
+          <span class="meta-tag meta-type">线上热线</span>
+          <span class="meta-tag meta-std">总部交付</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(245,166,35,0.15);">🎫</div>
+          <div>
+            <div class="service-name">在线工单</div>
+            <div class="service-category">服务支持 · 仅高级服务</div>
+          </div>
+        </div>
+        <div class="service-desc">处理应用类问题、数据问题（不含二开及第三方）。<br>提交渠道：产品端入口 / 官网 / ticket.kingdee.com / 云社区<br>响应标准：1个工作日内</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 5×8小时</span>
+          <span class="meta-tag meta-type">线上工单</span>
+          <span class="meta-tag meta-prem-only">⭐ 高级专属</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(139,92,246,0.15);">💬</div>
+          <div>
+            <div class="service-name">IM人工服务</div>
+            <div class="service-category">服务支持 · 仅高级服务</div>
+          </div>
+        </div>
+        <div class="service-desc">技术支持工程师通过在线 IM 即时响应，解决产品应用类咨询问题。<br>支持产品：EAS Cloud / 金蝶云·星空（其他产品逐步开通）</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 7×8小时</span>
+          <span class="meta-tag meta-type">在线IM</span>
+          <span class="meta-tag meta-prem-only">⭐ 高级专属</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">价值提升 · 深度服务（高级专属）</div>
+    <div class="service-grid" style="margin-bottom:24px;">
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(245,166,35,0.15);">🛠️</div>
+          <div>
+            <div class="service-name">定制开发维护</div>
+            <div class="service-category">价值提升 · 仅赠首年</div>
+          </div>
+        </div>
+        <div class="service-desc">首次购买高级服务赠送首年：<br>① 定制开发方案咨询与指导<br>② 定制功能运行异常分析排查与修复<br>③ 系统二开接口运行维护</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 5×8小时</span>
+          <span class="meta-tag meta-prem-only">⭐ 首年赠送</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(255,107,43,0.15);">⚡</div>
+          <div>
+            <div class="service-name">关键时刻支持</div>
+            <div class="service-category">价值提升 · 专家护航</div>
+          </div>
+        </div>
+        <div class="service-desc">月结、年结、系统上线、审计、季节性业务高峰等关键时刻，由专属技术经理协调专家资源提供保障。<br><br>⚠️ 不超过2人天/年；合同金额低于5000元不含此项</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 按约定时间</span>
+          <span class="meta-tag meta-prem-only">⭐ 2人天/年</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(139,92,246,0.15);">👤</div>
+          <div>
+            <div class="service-name">专属技术经理</div>
+            <div class="service-category">价值提升 · 1对1专家</div>
+          </div>
+        </div>
+        <div class="service-desc">当地中高级技术专家1对1服务：<br>① 协调资源跟进用户问题<br>② 疑难问题组织专家分析<br>③ 重要事件进度汇报<br>④ 定期工单问题总结汇报</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 5×8小时</span>
+          <span class="meta-tag meta-prem-only">⭐ 机构伙伴交付</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(16,185,129,0.15);">👥</div>
+          <div>
+            <div class="service-name">专属IM服务群</div>
+            <div class="service-category">价值提升 · 快速响应</div>
+          </div>
+        </div>
+        <div class="service-desc">建立专属服务群（≤5用户），工作时间即时响应。<br>IM工具优先：云之家 &gt; 企业微信 &gt; 钉钉等</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 7×8小时</span>
+          <span class="meta-tag meta-prem-only">⭐ 5用户群</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(245,166,35,0.15);">📊</div>
+          <div>
+            <div class="service-name">专属服务报告</div>
+            <div class="service-category">价值提升 · 年度洞察</div>
+          </div>
+        </div>
+        <div class="service-desc">年度分析诊断报告，包含：<br>① 系统购买和使用基本情况<br>② 用户反馈数据统计分析<br>③ 问题类型归纳与改善建议</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 1次/年</span>
+          <span class="meta-tag meta-prem-only">⭐ 诊断建议</span>
+        </div>
+      </div>
+      <div class="service-item">
+        <div class="service-item-header">
+          <div class="service-icon" style="background:rgba(26,86,255,0.15);">🔬</div>
+          <div>
+            <div class="service-name">系统健康检查</div>
+            <div class="service-category">价值提升 · 自动化诊断</div>
+          </div>
+        </div>
+        <div class="service-desc">使用自动化工具进行全面检查：<br>① 业务诊断（完整性/合规性/准确性/有效性）→ 业务诊断报告<br>② 系统巡检（环境全面扫描）→ 系统巡检报告</div>
+        <div class="service-meta">
+          <span class="meta-tag meta-time">⏰ 1次/年</span>
+          <span class="meta-tag meta-prem-only">⭐ 双报告输出</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 推介指南 ========== -->
+  <div id="pitch" class="section-anchor">
+    <div class="section-header">
+      <div class="section-header-icon" style="background:linear-gradient(135deg,#ff6b2b,#e05000);">💼</div>
+      <div class="section-header-text">
+        <div class="section-header-title">推介指南</div>
+        <div class="section-header-sub">痛点识别 · 话术参考 · 升级路径 · 异议处理</div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#ff6b2b,#e05000);">🎯</div>
+        推介前：识别客户类型与需求
+      </div>
+      <div class="pitch-section-title">客户痛点 → 对应服务权益</div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-title">😰 怕系统出问题没人管</div>
+          <div class="pain-desc">系统崩了/月结出错，联系不到人，影响正常业务</div>
+          <div class="pitch-arrow">→ 关键时刻支持 + 专属技术经理 + 在线工单1日响应</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">📱 需要快速得到反馈</div>
+          <div class="pain-desc">提工单等太久，问题积压，效率低</div>
+          <div class="pitch-arrow">→ 专属IM服务群（7×8即时）+ IM人工服务</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">🔧 有定制开发需要维护</div>
+          <div class="pain-desc">二次开发的功能出问题，原厂不管，无人维护</div>
+          <div class="pitch-arrow">→ 定制开发维护（首年赠送）</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">📈 想更好地用好系统</div>
+          <div class="pain-desc">不清楚系统现状是否健康，缺少优化改进思路</div>
+          <div class="pitch-arrow">→ 系统健康检查报告 + 专属服务报告</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">🖥️ 用私有云部署</div>
+          <div class="pain-desc">私有化部署的运维指导、宕机响应无保障</div>
+          <div class="pitch-arrow">→ 私有云运维（标准服务不含）</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">🎓 用户不懂系统操作</div>
+          <div class="pain-desc">新员工上岗培训、老员工深度应用能力弱</div>
+          <div class="pitch-arrow">→ 金蝶云社区新手课堂 + 知识库 + IM人工咨询</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">💬</div>
+        推介话术参考
+      </div>
+
+      <div class="pitch-section-title">推介标准成功服务</div>
+      <div class="talk-track">
+        <div class="talk-track-label">开场引入</div>
+        <div class="talk-track-content">"您续订金蝶产品后，默认就包含了<strong>标准成功服务</strong>。这不只是'售后'，金蝶把它定义为帮您<strong>用好系统、防范风险</strong>的基础保障。主要包括金蝶云社区7×24的知识自助、智能客服随时解答，以及公有云环境全天候的巡检运维。遇到真正的<strong>致命故障</strong>——系统大面积无法使用——热线也可以第一时间响应。"</div>
+      </div>
+      <div class="talk-track">
+        <div class="talk-track-label">价值定位</div>
+        <div class="talk-track-content">"简单说，<strong>标准服务保的是基本盘</strong>——系统不出大事，出了大事有人救。对于业务相对稳定、规模不大的团队，这是非常扎实的底线保障。"</div>
+      </div>
+
+      <div class="pitch-section-title">推介高级成功服务（升级话术）</div>
+      <div class="talk-track">
+        <div class="talk-track-label">对比引导</div>
+        <div class="talk-track-content">"标准服务是底线保障，<strong>高级成功服务是主动经营</strong>。最大的区别在于：您有了一个<strong>专属技术经理</strong>，他是您在金蝶的专属管家。不只是出了问题来处理，更是帮您定期梳理应用现状、提前发现隐患、在月结/年结这些<strong>关键时刻</strong>为您护航。"</div>
+      </div>
+      <div class="talk-track">
+        <div class="talk-track-label">关键时刻场景</div>
+        <div class="talk-track-content">"比如每年年末，财务封账、审计同步进来，这是最容易出问题的时候。高级服务里有<strong>2个人天的关键时刻专家在线护航</strong>，专家全程陪同，出了问题第一时间有人在。这个价值，远不是单次服务费能衡量的。"</div>
+      </div>
+      <div class="talk-track">
+        <div class="talk-track-label">定制开发场景</div>
+        <div class="talk-track-content">"我知道您的系统有定制开发的部分。标准服务对定制开发问题是不管的——这是一个很大的盲区。<strong>高级服务首年会赠送定制开发维护支持</strong>，帮您的二开功能做运行异常排查和修复，把这个风险口先堵上。"</div>
+      </div>
+      <div class="talk-track">
+        <div class="talk-track-label">IM即时响应场景</div>
+        <div class="talk-track-content">"另外，有了高级服务，我们会建立一个<strong>专属的服务群</strong>，把您这边的关键用户拉进来。工作时间有问题在群里发一下，即时响应——不用再打热线等转接、提工单等回复，体验完全不一样。"</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#f5a623,#e07b00);">🔄</div>
+        升级路径 — 从标准到高级
+      </div>
+      <div class="upgrade-path">
+        <div class="upgrade-box standard">
+          <div class="upgrade-title">🔵 标准成功服务</div>
+          <ul class="upgrade-list">
+            <li>金蝶云社区（7×24）</li>
+            <li>智能客服（7×24）</li>
+            <li>公有云运维（7×8）</li>
+            <li>补丁包下载</li>
+            <li>许可升级</li>
+            <li>热线（仅致命故障）</li>
+          </ul>
+        </div>
+        <div class="upgrade-arrow-box">➜</div>
+        <div class="upgrade-box premium">
+          <div class="upgrade-title">⭐ 高级成功服务<br><span style="font-size:11px;color:var(--text-muted);">以上全部 + 以下专属</span></div>
+          <ul class="upgrade-list">
+            <li>私有云运维（工单+远程）</li>
+            <li>热线服务（全问题7×24）</li>
+            <li class="premium-only">★ 在线工单（5×8，1日响应）</li>
+            <li class="premium-only">★ IM人工服务（7×8）</li>
+            <li class="premium-only">★ 定制开发维护（首年赠）</li>
+            <li class="premium-only">★ 关键时刻支持（2人天）</li>
+            <li class="premium-only">★ 专属技术经理（1对1）</li>
+            <li class="premium-only">★ 专属IM服务群（7×8）</li>
+            <li class="premium-only">★ 专属服务报告（年度）</li>
+            <li class="premium-only">★ 系统健康检查（年度）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#10b981,#059669);">❓</div>
+        拜访前必备：关键探询问题
+      </div>
+      <ol class="key-question-list">
+        <li>
+          您现在出了问题，主要通过什么渠道联系我们？等待时间能接受吗？
+          <span class="hint">→ 挖掘响应速度痛点，引入在线工单和IM服务群价值</span>
+        </li>
+        <li>
+          您有没有经历过月结、年结或系统上线时出问题的情况？
+          <span class="hint">→ 引出关键时刻支持的场景，场景感最强</span>
+        </li>
+        <li>
+          您的系统有没有做过定制开发或接口集成？出问题一般找谁？
+          <span class="hint">→ 触发定制开发维护的需求，标准服务的盲区</span>
+        </li>
+        <li>
+          您有没有用私有化部署（私有云）？运维这块有专人负责吗？
+          <span class="hint">→ 私有云运维是高级服务独有，标准不含</span>
+        </li>
+        <li>
+          您现在能清楚了解系统的健康状态吗？数据是否准确、完整？
+          <span class="hint">→ 引入系统健康检查和专属服务报告的价值</span>
+        </li>
+        <li>
+          您的IT团队对金蝶系统有多熟悉？有没有专门的系统管理员？
+          <span class="hint">→ 能力不足 → 专属技术经理是外援；能力强 → 强调效率提升</span>
+        </li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <div class="icon" style="background:linear-gradient(135deg,#ff6b2b,#e05000);">💡</div>
+        常见异议处理
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-title">🙄 "标准服务就够了"</div>
+          <div class="pain-desc">话术：标准服务保底线，但如果您有定制开发、私有云、或者年结等关键时刻，高级服务是主动风控，事前预防成本远低于事后救火。</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">💰 "价格太贵"</div>
+          <div class="pain-desc">话术：专属技术经理 + 关键时刻2人天 + 定制开发维护首年赠送，折算单项成本其实相当划算。如果上线时系统出问题影响业务一天，损失是多少？</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">🤔 "我们IT水平高，不需要"</div>
+          <div class="pain-desc">话术：即便IT能力强，专属技术经理更多是帮您对接金蝶内部资源、协调产品问题推进，这是外部渠道买不到的"内通能力"。</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-title">⏰ "已经有标准服务，续费就行"</div>
+          <div class="pain-desc">话术：建议今年先走一个系统健康检查，看看系统现状，再决定是否升级，数据说话。数据会告诉我们答案。</div>
+        </div>
+      </div>
+      <div class="alert-box" style="margin-top:4px;">
+        ⚠️ 重要提示：合同金额 &lt; 5000 元时，高级成功服务不含「关键时刻支持」人天，推介前需确认合同金额，避免承诺过度。
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  金蝶客户成功服务体系 · 内部参考资料 · 基于《客户成功服务（高级成功服务&amp;标准成功服务）》文档整理 · 2026年5月
+</footer>
+
+<script>
+  // 高亮活跃导航项（滚动检测）
+  const sections = ['overview','compare','detail','pitch'];
+  const navLinks = document.querySelectorAll('.nav-link[data-section]');
+  const navHeight = 64;
+
+  function updateNav() {
+    let current = sections[0];
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const top = el.getBoundingClientRect().top;
+      if (top <= navHeight + 40) current = id;
+    }
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.dataset.section === current);
+    });
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+</script>
+</body>
+</html>

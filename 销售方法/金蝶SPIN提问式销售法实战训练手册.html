@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金蝶SPIN提问式销售法实战训练手册</title>
+<style>
+:root {--primary:#1A57E4;--primary-l:#4A7FEF;--primary-bg:#E8EEFE;--success:#059669;--success-bg:#D1FAE5;--error:#DC2626;--error-bg:#FEE2E2;--warn:#D97706;--warn-bg:#FEF3C7;--text:#1E293B;--text-s:#475569;--text-t:#94A3B8;--bg:#F8FAFC;--card:#FFFFFF;--border:#E2E8F0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;}
+
+/* 顶部导航 */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:4px;padding:10px 16px;flex-wrap:wrap;}
+.nav-btn{padding:8px 18px;border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;background:transparent;color:var(--text-s);transition:all .2s;font-family:inherit;white-space:nowrap;}
+.nav-btn:hover{background:var(--primary-bg);color:var(--primary);}
+.nav-btn.active{background:var(--primary);color:#fff;}
+
+/* Hero */
+.hero{margin-top:52px;background:linear-gradient(135deg,#1A57E4 0%,#4A7FEF 50%,#6B9AF2 100%);color:#fff;text-align:center;padding:56px 24px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06);}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-60px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04);}
+.hero h1{font-size:2.6rem;font-weight:800;position:relative;z-index:1;}
+.hero .sub{font-size:1.15rem;opacity:.85;position:relative;z-index:1;margin-top:10px;}
+.hero .tags{display:flex;gap:8px;justify-content:center;margin-top:18px;flex-wrap:wrap;position:relative;z-index:1;}
+.hero .tag{background:rgba(255,255,255,.18);padding:4px 14px;border-radius:20px;font-size:.85rem;}
+
+/* Section */
+.section{max-width:1060px;margin:0 auto;padding:40px 24px;}
+.sec-anchor{scroll-margin-top:72px;}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:12px;border-bottom:3px solid var(--primary);}
+.sec-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0;}
+.sec-header h2{font-size:1.65rem;font-weight:700;}
+
+/* Card */
+.card{background:var(--card);border-radius:12px;padding:24px 28px;margin-bottom:18px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.02);}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.card h3{font-size:1.2rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.card h3 .badge{font-size:.75rem;padding:2px 10px;border-radius:12px;font-weight:600;}
+.badge-s{background:var(--primary-bg);color:var(--primary);}
+.badge-p{background:var(--warn-bg);color:var(--warn);}
+.badge-i{background:var(--error-bg);color:var(--error);}
+.badge-n{background:var(--success-bg);color:var(--success);}
+.card p{margin-bottom:6px;color:var(--text-s);font-size:1.02rem;}
+.card ul{margin:6px 0 6px 18px;color:var(--text-s);}
+.card ul li{margin-bottom:4px;}
+
+/* Highlight */
+.highlight{background:#F0F9FF;border-left:4px solid #3B82F6;border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-size:.95rem;}
+.highlight.warn{background:var(--warn-bg);border-left-color:var(--warn);}
+.highlight.err{background:var(--error-bg);border-left-color:var(--error);}
+.highlight.ok{background:var(--success-bg);border-left-color:var(--success);}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem;}
+th{background:var(--primary-bg);color:var(--primary);padding:10px 14px;text-align:left;font-weight:600;border:1px solid var(--border);}
+td{padding:10px 14px;border:1px solid var(--border);color:var(--text-s);}
+tr:nth-child(even){background:#FAFBFC;}
+tr:hover{background:#F0F4FF;}
+
+/* Grid */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:10px 0;}
+.grid-item{background:var(--bg);border-radius:10px;padding:14px 16px;border:1px solid var(--border);}
+
+/* Step */
+.step{display:flex;gap:12px;padding:10px 0;}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.95rem;}
+
+/* Quote */
+blockquote{background:var(--primary-bg);border-left:4px solid var(--primary);padding:16px 20px;border-radius:0 8px 8px 0;margin:14px 0;font-style:italic;color:var(--primary);font-size:1.05rem;}
+
+/* Dialog */
+.dialog{background:#F5F7FA;border-radius:8px;padding:12px 16px;margin:8px 0;}
+.dialog .q{color:var(--primary);font-weight:600;}
+.dialog .a{color:var(--text-s);margin-top:4px;}
+
+/* Quiz */
+.quiz-item{background:var(--bg);border-radius:10px;padding:16px 20px;margin:8px 0;border:1px solid var(--border);}
+.quiz-item .q-title{font-weight:700;margin-bottom:8px;}
+.quiz-item label{display:block;padding:4px 0;color:var(--text-s);cursor:pointer;}
+.quiz-item input[type=radio]{margin-right:8px;}
+
+/* 评分栏 */
+.score-bar{display:flex;align-items:center;gap:8px;margin:8px 0;}
+.score-bar .bar{flex:1;height:10px;border-radius:5px;background:var(--border);overflow:hidden;}
+.score-bar .bar-fill{height:100%;border-radius:5px;transition:width .4s;}
+.bar-high{background:var(--success);}
+.bar-mid{background:var(--warn);}
+.bar-low{background:var(--error);}
+
+/* Footer */
+.footer{text-align:center;padding:32px;color:var(--text-t);font-size:.85rem;}
+
+/* Checklist */
+.checklist{list-style:none;}
+.checklist li{padding:6px 0;display:flex;align-items:flex-start;gap:8px;}
+.checklist li::before{content:'☐';color:var(--primary);font-weight:700;flex-shrink:0;}
+
+@media(max-width:640px){
+  .hero h1{font-size:1.5rem;}
+  .section{padding:28px 12px;}
+  .card{padding:18px 16px;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .top-nav{gap:2px;padding:8px 8px;}
+  .nav-btn{padding:6px 10px;font-size:.82rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== 导航栏 ========== -->
+<nav class="top-nav">
+  <button class="nav-btn active" data-target="sec1">① 什么是SPIN</button>
+  <button class="nav-btn" data-target="sec2">② 四阶段详解</button>
+  <button class="nav-btn" data-target="sec3">③ SPIN vs 传统推销</button>
+  <button class="nav-btn" data-target="sec4">④ 实战话术拆解</button>
+  <button class="nav-btn" data-target="sec5">⑤ 常见误区与避坑</button>
+  <button class="nav-btn" data-target="sec6">⑥ 自测评分表</button>
+  <button class="nav-btn" data-target="sec7">⑦ 行动指南</button>
+</nav>
+
+<!-- ========== Hero ========== -->
+<header class="hero">
+  <h1>🎯 SPIN 提问式销售法</h1>
+  <p class="sub">实战训练手册 · 从「推销产品」到「客户自己说服自己」</p>
+  <div class="tags">
+    <span class="tag">销售方法论</span>
+    <span class="tag">实战训练</span>
+    <span class="tag">金蝶内部培训</span>
+    <span class="tag">2026</span>
+  </div>
+</header>
+
+<!-- ========== Section 1: 什么是SPIN ========== -->
+<div class="section">
+  <div class="sec-anchor" id="sec1"></div>
+  <div class="sec-header">
+    <div class="sec-icon" style="background:var(--primary);">①</div>
+    <h2>什么是 SPIN</h2>
+  </div>
+
+  <div class="card">
+    <h3>📖 一句话定义</h3>
+    <blockquote>SPIN 不是「问问题」，而是<strong>用一套精心设计的问题链，让客户自己走完「发现问题 → 意识到严重 → 迫切想解决」的心理过程。</strong>最后你推方案的时候，他不是在听你推销——他是在听你帮他解决他刚刚承认的问题。</blockquote>
+  </div>
+
+  <div class="card">
+    <h3>🔤 SPIN 全称拆解</h3>
+    <table>
+      <tr><th>字母</th><th>英文</th><th>中文</th><th>一句话释义</th><th>提问方向</th></tr>
+      <tr><td><strong>S</strong></td><td>Situation</td><td>情境 / 现状</td><td>问清楚：现在怎么干的？</td><td>背景、流程、数字、现状</td></tr>
+      <tr><td><strong>P</strong></td><td>Problem</td><td>问题 / 难点</td><td>挖出来：哪儿出问题了？</td><td>困难、障碍、不满、痛点</td></tr>
+      <tr><td><strong>I</strong></td><td>Implication</td><td>影响 / 后果</td><td>放大它：不解决会怎样？</td><td>连锁反应、损失、风险、代价</td></tr>
+      <tr><td><strong>N</strong></td><td>Need-payoff</td><td>需求 / 回报</td><td>给他看：解决了有多爽？</td><td>价值、收益、画面感、正面想象</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📜 起源</h3>
+    <p>SPIN 由英国心理学家 <strong>Neil Rackham</strong> 在1988年提出。他带领团队跟踪了<strong>35000个B2B销售拜访</strong>，对比顶尖销售和普通销售的行为差异，发现核心区别不在「怎么说产品」，而在<strong>「怎么问问题」</strong>。</p>
+    <p>他的书《SPIN Selling》是 B2B 销售领域的经典方法论，至今仍是 IBM、SAP、Oracle 等企业级销售的标准训练框架。</p>
+  </div>
+
+  <div class="highlight">
+    <strong>💡 核心认知：</strong>你觉得你在「卖东西」，客户觉得你在「帮我发现问题」。顶尖销售和普通销售最大的差距，不是口才，是提问设计能力。
+  </div>
+</div>
+
+<!-- ========== Section 2: SPIN四阶段详解 ========== -->
+<div class="section">
+  <div class="sec-anchor" id="sec2"></div>
+  <div class="sec-header">
+    <div class="sec-icon" style="background:var(--primary-l);">②</div>
+    <h2>SPIN 四阶段详解</h2>
+  </div>
+
+  <!-- S -->
+  <div class="card">
+    <h3><span class="badge badge-s">S</span> Situation —— 情境摸底</h3>
+    <p><strong>目标：</strong>让客户自己说出事实，建立信任，为后续问题铺路。</p>
+    <p><strong>核心原则：</strong>别急着卖，先拉关系。用问题让客户觉得「这人懂我这一行」。</p>
+    <table>
+      <tr><th>✅ 好的 S 问题</th><th>❌ 差的 S 问题</th></tr>
+      <tr><td>「领导，咱百利下面几个厂区，月底财务数据汇总现在走什么流程？」</td><td>「你们公司有多少人？」（太泛、没价值）</td></tr>
+      <tr><td>「这群核心客户，是谁在盯？私人健康顾问一对一？」</td><td>「你们用什么软件？」（像查户口）</td></tr>
+      <tr><td>「合并报表从各厂关账到最终出数，大概要多久？」</td><td>「你们公司成立几年了？」（无关痛点）</td></tr>
+    </table>
+    <div class="highlight">
+      <strong>🎯 技巧：</strong>S 阶段不要超过 3-5 个问题。目的不是收集信息——是让他自己说出他之前没仔细想过的「事实」。数字从他嘴里出来，比从你嘴里出来杀伤力大一百倍。
+    </div>
+  </div>
+
+  <!-- P -->
+  <div class="card">
+    <h3><span class="badge badge-p">P</span> Problem —— 痛点深挖</h3>
+    <p><strong>目标：</strong>让他承认「确实有麻烦」，而且这个麻烦不是小事。</p>
+    <p><strong>核心原则：</strong>用追问逼出他的疼。不要满足于第一个笼统的回答。</p>
+    <table>
+      <tr><th>✅ 好的 P 问题</th><th>❌ 差的 P 问题</th></tr>
+      <tr><td>「中间数据对不上，出过错吗？最严重的一次什么后果？」</td><td>「你觉得现在有什么问题吗？」（太宽泛）</td></tr>
+      <tr><td>「财务部的同事，每到月底加班到什么程度？有离职因为这个的吗？」</td><td>「效率是不是不太高？」（引导性太强）</td></tr>
+      <tr><td>「商保那边有没有少结过？最多一笔漏了多少？」</td><td>「你们对账有没有问题？」（只能得到「还好吧」）</td></tr>
+    </table>
+    <div class="highlight warn">
+      <strong>🎯 技巧：</strong>P 阶段的关键是「追问」。客户说「还好」，你问「那最差的一次呢？」客户说「有时候慢」，你问「最慢的一次多久？」——把笼统的不满变成具体的伤口。
+    </div>
+  </div>
+
+  <!-- I -->
+  <div class="card">
+    <h3><span class="badge badge-i">I</span> Implication —— 影响放大</h3>
+    <p><strong>目标：</strong>把小火苗变成火灾。让他意识到「不解决这个问题的代价，比解决它的成本大得多」。</p>
+    <p><strong>核心原则：</strong>算三笔账——<strong>钱、风险、人</strong>。数字从他嘴里说出来之后，你帮他乘上去。</p>
+    <div class="grid-3">
+      <div class="grid-item"><strong>💰 算钱</strong><br><span style="font-size:.9rem;color:var(--text-s);">人工成本、流失金额、机会成本</span></div>
+      <div class="grid-item"><strong>⚠️ 算风险</strong><br><span style="font-size:.9rem;color:var(--text-s);">审计追责、合规处罚、声誉损失</span></div>
+      <div class="grid-item"><strong>👥 算人</strong><br><span style="font-size:.9rem;color:var(--text-s);">离职率、培养成本、团队士气</span></div>
+    </div>
+    <div class="dialog" style="margin-top:14px;">
+      <div class="q">🗣️ 「我帮您算笔账——假设每月合并报表人工核对要5天，一年60天。财务部3个人，一年这60天就相当于烧掉一个人半年的产出。这还只是人力成本。」</div>
+      <div class="a" style="margin-top:8px;">→ 客户内心：我之前真没这么算过……</div>
+    </div>
+    <div class="highlight err">
+      <strong>🎯 技巧：</strong>I 阶段是 SPIN 的胜负手。S 和 P 很多人会做，但 I 做不好，客户只会说「嗯是个问题」然后放一边。I 做得够深，客户会反过来催你：「那你们那个怎么解决？多少钱？」
+    </div>
+  </div>
+
+  <!-- N -->
+  <div class="card">
+    <h3><span class="badge badge-n">N</span> Need-payoff —— 需求回报</h3>
+    <p><strong>目标：</strong>从「解决问题」升级到「给他未来画面」。他不是在买产品，是在买一个<strong>更好的状态</strong>。</p>
+    <p><strong>核心原则：</strong>让客户自己描述解决方案的价值，而不是你告诉他。</p>
+    <table>
+      <tr><th>✅ 好的 N 问题</th><th>❌ 差的 N 问题</th></tr>
+      <tr><td>「如果AI能自动对账、异常自动标红，您的财务同事不用再盯屏幕对数字，而是做专业判断——这对团队的价值有多大？」</td><td>「我们的系统能提升80%效率。」（你在说，不是他在想）</td></tr>
+      <tr><td>「合并周期从两周压到两天，您觉得最大的受益是什么？审计不用怕？还是财务不用加班？」</td><td>「我们这个产品很厉害，你买吧。」（硬推）</td></tr>
+    </table>
+    <div class="highlight ok">
+      <strong>🎯 技巧：</strong>N 阶段的问题应该让他产生「画面感」——想象问题解决后的状态。当他开始主动问「那你们这个怎么做的」的时候，SPIN 闭环了。
+    </div>
+  </div>
+
+  <!-- 一张总结表 -->
+  <div class="card">
+    <h3>📊 四阶段速查表</h3>
+    <table>
+      <tr><th>阶段</th><th>你做啥</th><th>客户心里发生什么</th><th>标志信号</th></tr>
+      <tr><td>S 情境</td><td>问现状、拉关系</td><td>「这人懂我这一行」</td><td>客户开始主动说细节</td></tr>
+      <tr><td>P 痛点</td><td>深挖麻烦、追问细节</td><td>「确实有问题，比我想的严重」</td><td>客户自己说出损失数字</td></tr>
+      <tr><td>I 放大</td><td>算钱算风险算人</td><td>「不解决代价太大了」</td><td>客户沉默、皱眉、叹气</td></tr>
+      <tr><td>N 回报</td><td>描绘解决后的画面</td><td>「我想要这个」</td><td>客户主动问价格/方案</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ========== Section 3: SPIN vs 传统推销 ========== -->
+<div class="section">
+  <div class="sec-anchor" id="sec3"></div>
+  <div class="sec-header">
+    <div class="sec-icon" style="background:var(--success);">③</div>
+    <h2>SPIN vs 传统推销：为什么 SPIN 赢</h2>
+  </div>
+
+  <div class="card">
+    <h3>⚔️ 对比一览</h3>
+    <table>
+      <tr><th>维度</th><th>传统推销</th><th>SPIN 提问式销售</th></tr>
+      <tr><td><strong>开场方式</strong></td><td>「我们产品能帮你…」</td><td>「您这边现在怎么做的？」</td></tr>
+      <tr><td><strong>信息流向</strong></td><td>销售→客户（单向灌输）</td><td>客户→销售→客户（双向对话）</td></tr>
+      <tr><td><strong>痛点来源</strong></td><td>销售猜测或直接指出</td><td>客户自己说出来</td></tr>
+      <tr><td><strong>价值呈现</strong></td><td>列功能、讲参数</td><td>让客户想象解决后的状态</td></tr>
+      <tr><td><strong>客户感觉</strong></td><td>「被推销」</td><td>「被理解」</td></tr>
+      <tr><td><strong>决策压力</strong></td><td>高——销售在推</td><td>低——客户在拉</td></tr>
+      <tr><td><strong>异议处理</strong></td><td>正面反驳</td><td>用新问题引导</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🧠 心理学原理：为什么 SPIN 有效</h3>
+    <div class="step"><div class="step-num">1</div><div><strong>认知失调：</strong>当客户自己说出「我们有这个问题」，与「我还没解决它」之间产生矛盾，他必须行动来消除不适感。</div></div>
+    <div class="step"><div class="step-num">2</div><div><strong>损失厌恶：</strong>人对「失去100万」的恐惧远大于「赚到100万」的渴望。I 阶段放大损失，驱动力几何级增长。</div></div>
+    <div class="step"><div class="step-num">3</div><div><strong>自我说服：</strong>人对自己说出来的结论深信不疑。SPIN 让他自己说出「我需要这个」，比你说100遍「你需要这个」更有效。</div></div>
+  </div>
+
+  <div class="highlight">
+    <strong>💡 一句话记住：</strong>客户说「我需要这个」> 你说「你需要这个」。SPIN 的本质是<strong>把销售从「我要卖」变成「你要买」</strong>。
+  </div>
+</div>
+
+<!-- ========== Section 4: 实战话术拆解 ========== -->
+<div class="section">
+  <div class="sec-anchor" id="sec4"></div>
+  <div class="sec-header">
+    <div class="sec-icon" style="background:var(--warn);">④</div>
+    <h2>实战话术拆解：丽滋卡尔 · AI财务对账场景</h2>
+  </div>
+
+  <div class="card">
+    <h3>🎬 完整对话 · 逐句标注</h3>
+
+    <div class="dialog">
+      <div class="q"><span class="badge badge-s">S</span> 「X总，咱丽滋现在的收入流——自费、医保、商保直付、会员储值、企业团检——月底这五条线汇总，对账一般要几天？」</div>
+      <div class="a" style="font-size:.85rem;color:var(--text-t);margin-top:4px;">→ 让他自己说出流程和数字</div>
+    </div>
+
+    <div class="dialog">
+      <div class="q"><span class="badge badge-p">P</span> 「最麻烦的是哪种？我猜是商保——结算周期长，打款和账单对不上。有没有因为对不上账，商保那边少结了的？」</div>
+      <div class="a" style="font-size:.85rem;color:var(--text-t);margin-top:4px;">→ 精准出击：商保对账是行业通病</div>
+    </div>
+
+    <div class="dialog">
+      <div class="q"><span class="badge badge-p">P</span> 「最多一次漏了多少？一年下来，这类漏掉的能有多少？」</div>
+      <div class="a" style="font-size:.85rem;color:var(--text-t);margin-top:4px;">→ 追问！把模糊的「有时候漏」变成具体数字</div>
+    </div>
+
+    <div class="dialog">
+      <div class="q"><span class="badge badge-i">I</span> 「我帮您算笔账——商保少结一笔不是小事。利润率在那摆着，少结10万相当于一个核心会员白干。而且这类漏掉的，不是一笔两笔，是一类一类地漏。更扎心的是——漏了多少，您现在根本不知道，因为人工对不出来。」</div>
+      <div class="a" style="font-size:.85rem;color:var(--text-t);margin-top:4px;">→ 三层放大：钱→系统性漏洞→信息盲区。最后一句是暴击。</div>
+    </div>
+
+    <div class="dialog">
+      <div class="q"><span class="badge badge-i">I</span> 「财务同事月底为了对这几条线，加班到几点？这活儿干三年，您觉得他还留得住吗？」</div>
+      <div class="a" style="font-size:.85rem;color:var(--text-t);margin-top:4px;">→ 打完钱再打人——人走了更贵</div>
+    </div>
+
+    <div class="dialog">
+      <div class="q"><span class="badge badge-n">N</span> 「AI干这件事很简单——五条收入流自动抓取、自动匹配、异常自动标红。财务同事不再眼睛盯屏幕对数字，而是看AI标出来的异常点，做专业判断。合并周期从两周压到两天。」</div>
+      <div class="a" style="font-size:.85rem;color:var(--text-t);margin-top:4px;">→ 给方案+画面感。不是替代人，是升级人。</div>
+    </div>
+
+    <div class="dialog">
+      <div class="q"><span class="badge badge-n">N</span> 「您觉得这个方向，对您目前最头疼的——是'少结的钱追不回来'，还是'财务同事加班加得人心不稳'？我根据您最关心的点出方案。」</div>
+      <div class="a" style="font-size:.85rem;color:var(--text-t);margin-top:4px;">→ 二选一收尾。不管选哪个，都赢了。</div>
+    </div>
+  </div>
+
+  <div class="highlight ok">
+    <strong>🏆 这套话术为什么能赢：</strong>全程没有说一句「金蝶AI很厉害」。客户从「嗯这人懂行」→「确实有这个麻烦」→「卧槽这损失不小」→「你说怎么解决」——<strong>他自己走到了终点，你只是递了路牌。</strong>
+  </div>
+</div>
+
+<!-- ========== Section 5: 常见误区与避坑 ========== -->
+<div class="section">
+  <div class="sec-anchor" id="sec5"></div>
+  <div class="sec-header">
+    <div class="sec-icon" style="background:var(--error);">⑤</div>
+    <h2>常见误区与避坑指南</h2>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ 5大常见错误</h3>
+    <table>
+      <tr><th>误区</th><th>表现</th><th>后果</th><th>✅ 正确做法</th></tr>
+      <tr>
+        <td><strong>1. S 阶段过长</strong></td>
+        <td>问了七八个情境问题还不进入 P</td>
+        <td>客户觉得你在查户口，失去耐心</td>
+        <td>S 阶段控制在 3-5 个问题，2分钟内转入 P</td>
+      </tr>
+      <tr>
+        <td><strong>2. 跳过 I 直接给方案</strong></td>
+        <td>发现痛点后马上说「我们产品能解决」</td>
+        <td>痛点不够痛，客户说「我再想想」</td>
+        <td>问完 P 一定要问 I——「不解决会怎样？」至少追问一层</td>
+      </tr>
+      <tr>
+        <td><strong>3. N 阶段自嗨推销</strong></td>
+        <td>「我们AI能提升80%效率、500强都在用！」</td>
+        <td>客户免疫——每家公司都这么说</td>
+        <td>用问句呈现价值：「如果对账时间从两周变两天，您觉得最大的好处是什么？」</td>
+      </tr>
+      <tr>
+        <td><strong>4. 问题像审讯</strong></td>
+        <td>连续发问不带停顿，不给客户消化时间</td>
+        <td>客户防御模式启动，敷衍回答</td>
+        <td>每问完一个问题停顿 3 秒，让客户思考。沉默是你的武器。</td>
+      </tr>
+      <tr>
+        <td><strong>5. 不敢问敏感问题</strong></td>
+        <td>怕冒犯客户，不敢问「最严重的失误」「有没有人因此离职」</td>
+        <td>永远挖不到真正的痛点</td>
+        <td>先用「我冒昧问一句」「我见过类似情况」铺垫，再问敏感问题</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="highlight warn">
+    <strong>🚨 最大忌讳：</strong>SPIN 不是审讯。你的语气、节奏、倾听的姿态比问题本身更重要。客户愿意回答你的问题，前提是他觉得你在「帮他发现问题」，而不是「套他的话好推销」。
+  </div>
+</div>
+
+<!-- ========== Section 6: 自测评分表 ========== -->
+<div class="section">
+  <div class="sec-anchor" id="sec6"></div>
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#7C3AED;">⑥</div>
+    <h2>自测评分表</h2>
+  </div>
+
+  <div class="card">
+    <h3>📝 SPIN 能力自测（每项 1-5 分）</h3>
+    <p>诚实打分。总分50，看看你在哪个段位。</p>
+    <table>
+      <tr><th style="width:40px;">#</th><th>评估项</th><th>阶段</th><th style="width:100px;">自评分</th></tr>
+      <tr><td>1</td><td>我能在2分钟内用3-5个问题搞清楚客户现状</td><td>S</td><td>/5</td></tr>
+      <tr><td>2</td><td>客户愿意回答我的问题，不觉得被查户口</td><td>S</td><td>/5</td></tr>
+      <tr><td>3</td><td>我能用追问让客户自己说出具体痛点，而非笼统说「还好」</td><td>P</td><td>/5</td></tr>
+      <tr><td>4</td><td>我能让客户回忆「最严重的一次失误」并说出具体数字</td><td>P</td><td>/5</td></tr>
+      <tr><td>5</td><td>痛点挖出来后，我能忍住不马上推产品，先放大影响</td><td>I</td><td>/5</td></tr>
+      <tr><td>6</td><td>我会算三笔账：钱、风险、人</td><td>I</td><td>/5</td></tr>
+      <tr><td>7</td><td>放大完影响后，客户有明显的紧迫感（沉默/皱眉/追问）</td><td>I</td><td>/5</td></tr>
+      <tr><td>8</td><td>我不自己说产品多好，而是让客户描述「解决问题后的状态」</td><td>N</td><td>/5</td></tr>
+      <tr><td>9</td><td>N 阶段结束时，客户会主动问「那你们怎么做」「多少钱」</td><td>N</td><td>/5</td></tr>
+      <tr><td>10</td><td>我全程让客户说的话比我多，倾听＞表达</td><td>全局</td><td>/5</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🏅 段位评估</h3>
+    <table>
+      <tr><th>分数</th><th>段位</th><th>说明</th><th>下一步</th></tr>
+      <tr><td style="background:var(--success-bg);font-weight:700;">40-50</td><td>🏆 SPIN 大师</td><td>你的提问能驱动客户决策</td><td>带教团队，输出你自己的最佳实践</td></tr>
+      <tr><td style="background:var(--primary-bg);font-weight:700;">30-39</td><td>💪 进阶选手</td><td>有 SPIN 框架意识，但某阶段薄弱</td><td>针对性补弱项，重点练 I 阶段</td></tr>
+      <tr><td style="background:var(--warn-bg);font-weight:700;">20-29</td><td>🌱 SPIN 新手</td><td>知道概念，但实战中容易退回传统推销</td><td>拿一个真实客户反复练话术</td></tr>
+      <tr><td style="background:var(--error-bg);font-weight:700;">10-19</td><td>🆕 刚入门</td><td>对 SPIN 理解停留在理论</td><td>先背熟四阶段含义，下次拜访刻意只用 S 和 P</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ========== Section 7: 行动指南 ========== -->
+<div class="section">
+  <div class="sec-anchor" id="sec7"></div>
+  <div class="sec-header">
+    <div class="sec-icon" style="background:var(--success);">⑦</div>
+    <h2>30天 SPIN 训练计划</h2>
+  </div>
+
+  <div class="card">
+    <h3>📅 四周训练路线</h3>
+    <table>
+      <tr><th>周</th><th>训练重点</th><th>具体动作</th></tr>
+      <tr>
+        <td><strong>第1周</strong></td>
+        <td>S + P 刻意练习</td>
+        <td>
+          • 每次客户拜访前，写下 5 个 S 问题、5 个 P 问题<br>
+          • 拜访后复盘：客户回答了什么？哪个问题让他眼睛亮了？<br>
+          • <strong>规则：本周禁用「我们产品能…」句式，只能用问题</strong>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第2周</strong></td>
+        <td>I 阶段突破</td>
+        <td>
+          • 挖到痛点后，强制自己问至少一层「不解决会怎样」<br>
+          • 练习算三笔账：钱、风险、人<br>
+          • 复盘：哪个痛点放大后客户有明显的紧迫感？
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第3周</strong></td>
+        <td>N 阶段收尾</td>
+        <td>
+          • 练习用提问呈现价值：「如果对账时间从两周变两天…」<br>
+          • 观察指标：N 阶段后客户是否主动问价格/方案<br>
+          • <strong>规则：N 阶段至少用一个反问句收尾</strong>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>第4周</strong></td>
+        <td>完整闭环实战</td>
+        <td>
+          • 挑一个真实客户，完整走一遍 S→P→I→N<br>
+          • 录下来或找同事旁听给反馈<br>
+          • 生成个人 SPIN 话术库——每个阶段用过的有效问题存档
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>📋 客户练习名单模板</h3>
+    <p>选 3 个正在跟的客户，按 SPIN 框架提前设计问题链：</p>
+    <table>
+      <tr><th>客户</th><th>S 问题（3个）</th><th>P 问题（3个）</th><th>I 放大方向</th><th>N 价值画面</th></tr>
+      <tr><td>1. _________</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>2. _________</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>3. _________</td><td></td><td></td><td></td><td></td></tr>
+    </table>
+    <p style="margin-top:12px;color:var(--text-t);font-size:.85rem;">✏️ 把这个模板打印出来，每次拜访前填好，拜访后复盘。</p>
+  </div>
+
+  <div class="highlight ok">
+    <strong>🎯 30天唯一的成功标准：</strong>当你不需要提前准备问题，张嘴就能按 SPIN 节奏跟客户聊的时候，这个方法论就长在你身上了。在那之前——<strong>提前写、盯着练、每周复盘。</strong>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>金蝶软件 · 客户成功业务部 · SPIN 实战训练手册 v1.0</p>
+  <p>「让客户自己说服自己」</p>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+(function(){
+  const nav = document.querySelector('.top-nav');
+  const btns = nav.querySelectorAll('.nav-btn');
+  const sections = [];
+  btns.forEach(b => {
+    const id = b.getAttribute('data-target');
+    const el = document.getElementById(id);
+    if (el) sections.push({btn:b, el:el});
+  });
+
+  function setActive(target){
+    btns.forEach(b => b.classList.remove('active'));
+    const btn = nav.querySelector(`[data-target="${target}"]`);
+    if (btn) btn.classList.add('active');
+  }
+
+  // 点击导航按钮
+  btns.forEach(b => {
+    b.addEventListener('click', function(){
+      const id = this.getAttribute('data-target');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({behavior:'smooth'});
+        setActive(id);
+      }
+    });
+  });
+
+  // 滚动时自动切换 active
+  let ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      requestAnimationFrame(function(){
+        let current = sections[0];
+        const scrollY = window.scrollY + 100;
+        for (let i = sections.length - 1; i >= 0; i--) {
+          if (sections[i].el.offsetTop <= scrollY) {
+            current = sections[i];
+            break;
+          }
+        }
+        setActive(current.btn.getAttribute('data-target'));
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
