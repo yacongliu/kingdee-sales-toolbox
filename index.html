@@ -122,6 +122,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);co
       <span>📂 天津 · 营销中心</span>
       <span id="totalCount">📊 统计中...</span>
       <span>👤 刘总</span>
+      <span><a href="./销售工具箱学习总结.html" target="_blank" style="color:inherit;text-decoration:underline;">📚 学习总结</a></span>
     </div>
   </div>
 </div>
@@ -133,6 +134,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);co
   <div class="stat-box animate" id="stats-ir"><div class="num">-</div><div class="lbl">行业研究</div></div>
   <div class="stat-box animate" id="stats-pl"><div class="num">-</div><div class="lbl">产品学习</div></div>
   <div class="stat-box animate" id="stats-sm"><div class="num">-</div><div class="lbl">销售方法</div></div>
+  <div class="stat-box animate" id="stats-guide"><div class="num">1</div><div class="lbl">学习总结</div></div>
 </div>
 
 <div class="flow">
@@ -191,6 +193,11 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);co
   行业分析报告 → <code style="background:rgba(79,70,229,.08);padding:1px 6px;border-radius:3px;font-size:12px;">行业研究/</code> &nbsp;|&nbsp;
   产品方案/打单速查 → <code style="background:rgba(79,70,229,.08);padding:1px 6px;border-radius:3px;font-size:12px;">产品学习/</code> &nbsp;|&nbsp;
   话术/策略/方法 → <code style="background:rgba(79,70,229,.08);padding:1px 6px;border-radius:3px;font-size:12px;">销售方法/</code>
+</div>
+
+<div style="margin-top:12px;padding:18px 20px;background:linear-gradient(135deg,#F5F0FF,#EEF2FF);border-radius:12px;border:1px solid rgba(124,58,237,.15);">
+  <strong style="color:#7C3AED;">📚 <a href="./销售工具箱学习总结.html" target="_blank" style="color:#7C3AED;">销售工具箱学习总结</a></strong><br>
+  <span style="font-size:12px;color:#475569;">基于2026.06.08完整系统性学习生成。包含：全部34份资料分类梳理、每份资料的关键要点提炼与使用场景说明、后续协作规范与索引维护方法。</span>
 </div>
 
 </div><!-- /container -->
@@ -266,7 +273,7 @@ document.getElementById('ci-count').textContent = files.ci.length;
 document.getElementById('ir-count').textContent = files.ir.length;
 document.getElementById('pl-count').textContent = files.pl.length;
 document.getElementById('sm-count').textContent = files.sm.length;
-document.getElementById('totalCount').textContent = `📊 共 ${files.ci.length+files.ir.length+files.pl.length+files.sm.length} 份资料`;
+document.getElementById('totalCount').textContent = `📊 共 ${files.ci.length+files.ir.length+files.pl.length+files.sm.length} 份资料 + 1份学习总结`;
 document.getElementById('stats-ci').querySelector('.num').textContent = files.ci.length;
 document.getElementById('stats-ir').querySelector('.num').textContent = files.ir.length;
 document.getElementById('stats-pl').querySelector('.num').textContent = files.pl.length;

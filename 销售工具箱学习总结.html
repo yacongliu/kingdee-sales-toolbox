@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>销售工具箱 · 系统性学习总结</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--pri:#4F46E5;--pri-light:#818CF8;--pri-dark:#4338CA;--pri-deep:#1E1B4B;--pri-glow:rgba(79,70,229,0.3);--pri-bg:#EEF2FF;--success:#059669;--success-bg:#D1FAE5;--error:#DC2626;--error-bg:#FEE2E2;--warn:#D97706;--warn-bg:#FEF3C7;--text:#111;--sub:#475569;--line:#E2E8F0;--bg:#F8FAFC;--card:#FFF;--radius-sm:8px;--radius-md:16px;--radius-lg:24px;--shadow-md:0 4px 24px rgba(0,0,0,0.06);--shadow-lg:0 12px 48px rgba(0,0,0,0.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+.floating-nav{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:12px 8px;display:flex;flex-direction:column;gap:2px}
+.nav-item{display:flex;align-items:center;gap:6px;padding:5px 10px;font-size:11px;color:var(--sub);text-decoration:none;border-radius:6px;font-weight:500;white-space:nowrap}
+.nav-item:hover{background:var(--pri-bg);color:var(--pri)}.nav-item.active{background:var(--pri-bg);color:var(--pri);font-weight:700}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--line);flex-shrink:0}
+.nav-item:hover .nav-dot,.nav-item.active .nav-dot{background:var(--pri);box-shadow:0 0 8px var(--pri-glow)}
+.hero{position:relative;background:linear-gradient(155deg,#1E1B4B,#312E81,#4F46E5,#6366F1,#818CF8);padding:72px 48px 72px;overflow:hidden;color:#fff;z-index:1;text-align:center}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:52px;background:linear-gradient(to bottom right,transparent 49%,var(--bg) 50%)}
+.hero-bg-orb{position:absolute;width:560px;height:560px;background:radial-gradient(circle,rgba(99,102,241,.14),transparent 65%);border-radius:50%;top:-30%;right:-8%;animation:orbPulse 8s ease-in-out infinite}
+@keyframes orbPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.06);opacity:1}}
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);padding:5px 14px;border-radius:100px;font-size:11px;font-weight:500;letter-spacing:2px;margin-bottom:20px}
+.hero h1{font-size:clamp(30px,4vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+.hero .sub{font-size:15px;opacity:.8;max-width:560px;margin:0 auto}
+.hero-strip{display:flex;gap:20px;justify-content:center;margin-top:22px;font-size:12px;opacity:.65;flex-wrap:wrap}
+.container{max-width:1060px;margin:-16px auto 0;padding:0 48px 48px;position:relative;z-index:1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat-box{background:var(--card);border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--line)}
+.stat-box .num{font-size:26px;font-weight:900;color:var(--pri)}.stat-box .lbl{font-size:11px;color:var(--sub);margin-top:2px}
+.flow{display:flex;align-items:center;justify-content:center;gap:4px;margin:14px 0;flex-wrap:wrap}
+.flow-node{padding:7px 14px;border-radius:7px;font-size:11px;font-weight:700;text-align:center}.flow-arr{font-size:14px;color:var(--line)}
+.flow-node.f1{background:#DBEAFE;color:#1A5FFF}.flow-node.f2{background:#D1FAE5;color:#065F46}.flow-node.f3{background:#FEF3C7;color:#92400E}.flow-node.f4{background:#EDE9FE;color:#5B21B6}
+.sec{margin-top:32px}.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:3px solid var(--pri)}
+.sec-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;flex-shrink:0}
+.sec-header h2{font-size:1.35rem;font-weight:800;color:var(--pri-deep)}.sec-header .en{font-size:.75rem;color:#94A3B8;font-weight:400;margin-left:6px}
+.card{background:var(--card);border-radius:var(--radius-lg);padding:26px;margin-bottom:14px;border:1px solid var(--line);transition:all .2s}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card h3{font-size:1.05rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card h3 .badge{font-size:.67rem;padding:2px 8px;border-radius:10px;font-weight:600}
+.badge-m{background:rgba(124,58,237,.1);color:#7C3AED}.badge-i{background:rgba(13,148,136,.1);color:#0D9488}.badge-c{background:rgba(59,130,246,.1);color:#3B82F6}.badge-p{background:rgba(245,158,11,.1);color:#D97706}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.tool-item{border-radius:var(--radius-sm);padding:14px 18px;border:1px solid var(--line);background:#fff;transition:all .2s}
+.tool-item:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.tool-item .tn{font-size:13px;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.tool-item .td{font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:7px}
+.tool-item .tu{font-size:10px;color:var(--pri);font-weight:600;background:var(--pri-bg);padding:3px 8px;border-radius:5px;display:inline-block}
+.highlight{border-radius:var(--radius-sm);padding:12px 16px;margin:10px 0;font-size:12px;line-height:1.6}
+.highlight.info{background:var(--pri-bg);border-left:4px solid var(--pri);color:var(--pri-dark)}
+.highlight.ok{background:var(--success-bg);border-left:4px solid var(--success);color:#065F46}
+.highlight.warn{background:var(--warn-bg);border-left:4px solid var(--warn);color:#92400E}
+.list-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.list-item{padding:10px 14px;border-radius:var(--radius-sm);background:#fff;border:1px solid var(--line);font-size:12px}
+.list-item strong{display:block;color:var(--pri);margin-bottom:3px;font-size:12px}
+.list-item span{color:var(--sub);font-size:11px;line-height:1.5}
+.collab-section{margin-top:36px;background:linear-gradient(135deg,var(--pri-bg),#F5F0FF);border-radius:var(--radius-lg);padding:28px;border:1px solid rgba(79,70,229,.15)}
+.collab-section h2{font-size:1.2rem;font-weight:800;color:var(--pri-deep);margin-bottom:14px}
+.collab-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.collab-item{background:#fff;border-radius:var(--radius-sm);padding:14px 18px;border:1px solid var(--line)}
+.collab-item h4{font-size:12px;font-weight:700;margin-bottom:7px;color:var(--pri)}
+.collab-item p,.collab-item ul{font-size:11px;color:var(--sub);line-height:1.7}.collab-item ul{margin-left:14px}
+.collab-item code{background:var(--pri-bg);padding:1px 5px;border-radius:3px;font-size:10px;color:var(--pri)}
+.footer{text-align:center;padding:28px;color:#94A3B8;font-size:11px;border-top:1px solid var(--line);margin-top:32px}
+.tv{height:1px;background:linear-gradient(to right,transparent,rgba(79,70,229,.1),transparent);margin:14px 0}
+@media(max-width:768px){.hero{padding:50px 20px 50px}.hero h1{font-size:26px}.container{padding:0 16px 36px}.floating-nav{display:none}.sec-header h2{font-size:1.1rem}.tool-grid,.collab-grid,.list-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<nav class="floating-nav">
+  <a class="nav-item active" href="#hero"><span class="nav-dot"></span>概览</a>
+  <a class="nav-item" href="#s-sales"><span class="nav-dot"></span>销售方法</a>
+  <a class="nav-item" href="#s-industry"><span class="nav-dot"></span>行业研究</a>
+  <a class="nav-item" href="#s-customer"><span class="nav-dot"></span>客户洞察</a>
+  <a class="nav-item" href="#s-product"><span class="nav-dot"></span>产品学习</a>
+  <a class="nav-item" href="#s-collab"><span class="nav-dot"></span>协作规范</a>
+</nav>
+
+<div class="hero" id="hero">
+  <div class="hero-bg-orb"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ 金蝶销售工具箱</div>
+    <h1>系统性学习总结</h1>
+    <p class="sub">逐一学习34份资料后的完整梳理 —— 资料分类、关键要点、使用场景、协作规范</p>
+    <div class="hero-strip"><span>📂 /Claude/销售工具箱/</span><span>📊 34份资料</span><span>👤 聪哥专属</span><span>📅 2026.06.08</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="stats">
+  <div class="stat-box"><div class="num">10</div><div class="lbl">销售方法工具</div></div>
+  <div class="stat-box"><div class="num">11</div><div class="lbl">行业研究报告</div></div>
+  <div class="stat-box"><div class="num">12</div><div class="lbl">客户洞察报告</div></div>
+  <div class="stat-box"><div class="num">1</div><div class="lbl">产品学习资料</div></div>
+</div>
+
+<div class="flow">
+  <div class="flow-node f1">客户洞察</div><div class="flow-arr">→</div>
+  <div class="flow-node f2">行业研究</div><div class="flow-arr">→</div>
+  <div class="flow-node f3">产品学习</div><div class="flow-arr">→</div>
+  <div class="flow-node f4">销售方法 → 打单</div>
+</div>
+
+<!-- ========== 一、销售方法 ========== -->
+<div class="sec" id="s-sales">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#7C3AED,#A78BFA);">🎯</div>
+    <h2>销售方法 <span class="en">10份工具 — 工具箱核心模块</span></h2>
+  </div>
+
+  <!-- 1. 商机判断 -->
+  <div class="card">
+    <h3><span class="badge badge-m">v2</span> 商机判断与打单策略</h3>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:10px;"><strong>核心逻辑：</strong>两步走——先过滤再诊断。6维快速评分(5分钟)→ABCD评级→A/B级启动5W2P深度诊断(30分钟)→出打单策略。不浪费精力在假商机上。</p>
+    <div class="tool-grid">
+      <div class="tool-item"><div class="tn">📊 6维快速过滤</div><div class="td">立项(20)+采购方式(15)+预算(20)+产品匹配(20)+决策流程(15)+内部计划(10)=100分。5分钟初判。</div><div class="tu">拿到线索第一时间</div></div>
+      <div class="tool-item"><div class="tn">🎯 5W2P深度诊断</div><div class="td">WHY动机/WHO决策链/WHAT需求/WHEN时间/WHOM竞争/PLAN立项/BUDGET预算。30分钟全面摸底。</div><div class="tu">A/B级商机</div></div>
+      <div class="tool-item"><div class="tn">📈 ABCD评级</div><div class="td">≥80=A(必追)/60-79=B(跟进)/40-59=C(观察)/<40=D(过滤)。4条一票否决。</div><div class="tu">CRM分级管理</div></div>
+      <div class="tool-item"><div class="tn">🛡️ 竞品反击三连</div><div class="td">信创牌+交付牌+TCO牌。按品牌型/价格型/关系型分类应战，5阶段各阶段竞品应对动作。</div><div class="tu">竞品压力下</div></div>
+    </div>
+  </div>
+
+  <!-- 2. SPIN -->
+  <div class="card">
+    <h3><span class="badge badge-m">必学</span> SPIN提问式销售法实战训练手册</h3>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:10px;"><strong>核心逻辑：</strong>用精心设计的问题链让客户自己走完「发现问题→意识到严重→迫切想解决」的心理过程。客户自己说出来的结论比你说100遍有效。</p>
+    <div class="tool-grid">
+      <div class="tool-item"><div class="tn">S 情境摸底</div><div class="td">3-5个问题，2分钟内完成。让他自己说出事实数据。数字从他嘴里出来杀伤力大100倍。</div><div class="tu">开场阶段</div></div>
+      <div class="tool-item"><div class="tn">P 痛点深挖</div><div class="td">追问逼出真疼。"最差的一次？""最严重的一次？"把笼统不满变成具体伤口。</div><div class="tu">信任建立后</div></div>
+      <div class="tool-item"><div class="tn">I 影响放大</div><div class="td">SPIN胜负手。算钱+算风险+算人。让他意识到代价远大于成本。</div><div class="tu">痛点确认后</div></div>
+      <div class="tool-item"><div class="tn">N 需求回报</div><div class="td">描绘解决后画面。用问句呈现价值而非陈述功能。他主动问"怎么做的"=闭环。</div><div class="tu">收尾阶段</div></div>
+    </div>
+    <div class="highlight ok">内含：30天训练计划+自测评分表+完整丽滋卡尔实战话术拆解+5大常见误区避坑指南。</div>
+  </div>
+
+  <!-- 3. 痛点挖掘 -->
+  <div class="card">
+    <h3><span class="badge badge-m">基础功</span> ERP客户痛点挖掘清单</h3>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:10px;"><strong>核心逻辑：</strong>需求≠痛点。四层穿透法+按角色提问+行业深挖+真伪判断+话术衔接。含15分钟速填模板。</p>
+    <div class="tool-grid">
+      <div class="tool-item"><div class="tn">🔺 四层穿透</div><div class="td">表面诉求→业务痛点→根因痛点→战略痛点。含实战示例。</div><div class="tu">任何拜访</div></div>
+      <div class="tool-item"><div class="tn">👤 按角色提问</div><div class="td">一把手/CFO/生产总监/CIO各3个精准问题。前3暖场+第4杀手锏。</div><div class="tu">拜访前准备</div></div>
+      <div class="tool-item"><div class="tn">🏭 行业深挖</div><div class="td">项目型制造7大话题：成本/资源/采购/变更/进度/质量/利润。</div><div class="tu">装备制造客户</div></div>
+      <div class="tool-item"><div class="tn">✅ 真伪判断</div><div class="td">真痛点4特征：具体场景+量化+情绪+个人关联。假痛点红灯信号。</div><div class="tu">痛点验证</div></div>
+    </div>
+  </div>
+
+  <!-- 4. 大客户路线图 -->
+  <div class="card">
+    <h3><span class="badge badge-m">体系化</span> 大客户打单推进路线图</h3>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:10px;"><strong>核心逻辑：</strong>5阶段作战地图，每阶段有目标/动作/输出/晋级标准/常见死法。30项检查点。</p>
+    <div class="tool-grid">
+      <div class="tool-item"><div class="tn">🗺️ 5阶段地图</div><div class="td">初访→方案→演示→商务→收单。每阶段有晋级检查表。</div><div class="tu">大项目全周期</div></div>
+      <div class="tool-item"><div class="tn">🔗 决策链攻防</div><div class="td">老板←选型小组←CIO/CFO/业务VP/采购。按角色话术。</div><div class="tu">识别决策链</div></div>
+      <div class="tool-item"><div class="tn">⚠️ 竞品节点预警</div><div class="td">用友5阶段不同打法+每阶段应对动作。</div><div class="tu">竞品防御</div></div>
+      <div class="tool-item"><div class="tn">✅ 节奏检查表</div><div class="td">5阶段×6检查=30个检查点。宁丢单不跳步。</div><div class="tu">每阶段结束</div></div>
+    </div>
+  </div>
+
+  <!-- 5-7. 三部实战手册 -->
+  <div class="card">
+    <h3><span class="badge badge-m">话术库</span> 预算/谈判/服务 三部实战手册</h3>
+    <div class="tool-grid">
+      <div class="tool-item"><div class="tn">💰 预算有限实战</div><div class="td">三板斧：不动单价调范围+拆价值算风险+换筹码给台阶。4个场景含错误/正确话术对比。</div><div class="tu">客户说"预算不够"</div></div>
+      <div class="tool-item"><div class="tn">⚡ 谈判困局实战</div><div class="td">3类典型困局：中层认可高层不认/技术认同商务卡壳/方案占优客情劣势。4条铁律+双方案策略。</div><div class="tu">谈判卡壳时</div></div>
+      <div class="tool-item"><div class="tn">📋 客户成功服务指南</div><div class="td">标准vs高级两级服务体系。4层价值递进+16项服务详解+推介话术+异议处理+升级路径。</div><div class="tu">续费/增购推荐</div></div>
+      <div class="tool-item"><div class="tn">📊 5W2P商机判断指南×2</div><div class="td">销售实战版+营销经理版两份5W2P框架工具，互补视角覆盖商机判断全场景。</div><div class="tu">商机评审</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 二、行业研究 ========== -->
+<div class="sec" id="s-industry">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#0D9488,#2DD4BF);">🏭</div>
+    <h2>行业研究 <span class="en">11份报告 — 行业洞察弹药库</span></h2>
+  </div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--sub);margin-bottom:12px;"><strong>覆盖行业：</strong>低空经济、机器人、生命科学、电子高科技、装备制造、汽车零部件、流程制造、食品饮料、批发零售、现代服务。金蝶品牌风格深度分析报告，每份含行业格局、痛点洞察、信息化价值点、金蝶方案锚点、标杆客户案例。</p>
+    <div class="list-grid">
+      <div class="list-item"><strong>✈️ 低空经济</strong><span>万亿赛道+金蝶机会分析，新质生产力重点领域</span></div>
+      <div class="list-item"><strong>🏗️ 装备制造</strong><span>ETO/BTO按单设计、项目制造、四算一控核心痛点</span></div>
+      <div class="list-item"><strong>🤖 机器人</strong><span>多品种小批量、委外管理、物料替代频繁痛点</span></div>
+      <div class="list-item"><strong>🚗 汽车零部件</strong><span>JIT供货、QMS质量追溯、VMI库存管理</span></div>
+      <div class="list-item"><strong>💻 电子高科技</strong><span>MTO/MTS/ATO多制造战略+ECN闭环管理</span></div>
+      <div class="list-item"><strong>⚙️ 流程制造</strong><span>联副产品成本核算、配方管理、批次追溯</span></div>
+      <div class="list-item"><strong>🔬 生命科学</strong><span>GMP/GSP合规、UDI追溯、CSV验证要求</span></div>
+      <div class="list-item"><strong>🍱 食品饮料</strong><span>批号追溯、渠道窜货、配方保密管理</span></div>
+      <div class="list-item"><strong>🛒 批发零售</strong><span>全渠道订单、电商对接、多仓库存管理</span></div>
+      <div class="list-item"><strong>💼 现代服务</strong><span>项目成本管控、合同管理、业财税合规</span></div>
+    </div>
+    <div class="highlight info"><strong>使用场景：</strong>拜访前了解客户所在行业趋势 → 方案中引用行业数据和标杆案例 → 竞品对标时突出行业Know-how优势。装备制造和电子高科是聪哥最核心的行业方向。</div>
+  </div>
+</div>
+
+<!-- ========== 三、客户洞察 ========== -->
+<div class="sec" id="s-customer">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#3B82F6,#6366F1);">📋</div>
+    <h2>客户洞察 <span class="en">12份报告 — 目标客户360°画像</span></h2>
+  </div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--sub);margin-bottom:12px;"><strong>报告类型：</strong>360°画像/企业洞察报告/企业调研报告三种格式。涵盖公司概况、财务数据、战略方向、供应链痛点、数字化需求、金蝶切入建议。</p>
+    <div class="list-grid">
+      <div class="list-item"><strong>🚁 中航直升机</strong><span>央企子公司，装备制造，定制化需求强</span></div>
+      <div class="list-item"><strong>🧪 久日新材料</strong><span>全球最大光引发剂供应商，2025营收14.86亿</span></div>
+      <div class="list-item"><strong>📱 北京慧图科技</strong><span>大禹节水控股2024营收5.8亿+DeepSeek AI</span></div>
+      <div class="list-item"><strong>📊 天咨集团</strong><span>咨询行业，项目管理+业财税需求</span></div>
+      <div class="list-item"><strong>🤖 朗誉机器人</strong><span>AGV领域，多品种小批量制造</span></div>
+      <div class="list-item"><strong>🚄 天津电力机车</strong><span>装备制造，流程+离散混合模式</span></div>
+      <div class="list-item"><strong>📡 德力仪器</strong><span>仪器仪表，电子高科行业</span></div>
+      <div class="list-item"><strong>🔧 阿特普科</strong><span>螺杆压缩机，装备制造</span></div>
+      <div class="list-item"><strong>📊 津玺集团</strong><span>综合型企业集团</span></div>
+      <div class="list-item"><strong>📋 立联信</strong><span>深度调研报告</span></div>
+      <div class="list-item"><strong>📋 客户洞察报告</strong><span>可复用的可视化调研报告模板</span></div>
+    </div>
+    <div class="highlight info"><strong>使用场景：</strong>拜访前了解目标客户全景 → 方案中引用客户行业数据和痛点 → 团队内部共享客户理解。通过digital-hunter技能可持续生成新报告。</div>
+  </div>
+</div>
+
+<!-- ========== 四、产品学习 ========== -->
+<div class="sec" id="s-product">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);">📦</div>
+    <h2>产品学习 <span class="en">1份 — AI套件销售速查卡</span></h2>
+  </div>
+  <div class="card">
+    <h3><span class="badge badge-p">核心</span> 金蝶AI套件 · 销售速查卡</h3>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:10px;"><strong>来源：</strong>金蝶AI套件销售指导书（202604）。<strong>内容涵盖：</strong>产品定位、三大支柱（全域+Live AI+全球化）、20+AI Agent按角色速查（见到CFO推财务分析、见到CEO推Boss助理等）、8大行业解决方案、全球化三层架构、竞争策略（vs SAP/用友）、场景化SPIN话术、200+客户量化案例弹药库。</p>
+    <div class="tool-grid">
+      <div class="tool-item"><div class="tn">🤖 20+ AI Agent</div><div class="td">财务分析/Boss助理/呆滞料/合同审查/插单模拟/质量8D/招聘/Agent开发平台。按角色速查，一句话说清价值。</div><div class="tu">见到谁推什么Agent</div></div>
+      <div class="tool-item"><div class="tn">🏭 8大行业方案</div><div class="td">电子高科/汽车零部件/装备制造/流程制造/生命科学/食品饮料/现代服务/批发零售。每行业有痛点+方案锚点+标杆客户。</div><div class="tu">行业匹配论证</div></div>
+      <div class="tool-item"><div class="tn">🌍 全球化能力</div><div class="td">3层架构：LocalKits(7国财税关务包)+GlobalEase(跨国合规)+AI EBC(多准则/币种/合并)。12语言+双数据中心。</div><div class="tu">出海客户</div></div>
+      <div class="tool-item"><div class="tn">💬 场景化SPIN话术</div><div class="td">企业出海合规+企业项目管理 两套完整SPIN话术链 + 按角色"一句话搞定"话术模板。</div><div class="tu">拜访话术准备</div></div>
+    </div>
+    <div class="highlight warn"><strong>五大不可替代锚点：</strong>①财务深度(30年专家模型) ②Agent非ChatBot ③真全球化(LocalKits开箱即用) ④安全全栈(ISO42001率先获得) ⑤越用越聪明(免费升级+自进化)。——打单时这5个锚点必须讲透。</div>
+  </div>
+</div>
+
+<!-- ========== 五、协作规范 ========== -->
+<div class="collab-section" id="s-collab">
+  <h2>📐 后续协作规范</h2>
+
+  <div class="collab-grid">
+    <div class="collab-item">
+      <h4>📁 产物自动归档规则</h4>
+      <p>与AI协作产出的所有销售相关文件，按类型自动归入对应子目录：</p>
+      <ul>
+        <li>客户调研/洞察报告 → <code>客户洞察/</code></li>
+        <li>行业分析报告 → <code>行业研究/</code></li>
+        <li>产品方案/打单速查 → <code>产品学习/</code></li>
+        <li>话术/策略/方法 → <code>销售方法/</code></li>
+      </ul>
+    </div>
+    <div class="collab-item">
+      <h4>📝 文件命名规范</h4>
+      <ul>
+        <li>客户报告：<code>客户名+报告类型.html</code>（如 久日新材料企业360°画像.html）</li>
+        <li>行业报告：<code>行业名+行业深度分析报告.html</code></li>
+        <li>销售方法：<code>功能描述.html</code>（如 商机判断与打单策略.html）</li>
+        <li>产品学习：<code>产品名+用途.html</code>（如 金蝶AI套件-销售速查卡.html）</li>
+      </ul>
+    </div>
+    <div class="collab-item">
+      <h4>🔄 index.html 更新流程</h4>
+      <p>每次新增资料后，同步更新 <code>index.html</code> 中的文件列表数据：</p>
+      <ul>
+        <li>在对应的 <code>files.ci/ir/pl/sm</code> 数组中添加条目</li>
+        <li>条目格式：<code>{n:"文件名", d:"简短描述", c:"颜色代码", e:"emoji"}</code></li>
+        <li>页面加载时自动更新统计数据，无需手动修改统计面板</li>
+      </ul>
+    </div>
+    <div class="collab-item">
+      <h4>📚 学习总结更新</h4>
+      <p>本页面（<code>销售工具箱学习总结.html</code>）作为工具库的"使用说明书"：</p>
+      <ul>
+        <li>新增≥3份同类资料时，更新对应分类的学习总结卡片</li>
+        <li>发现新的使用场景/技巧时，追加到对应资料的使用说明</li>
+        <li>协作规范变更时，更新本节的规范内容</li>
+      </ul>
+    </div>
+    <div class="collab-item">
+      <h4>🔗 与Git仓库的协作</h4>
+      <p>销售工具箱是Git仓库（<code>/Users/cong/Claude/销售工具箱/</code>）：</p>
+      <ul>
+        <li>每次新增/修改资料后，建议提交并推送Git</li>
+        <li>index.html 和 学习总结.html 随资料同步版本管理</li>
+        <li>GitHub远程备份，防止资料丢失</li>
+      </ul>
+    </div>
+    <div class="collab-item">
+      <h4>🎯 使用原则</h4>
+      <ul>
+        <li><strong>先查后用：</strong>接到新客户/新任务，先查工具箱有无相关行业报告和销售方法</li>
+        <li><strong>用后更新：</strong>实战中发现的新的有效话术/问题/策略，回写到对应工具文件</li>
+        <li><strong>定期回顾：</strong>每月至少翻阅一次销售方法类工具，保持方法论肌肉记忆</li>
+        <li><strong>宁缺毋滥：</strong>资料求精不求多，每份资料必须有明确使用场景</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight info" style="margin-top:12px;">
+    <strong>核心原则：</strong>工具箱是"弹药库"不是"陈列室"——每份资料都是随时可以拿出来打单的实战武器。资料归档+索引更新+Git推送形成闭环，确保工具箱持续成长。
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  金蝶 · 天津分公司 · 营销中心 · 聪哥专属销售工具箱学习总结<br>
+  基于2026.06.08全面系统性学习生成 &nbsp;|&nbsp; ④ 内部公开 请勿外传
+</div>
+
+<script>
+(function(){
+  const items=document.querySelectorAll('.floating-nav .nav-item');
+  const secs=[];
+  items.forEach(function(item){
+    const id=item.getAttribute('href').slice(1);
+    const el=document.getElementById(id);
+    if(el)secs.push({el,nav:item});
+  });
+  function update(){
+    let cur=secs[0];
+    const sy=window.scrollY+130;
+    for(let i=0;i<secs.length;i++){if(secs[i].el.offsetTop<=sy)cur=secs[i];}
+    items.forEach(n=>n.classList.remove('active'));
+    if(cur)cur.nav.classList.add('active');
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  items.forEach(function(item){
+    item.addEventListener('click',function(e){
+      e.preventDefault();
+      const el=document.getElementById(this.getAttribute('href').slice(1));
+      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+})();
+</script>
+</body>
+</html>
