@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金蝶灵基 — 企业级 AI 智能体平台</title>
+<style>
+  :root {
+    --primary: #0055FF;
+    --primary-light: #3399FF;
+    --accent: #1A53FF;
+    --success: #00BFA5;
+    --warning: #FFAA00;
+    --info: #0099FF;
+    --link-cyan: #00CCFF;
+    --text-dark: #1A1A40;
+    --text-body: #262626;
+    --text-muted: #A6A6A6;
+    --text-hero-sub: #E6F0FF;
+    --bg-light: #F7F9FC;
+    --bg-white: #FFFFFF;
+    --border: #E8ECF2;
+    --shadow: 0 2px 12px rgba(0,0,0,.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.10);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif; color: var(--text-body); background: var(--bg-light); line-height:1.7; }
+  .container { max-width:960px; margin:0 auto; padding:0 24px; }
+
+  .hero {
+    background: linear-gradient(135deg, #0055FF 0%, #3399FF 100%);
+    color: #fff; padding:56px 0 48px; text-align:center;
+  }
+  .hero-badge { display:inline-block; background:rgba(255,255,255,.18); border-radius:20px; padding:4px 16px; font-size:13px; letter-spacing:1px; margin-bottom:16px; }
+  .hero h1 { font-size:36px; font-weight:700; margin-bottom:12px; letter-spacing:1px; }
+  .hero p { font-size:17px; color: var(--text-hero-sub); max-width:640px; margin:0 auto; }
+  .hero-stats { display:flex; justify-content:center; gap:48px; margin-top:36px; }
+  .hero-stat { text-align:center; }
+  .hero-stat .num { font-size:32px; font-weight:700; }
+  .hero-stat .label { font-size:13px; color:var(--text-hero-sub); margin-top:4px; }
+
+  .section { padding:48px 0; }
+  .section-alt { background: var(--bg-white); }
+  .section-title { font-size:24px; font-weight:700; color:var(--text-dark); margin-bottom:8px; text-align:center; }
+  .section-sub { text-align:center; color:var(--text-muted); font-size:15px; margin-bottom:36px; }
+
+  .pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .pillar-card {
+    background: var(--bg-white); border-radius: var(--radius); padding:28px 24px;
+    box-shadow: var(--shadow); border:1px solid var(--border);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .pillar-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+  .pillar-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:16px; }
+  .pillar-card h3 { font-size:17px; font-weight:600; color:var(--text-dark); margin-bottom:8px; }
+  .pillar-card p { font-size:14px; color:#555; line-height:1.7; }
+  .icon-data { background:rgba(0,85,255,.1); }
+  .icon-exp { background:rgba(0,191,165,.1); }
+  .icon-platform { background:rgba(255,170,0,.1); }
+
+  .scenarios { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .scenario-card {
+    background: var(--bg-white); border-radius: var(--radius); padding:28px 24px;
+    box-shadow: var(--shadow); border-left:4px solid var(--accent);
+  }
+  .scenario-card h3 { font-size:17px; font-weight:600; color:var(--text-dark); margin-bottom:10px; }
+  .scenario-card .tag { display:inline-block; background:rgba(0,85,255,.08); color:var(--primary); border-radius:4px; padding:2px 8px; font-size:12px; margin-bottom:10px; }
+  .scenario-card ul { list-style:none; padding:0; }
+  .scenario-card li { position:relative; padding-left:20px; font-size:14px; color:#444; margin-bottom:6px; }
+  .scenario-card li::before { content:"✓"; position:absolute; left:0; color:var(--success); font-weight:700; }
+
+  .efficiency-box {
+    background: linear-gradient(135deg, #0055FF 0%, #3399FF 100%);
+    border-radius: var(--radius); padding:36px; color:#fff; text-align:center;
+  }
+  .efficiency-box h3 { font-size:20px; font-weight:600; margin-bottom:20px; }
+  .efficiency-grid { display:flex; justify-content:center; gap:56px; }
+  .eff-item .val { font-size:36px; font-weight:700; }
+  .eff-item .unit { font-size:16px; font-weight:400; }
+  .eff-item .desc { font-size:13px; color:var(--text-hero-sub); margin-top:4px; }
+  .eff-vs { font-size:14px; color:rgba(255,255,255,.7); margin-top:20px; }
+
+  .faq-list { max-width:720px; margin:0 auto; }
+  .faq-item { background:var(--bg-white); border-radius:var(--radius-sm); margin-bottom:12px; box-shadow:var(--shadow); overflow:hidden; }
+  .faq-q { padding:16px 20px; font-weight:600; color:var(--text-dark); cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-size:15px; }
+  .faq-q::after { content:"+"; font-size:18px; color:var(--primary); transition:transform .2s; }
+  .faq-item.open .faq-q::after { transform:rotate(45deg); }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-item.open .faq-a { max-height:300px; }
+  .faq-a-inner { padding:0 20px 16px; font-size:14px; color:#555; line-height:1.8; border-top:1px solid var(--border); padding-top:14px; }
+
+  .footer { text-align:center; padding:36px 0; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); }
+
+  @media(max-width:768px) {
+    .pillars, .scenarios { grid-template-columns:1fr; }
+    .hero-stats { flex-direction:column; gap:16px; }
+    .efficiency-grid { flex-direction:column; gap:20px; }
+    .hero h1 { font-size:26px; }
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">🤖 企业级 AI 智能体平台</div>
+    <h1>金蝶灵基</h1>
+    <p>以 AI Agent 重新定义企业管理软件交互，让大模型真正"动手干活"，驱动财务从"事后记录"走向"事前预警、事中督导"</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">10<span style="font-size:18px">分钟</span></div><div class="label">自然语言构建业务应用</div></div>
+      <div class="hero-stat"><div class="num">0<span style="font-size:18px">代码</span></div><div class="label">业务人员即可上手</div></div>
+      <div class="hero-stat"><div class="num">100<span style="font-size:18px">%</span></div><div class="label">原生集成金蝶生态</div></div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="section-title">为什么企业需要 AI Agent？</div>
+    <div class="section-sub">大模型只能"思考"，Agent 让 AI 真正"执行"</div>
+    <div style="background:var(--bg-white);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);max-width:720px;margin:0 auto;">
+      <p style="font-size:15px;color:#444;line-height:2;text-align:center;">
+        传统大模型擅长理解和生成文本，但<strong>无法直接操作企业系统</strong>。<br>
+        AI Agent 是为大模型装上"手脚"的关键技术——它将业务需求自动转化为可执行的操作脚本，<br>
+        直接调用 ERP、审批、核算等企业系统接口，<strong style="color:var(--primary)">实现从"对话"到"办结"的闭环</strong>。
+      </p>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:24px;align-items:center;flex-wrap:wrap;">
+        <span style="background:rgba(0,85,255,.08);color:var(--primary);padding:6px 16px;border-radius:20px;font-size:14px;">💬 自然语言输入</span>
+        <span style="color:var(--text-muted);font-size:18px;">→</span>
+        <span style="background:rgba(0,85,255,.08);color:var(--primary);padding:6px 16px;border-radius:20px;font-size:14px;">🧠 Agent 理解意图</span>
+        <span style="color:var(--text-muted);font-size:18px;">→</span>
+        <span style="background:rgba(0,191,165,.1);color:var(--success);padding:6px 16px;border-radius:20px;font-size:14px;">⚡ 自动执行业务</span>
+        <span style="color:var(--text-muted);font-size:18px;">→</span>
+        <span style="background:rgba(0,191,165,.1);color:var(--success);padding:6px 16px;border-radius:20px;font-size:14px;">✅ 结果交付</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-title">灵基的三大核心优势</div>
+    <div class="section-sub">不是通用 AI 工具，而是懂企业管理的企业原生智能体</div>
+    <div class="pillars">
+      <div class="pillar-card">
+        <div class="pillar-icon icon-data">🗄️</div>
+        <h3>企业数据资产</h3>
+        <p>直接接入企业真实运营数据，AI 不再"空转"于公开知识，而是基于您的财务、供应链、人力等核心数据进行分析与决策。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon icon-exp">📐</div>
+        <h3>行业管理经验</h3>
+        <p>沉淀 30 年企业管理 Know-how，将行业最佳实践注入 Agent 决策链路，确保 AI 输出符合业务规范而非"自由发挥"。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon icon-platform">🔧</div>
+        <h3>苍穹低代码平台</h3>
+        <p>Agent 生成的应用直接在苍穹平台运行，原生具备权限、审批、集成能力，无需二次封装即可交付生产使用。</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="section-title">典型业务场景</div>
+    <div class="section-sub">从财务到日常运营，AI Agent 让重复工作自动化</div>
+    <div class="scenarios">
+      <div class="scenario-card">
+        <span class="tag">财务场景</span>
+        <h3>费用报账智能体</h3>
+        <ul>
+          <li>定时自动获取发票，校验合规性</li>
+          <li>学习用户填报习惯，自动填充报销字段</li>
+          <li>消灭手工报销环节，提升员工体验</li>
+          <li>异常费用主动预警，降低审计风险</li>
+        </ul>
+      </div>
+      <div class="scenario-card">
+        <span class="tag">财务场景</span>
+        <h3>结账智能体</h3>
+        <ul>
+          <li>月结流程智能编排，自动生成任务清单</li>
+          <li>实时监控各模块进度与风险指标</li>
+          <li>自动生成月结简报，沉淀规则经验</li>
+          <li>从"事后记录"转向"事前预警、事中督导"</li>
+        </ul>
+      </div>
+      <div class="scenario-card">
+        <span class="tag">开发场景</span>
+        <h3>自然语言构建应用</h3>
+        <ul>
+          <li>一句话描述需求，自动生成苍穹原生应用</li>
+          <li>自动创建单据、字段、关联关系</li>
+          <li>业务人员可直接参与应用构建</li>
+          <li>开发团队聚焦复杂逻辑，效率倍增</li>
+        </ul>
+      </div>
+      <div class="scenario-card">
+        <span class="tag">交互场景</span>
+        <h3>动态表单与智能交互</h3>
+        <ul>
+          <li>根据业务场景动态构建输入界面</li>
+          <li>仅展示必填字段，极简操作体验</li>
+          <li>多账套智能识别，自动切换或询问确认</li>
+          <li>对话式交互，降低系统学习成本</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section-alt">
+  <div class="container">
+    <div class="efficiency-box">
+      <h3>🚀 开发效率跃升</h3>
+      <div class="efficiency-grid">
+        <div class="eff-item">
+          <div class="val">4<span class="unit">小时</span></div>
+          <div class="desc">传统低代码拖拽开发一个单据</div>
+        </div>
+        <div class="eff-item" style="display:flex;align-items:center;">
+          <div style="font-size:32px;">→</div>
+        </div>
+        <div class="eff-item">
+          <div class="val" style="color:#00FFB3;">10<span class="unit">分钟</span></div>
+          <div class="desc">灵基一句话生成基础框架</div>
+        </div>
+      </div>
+      <div class="eff-vs">效率提升约 <strong>24 倍</strong>，开发人员从重复搭建中释放，专注业务逻辑</div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="section-title">企业原生能力</div>
+    <div class="section-sub">不是"套壳 ChatGPT"，而是天生为企业而生</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+      <div style="background:var(--bg-white);border-radius:var(--radius-sm);padding:24px;text-align:center;box-shadow:var(--shadow);">
+        <div style="font-size:32px;margin-bottom:8px;">🛡️</div>
+        <h4 style="font-size:15px;font-weight:600;margin-bottom:6px;">组织权限集成</h4>
+        <p style="font-size:13px;color:#666;">天然集成组织架构与角色权限，员工入职自动开通、离职自动关闭，无需手动维护</p>
+      </div>
+      <div style="background:var(--bg-white);border-radius:var(--radius-sm);padding:24px;text-align:center;box-shadow:var(--shadow);">
+        <div style="font-size:32px;margin-bottom:8px;">🔗</div>
+        <h4 style="font-size:15px;font-weight:600;margin-bottom:6px;">ERP 深度打通</h4>
+        <p style="font-size:13px;color:#666;">直接调用金蝶 ERP 接口完成业务操作，数据不出系统，安全可控</p>
+      </div>
+      <div style="background:var(--bg-white);border-radius:var(--radius-sm);padding:24px;text-align:center;box-shadow:var(--shadow);">
+        <div style="font-size:32px;margin-bottom:8px;">📊</div>
+        <h4 style="font-size:15px;font-weight:600;margin-bottom:6px;">财务范式变革</h4>
+        <p style="font-size:13px;color:#666;">推动财务从事后记录→事前预警+事中督导，让 AI 成为财务团队的智能助手</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-title">常见问题</div>
+    <div class="section-sub">客户最关心的问题，这里都有答案</div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">灵基能对接我们自建的大模型吗？</div>
+        <div class="faq-a"><div class="faq-a-inner">目前公有云版本暂不支持对接客户自建模型；未来私有云版本将支持该能力，届时需收取席位费。公有云用户可使用灵基内置的高性能大模型服务。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">我们有多个公司账套，灵基怎么处理？</div>
+        <div class="faq-a"><div class="faq-a-inner">实施时会为您配置默认账套。当涉及多账套或无法确定目标时，AI 会主动询问您指定，确保操作精准、不串数据。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">灵基的点数（Token）怎么消耗？</div>
+        <div class="faq-a"><div class="faq-a-inner">灵基点数是综合折算值。以发票处理为例：视觉模型提取文字（计费）→ 大模型结构化（计费）→ ERP 保存（免费）。简单数据查询不消耗 Token，涉及 AI 推理分析的场景才会计费，按实际调用复杂度决定。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">我们现有自研系统，灵基能分析其数据吗？</div>
+        <div class="faq-a"><div class="faq-a-inner">可以。数据分析场景，通过 MCP 协议封装 API 即可让灵基调用分析。如需在金蝶系统中进行核算记账，则需通过集成平台将数据接入金蝶，确保财务合规与审计闭环。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">灵基是否支持多语言？</div>
+        <div class="faq-a"><div class="faq-a-inner">底层架构支持多语言处理能力。当前产品阶段界面暂未开放语言切换功能，后续版本将逐步提供。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">非金蝶的低代码平台（如钉钉宜搭）能接入灵基吗？</div>
+        <div class="faq-a"><div class="faq-a-inner">目前暂不支持。灵基深度依赖金蝶苍穹平台的元数据结构与 API 规范，以确保生成应用的完整性与可靠性。非标准平台缺乏统一的元数据与接口规范，接入后难以保证业务一致性。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="footer">
+  <div class="container">© 2026 金蝶软件（中国）有限公司 · 金蝶灵基产品介绍</div>
+</div>
+<script>
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.parentElement;
+    const wasOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

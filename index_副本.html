@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>销售工具箱 · 索引</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pri: #4F46E5; --pri-light: #818CF8; --pri-dark: #4338CA; --pri-deep: #1E1B4B;
+  --pri-glow: rgba(79,70,229,0.3); --pri-bg: #EEF2FF;
+  --success: #059669; --success-bg: #D1FAE5; --error: #DC2626;
+  --warn: #D97706; --warn-bg: #FEF3C7;
+  --text: #111111; --sub: #475569; --line: #E2E8F0; --bg: #F8FAFC; --card: #FFFFFF;
+  --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px;
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.floating-nav{position:fixed;left:24px;top:50%;transform:translateY(-50%);z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-lg);transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.floating-nav.collapsed{padding:8px;min-width:auto;width:44px}
+.floating-nav.expanded{padding:14px 10px;min-width:160px;width:auto}
+.nav-toggle{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:var(--pri-bg);border:none;cursor:pointer;transition:all .2s}
+.nav-toggle:hover{background:var(--pri)}.nav-toggle svg{width:16px;height:16px;color:var(--pri);transition:all .2s}.nav-toggle:hover svg{color:#fff}
+.nav-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.nav-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--pri);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.nav-body{overflow:hidden}.floating-nav.collapsed .nav-body{max-height:0;opacity:0}.floating-nav.expanded .nav-body{max-height:800px;opacity:1;transition:all .35s}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 10px;font-size:12px;color:var(--sub);text-decoration:none;border-radius:6px;transition:all .2s;cursor:pointer;font-weight:500;white-space:nowrap}
+.nav-item:hover{background:var(--pri-bg);color:var(--pri)}.nav-item.active{background:var(--pri-bg);color:var(--pri);font-weight:700}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--line);flex-shrink:0;transition:all .2s}
+.nav-item:hover .nav-dot,.nav-item.active .nav-dot{background:var(--pri);box-shadow:0 0 10px var(--pri-glow)}
+
+.hero{position:relative;background:linear-gradient(155deg,#1E1B4B 0%,#312E81 25%,#4F46E5 50%,#6366F1 70%,#818CF8 100%);padding:80px 48px 80px;overflow:hidden;color:#fff;z-index:1;text-align:center}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to bottom right,transparent 49%,var(--bg) 50%)}
+.hero-bg-orb{position:absolute;width:620px;height:620px;background:radial-gradient(circle,rgba(99,102,241,0.16) 0%,transparent 65%);border-radius:50%;top:-35%;right:-10%;animation:orbPulse 8s ease-in-out infinite}
+@keyframes orbPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.06);opacity:1}}
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);padding:5px 16px;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:2.5px;margin-bottom:24px}
+.hero h1{font-size:clamp(32px,4vw,48px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:10px;color:#fff}
+.hero .sub{font-size:16px;opacity:.8;max-width:500px;margin:0 auto}
+.hero-strip{display:flex;gap:24px;justify-content:center;margin-top:28px;font-size:13px;opacity:.7;flex-wrap:wrap}
+
+.container{max-width:1060px;margin:-20px auto 0;padding:0 48px 60px;position:relative;z-index:1}
+
+.sec{margin-top:40px}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid var(--pri)}
+.sec-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff;flex-shrink:0}
+.sec-header h2{font-size:1.5rem;font-weight:800;color:var(--pri-deep)}
+.sec-header .en{font-size:.8rem;color:#94A3B8;font-weight:400;margin-left:8px}
+.sec-count{font-size:12px;color:#94A3B8;margin-left:auto}
+
+/* File Grid */
+.file-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.file-grid{grid-template-columns:1fr}}
+.file-item{
+  display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
+  background:var(--card);border-radius:var(--radius-sm);border:1px solid var(--line);
+  transition:all .2s;cursor:pointer;text-decoration:none;color:var(--text);
+}
+.file-item:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--pri-light)}
+.file-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex-shrink:0;margin-top:1px}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-name .highlight{color:var(--pri);font-weight:600}
+.file-desc{font-size:11px;color:#94A3B8;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Stats strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat-box{background:var(--card);border-radius:var(--radius-sm);padding:18px;text-align:center;border:1px solid var(--line)}
+.stat-box .num{font-size:28px;font-weight:900;color:var(--pri)}
+.stat-box .lbl{font-size:12px;color:var(--sub);margin-top:2px}
+
+/* Alert for new */
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px}
+.dot-new{background:#10B981;box-shadow:0 0 6px rgba(16,185,129,.4)}
+
+.flow{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:20px;flex-wrap:wrap}
+.flow-node{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;text-align:center}
+.flow-arr{font-size:14px;color:var(--line)}
+.flow-node.f1{background:#DBEAFE;color:#1A5FFF}
+.flow-node.f2{background:#D1FAE5;color:#065F46}
+.flow-node.f3{background:#FEF3C7;color:#92400E}
+.flow-node.f4{background:#EDE9FE;color:#5B21B6}
+
+.footer{text-align:center;padding:32px;color:#94A3B8;font-size:12px;border-top:1px solid var(--line);margin-top:40px}
+.animate{animation:fadeUp .55s ease forwards;opacity:0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:768px){
+  .hero{padding:60px 24px 60px}.hero h1{font-size:28px}
+  .container{padding:0 16px 40px}.floating-nav{display:none}
+  .sec-header h2{font-size:1.2rem}.file-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="floating-nav expanded" id="floatingNav">
+  <div class="nav-header">
+    <button class="nav-toggle" id="navToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+  <div class="nav-body">
+    <a class="nav-item active" href="#hero">概览</a>
+    <a class="nav-item" href="#s1">📋 客户洞察</a>
+    <a class="nav-item" href="#s2">🏭 行业研究</a>
+    <a class="nav-item" href="#s3">📦 产品学习</a>
+    <a class="nav-item" href="#s4">🎯 销售方法</a>
+  </div>
+</nav>
+
+<div class="hero" id="hero">
+  <div class="hero-bg-orb"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ 金蝶销售工具箱</div>
+    <h1>销售工具箱 · 索引</h1>
+    <p class="sub">客户洞察 → 行业研究 → 产品学习 → 销售方法，全链路覆盖</p>
+    <div class="hero-strip">
+      <span>📂 天津 · 营销中心</span>
+      <span id="totalCount">📊 统计中...</span>
+      <span>👤 刘总</span>
+      <span><a href="./销售工具箱学习总结.html" target="_blank" style="color:inherit;text-decoration:underline;">📚 学习总结</a></span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="stats">
+  <div class="stat-box animate" id="stats-ci"><div class="num">-</div><div class="lbl">客户洞察</div></div>
+  <div class="stat-box animate" id="stats-ir"><div class="num">-</div><div class="lbl">行业研究</div></div>
+  <div class="stat-box animate" id="stats-pl"><div class="num">-</div><div class="lbl">产品学习</div></div>
+  <div class="stat-box animate" id="stats-sm"><div class="num">-</div><div class="lbl">销售方法</div></div>
+  <div class="stat-box animate" id="stats-guide"><div class="num">1</div><div class="lbl">学习总结</div></div>
+</div>
+
+<div class="flow">
+  <div class="flow-node f1">客户洞察</div>
+  <div class="flow-arr">→</div>
+  <div class="flow-node f2">行业研究</div>
+  <div class="flow-arr">→</div>
+  <div class="flow-node f3">产品学习</div>
+  <div class="flow-arr">→</div>
+  <div class="flow-node f4">销售方法&nbsp;&nbsp;→ 打单</div>
+</div>
+
+<!-- 客户洞察 -->
+<div class="sec animate" id="s1">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#3B82F6,#6366F1);">📋</div>
+    <h2>客户洞察 <span class="en">Customer Intelligence</span></h2>
+    <div class="sec-count"><span id="ci-count">-</span> 份</div>
+  </div>
+  <div class="file-grid" id="ci-grid"></div>
+</div>
+
+<!-- 行业研究 -->
+<div class="sec animate" id="s2">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#0D9488,#2DD4BF);">🏭</div>
+    <h2>行业研究 <span class="en">Industry Research</span></h2>
+    <div class="sec-count"><span id="ir-count">-</span> 份</div>
+  </div>
+  <div class="file-grid" id="ir-grid"></div>
+</div>
+
+<!-- 产品学习 -->
+<div class="sec animate" id="s3">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);">📦</div>
+    <h2>产品学习 <span class="en">Product Knowledge</span></h2>
+    <div class="sec-count"><span id="pl-count">-</span> 份</div>
+  </div>
+  <div class="file-grid" id="pl-grid"></div>
+</div>
+
+<!-- 销售方法 -->
+<div class="sec animate" id="s4">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:linear-gradient(135deg,#7C3AED,#A78BFA);">🎯</div>
+    <h2>销售方法 <span class="en">Sales Methodology</span></h2>
+    <div class="sec-count"><span id="sm-count">-</span> 份</div>
+  </div>
+  <div class="file-grid" id="sm-grid"></div>
+</div>
+
+<div style="margin-top:24px;padding:14px 18px;background:#EEF2FF;border-radius:12px;border:1px solid rgba(79,70,229,.15);font-size:13px;color:#4338CA;">
+  <strong>📌 自动同步规则：</strong>以后与我协作的产出物，会按类型自动同步到以下目录：<br>
+  客户调研/洞察报告 → <code style="background:rgba(79,70,229,.08);padding:1px 6px;border-radius:3px;font-size:12px;">客户洞察/</code> &nbsp;|&nbsp;
+  行业分析报告 → <code style="background:rgba(79,70,229,.08);padding:1px 6px;border-radius:3px;font-size:12px;">行业研究/</code> &nbsp;|&nbsp;
+  产品方案/打单速查 → <code style="background:rgba(79,70,229,.08);padding:1px 6px;border-radius:3px;font-size:12px;">产品学习/</code> &nbsp;|&nbsp;
+  话术/策略/方法 → <code style="background:rgba(79,70,229,.08);padding:1px 6px;border-radius:3px;font-size:12px;">销售方法/</code>
+</div>
+
+<div style="margin-top:12px;padding:18px 20px;background:linear-gradient(135deg,#F5F0FF,#EEF2FF);border-radius:12px;border:1px solid rgba(124,58,237,.15);">
+  <strong style="color:#7C3AED;">📚 <a href="./销售工具箱学习总结.html" target="_blank" style="color:#7C3AED;">销售工具箱学习总结</a></strong><br>
+  <span style="font-size:12px;color:#475569;">基于2026.06.08完整系统性学习生成。包含：全部34份资料分类梳理、每份资料的关键要点提炼与使用场景说明、后续协作规范与索引维护方法。</span>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">金蝶 · 天津分公司 · 营销中心 &nbsp;|&nbsp; ④ 内部公开 请勿外传</div>
+
+<script>
+// File data
+const files = {
+  ci: [
+    {n:"中航直升机企业洞察报告",d:"中航直升机股份有限公司深度调研",c:"#3B82F6",e:"🚁"},
+    {n:"德力仪器客户洞察",d:"天津德力仪器设备有限公司调研报告",c:"#3B82F6",e:"📡"},
+    {n:"阿特普科洞察报告",d:"天津市阿特普科螺杆压缩机有限公司",c:"#3B82F6",e:"🔧"},
+    {n:"久日新材料企业360°画像",d:"久日新材料股份有限公司360度画像",c:"#6366F1",e:"🧪"},
+    {n:"北京慧图科技企业洞察报告",d:"北京慧图科技股份有限公司",c:"#6366F1",e:"📱"},
+    {n:"北京慧图科技企业360°画像",d:"慧图科技360度画像",c:"#6366F1",e:"📱"},
+    {n:"天咨集团企业洞察报告",d:"天咨集团调研报告",c:"#6366F1",e:"📊"},
+    {n:"天津朗誉机器人有限公司_企业调研报告",d:"天津朗誉机器人有限公司",c:"#3B82F6",e:"🤖"},
+    {n:"天津电力机车有限公司企业调研报告",d:"天津电力机车有限公司",c:"#3B82F6",e:"🚄"},
+    {n:"津玺集团有限公司_企业调研报告",d:"津玺集团有限公司",c:"#6366F1",e:"📊"},
+    {n:"立联信企业洞察报告",d:"立联信公司深度调研",c:"#6366F1",e:"📋"},
+    {n:"客户洞察报告",d:"可复用的客户可视化调研报告模板",c:"#818CF8",e:"📋"},
+  ],
+  ir: [
+    {n:"低空经济行业深度分析报告_金蝶",d:"低空经济万亿赛道+金蝶机会",c:"#0D9488",e:"✈️"},
+    {n:"机器人行业深度分析报告",d:"机器人行业数字化转型分析",c:"#0D9488",e:"🤖"},
+    {n:"生命科学行业深度分析报告",d:"生命科学行业数字化趋势",c:"#0D9488",e:"🔬"},
+    {n:"电子高科技行业深度分析报告",d:"电子高科技行业数字化转型",c:"#0D9488",e:"💻"},
+    {n:"装备制造行业数字化转型深度分析报告",d:"装备制造行业深度分析",c:"#0D9488",e:"🏗️"},
+    {n:"汽车及零部件行业深度分析报告_金蝶",d:"汽车及零部件行业趋势",c:"#2DD4BF",e:"🚗"},
+    {n:"流程制造行业深度分析报告_金蝶",d:"流程制造行业数字化转型",c:"#2DD4BF",e:"⚙️"},
+    {n:"食品饮料行业深度分析报告_金蝶",d:"食品饮料行业深度分析",c:"#2DD4BF",e:"🍱"},
+    {n:"批发零售行业深度分析报告_金蝶",d:"批发零售行业数字化转型",c:"#2DD4BF",e:"🛒"},
+    {n:"现代服务行业深度分析报告_金蝶",d:"现代服务行业深度分析",c:"#2DD4BF",e:"💼"},
+  ],
+  pl: [
+    {n:"金蝶AI套件-销售速查卡",d:"基于销售指导书——定位/Agent/行业/全球化/竞争/话术",c:"#F59E0B",e:"🤖"},
+    {n:"金蝶灵基-客户版介绍",d:"灵基产品定位、核心优势、业务场景、常见问题",c:"#F59E0B",e:"🧠"},
+    {n:"企业级vs个人AI-销售话术手册",d:"企业级AI vs 个人AI差异对比+四大场景话术脚本",c:"#F59E0B",e:"💬"},
+    {n:"灵基产品与话术速查卡",d:"灵基产品介绍+销售话术合并速查卡（浮动导航）",c:"#F59E0B",e:"⚡"},
+  ],
+  sm: [
+    {n:"商机判断与打单策略",d:"6维评分+5W2P深度诊断出打法",c:"#7C3AED",e:"🎯"},
+    {n:"商机判断与打单策略_v2",d:"商机过滤+诊断完整版",c:"#7C3AED",e:"🎯"},
+    {n:"ERP客户痛点挖掘清单",d:"四层穿透法挖掘真痛点",c:"#7C3AED",e:"🔍"},
+    {n:"金蝶销售实战5W2P商机判断指南",d:"5W2P框架商机判断",c:"#7C3AED",e:"📊"},
+    {n:"营销经理人5W2P商机判断指南",d:"5W2P商机判断(经理版)",c:"#A78BFA",e:"📊"},
+    {n:"金蝶SPIN提问式销售法实战训练手册",d:"SPIN销售法实战训练",c:"#7C3AED",e:"💬"},
+    {n:"大客户打单推进路线图",d:"5阶段推进+决策链攻防",c:"#7C3AED",e:"🗺️"},
+    {n:"客户预算有限实战手册",d:"预算有限应对策略+话术",c:"#A78BFA",e:"💰"},
+    {n:"谈判困局实战手册",d:"三类典型困局破局策略",c:"#A78BFA",e:"⚡"},
+    {n:"金蝶客户成功服务指南",d:"客户成功服务规范手册",c:"#A78BFA",e:"📋"},
+  ]
+};
+
+function renderGrid(id, data, prefix) {
+  const grid = document.getElementById(id);
+  grid.innerHTML = data.map(f => {
+    const path = `./${prefix}/${f.n}.html`;
+    return `<a class="file-item" href="${path}" target="_blank">
+      <div class="file-icon" style="background:${f.c};">${f.e}</div>
+      <div class="file-info">
+        <div class="file-name">${f.n}</div>
+        <div class="file-desc">${f.d}</div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+renderGrid('ci-grid', files.ci, '客户洞察');
+renderGrid('ir-grid', files.ir, '行业研究');
+renderGrid('pl-grid', files.pl, '产品学习');
+renderGrid('sm-grid', files.sm, '销售方法');
+
+document.getElementById('ci-count').textContent = files.ci.length;
+document.getElementById('ir-count').textContent = files.ir.length;
+document.getElementById('pl-count').textContent = files.pl.length;
+document.getElementById('sm-count').textContent = files.sm.length;
+document.getElementById('totalCount').textContent = `📊 共 ${files.ci.length+files.ir.length+files.pl.length+files.sm.length} 份资料 + 1份学习总结`;
+document.getElementById('stats-ci').querySelector('.num').textContent = files.ci.length;
+document.getElementById('stats-ir').querySelector('.num').textContent = files.ir.length;
+document.getElementById('stats-pl').querySelector('.num').textContent = files.pl.length;
+document.getElementById('stats-sm').querySelector('.num').textContent = files.sm.length;
+
+// Float Nav
+(function(){const items=document.querySelectorAll('.nav-item');const nav=document.getElementById('floatingNav');const toggle=document.getElementById('navToggle');const secs=[];items.forEach(function(item){const id=item.getAttribute('href').slice(1);const el=document.getElementById(id);if(el)secs.push({el,nav:item});});toggle.addEventListener('click',function(){if(nav.classList.contains('expanded')){nav.classList.remove('expanded');nav.classList.add('collapsed');}else{nav.classList.remove('collapsed');nav.classList.add('expanded');}});function update(){let cur=secs[0];const sy=window.scrollY+120;for(let i=0;i<secs.length;i++){if(secs[i].el.offsetTop<=sy)cur=secs[i];}items.forEach(n=>n.classList.remove('active'));if(cur)cur.nav.classList.add('active');}window.addEventListener('scroll',update,{passive:true});items.forEach(function(item){item.addEventListener('click',function(e){e.preventDefault();const el=document.getElementById(this.getAttribute('href').slice(1));if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});});})();
+</script>
+</body>
+</html>

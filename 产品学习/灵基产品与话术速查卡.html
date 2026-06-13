@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金蝶灵基 · 产品与话术速查卡</title>
+<style>
+  :root {
+    --primary: #0055FF; --primary-light: #3399FF; --accent: #1A53FF;
+    --success: #00BFA5; --warning: #FFAA00; --info: #0099FF;
+    --text-dark: #1A1A40; --text-body: #262626; --text-muted: #A6A6A6;
+    --text-hero-sub: #E6F0FF; --bg-light: #F7F9FC; --bg-white: #FFFFFF;
+    --border: #E8ECF2; --shadow: 0 2px 12px rgba(0,0,0,.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.10);
+    --radius: 12px; --radius-sm: 8px;
+    --nav-height: 52px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif; color:var(--text-body); background:var(--bg-light); line-height:1.75; }
+
+  .container { max-width:960px; margin:0 auto; padding:0 24px; }
+
+  /* Floating Nav */
+  .floating-nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:rgba(255,255,255,.92); backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    box-shadow:0 1px 8px rgba(0,0,0,.06);
+    height:var(--nav-height);
+    display:flex; align-items:center;
+  }
+  .floating-nav .nav-inner {
+    max-width:960px; width:100%; margin:0 auto; padding:0 24px;
+    display:flex; align-items:center; gap:0;
+    overflow-x:auto; white-space:nowrap;
+    scrollbar-width:none;
+  }
+  .floating-nav .nav-inner::-webkit-scrollbar { display:none; }
+  .floating-nav .nav-brand {
+    font-weight:700; color:var(--primary); font-size:15px; margin-right:20px;
+    flex-shrink:0; text-decoration:none;
+  }
+  .floating-nav .nav-brand span { color:var(--text-dark); }
+  .floating-nav a {
+    text-decoration:none; color:var(--text-muted); font-size:13px;
+    padding:6px 12px; border-radius:6px; transition:all .2s; flex-shrink:0;
+    position:relative; white-space:nowrap;
+  }
+  .floating-nav a:hover { color:var(--primary); background:rgba(0,85,255,.06); }
+  .floating-nav a.active { color:var(--primary); background:rgba(0,85,255,.08); font-weight:600; }
+  .nav-divider { width:1px; height:18px; background:var(--border); margin:0 4px; flex-shrink:0; }
+
+  /* Hero */
+  .hero {
+    background:linear-gradient(135deg, #0055FF 0%, #3399FF 100%);
+    color:#fff; padding:56px 0 48px; text-align:center; margin-top:var(--nav-height);
+  }
+  .hero-badge { display:inline-block; background:rgba(255,255,255,.18); border-radius:20px; padding:4px 16px; font-size:13px; letter-spacing:1px; margin-bottom:16px; }
+  .hero h1 { font-size:36px; font-weight:700; margin-bottom:12px; letter-spacing:1px; }
+  .hero p { font-size:17px; color:var(--text-hero-sub); max-width:640px; margin:0 auto; }
+  .hero-stats { display:flex; justify-content:center; gap:48px; margin-top:36px; }
+  .hero-stat { text-align:center; }
+  .hero-stat .num { font-size:32px; font-weight:700; }
+  .hero-stat .label { font-size:13px; color:var(--text-hero-sub); margin-top:4px; }
+
+  /* Section */
+  .section { padding:48px 0; }
+  .section-alt { background:var(--bg-white); }
+  .section-title { font-size:24px; font-weight:700; color:var(--text-dark); margin-bottom:8px; text-align:center; }
+  .section-sub { text-align:center; color:var(--text-muted); font-size:15px; margin-bottom:36px; }
+  .section-header { text-align:center; margin-bottom:36px; }
+  .section-header h2 { font-size:23px; font-weight:700; color:var(--text-dark); margin-bottom:6px; }
+  .section-header p { color:var(--text-muted); font-size:14px; }
+  .section-number { display:inline-block; width:28px; height:28px; line-height:28px; border-radius:50%; background:var(--primary); color:#fff; font-size:14px; font-weight:700; margin-right:8px; vertical-align:middle; }
+
+  /* Pillars */
+  .pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .pillar-card { background:var(--bg-white); border-radius:var(--radius); padding:28px 24px; box-shadow:var(--shadow); border:1px solid var(--border); transition:transform .2s,box-shadow .2s; }
+  .pillar-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+  .pillar-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:16px; }
+  .pillar-card h3 { font-size:17px; font-weight:600; color:var(--text-dark); margin-bottom:8px; }
+  .pillar-card p { font-size:14px; color:#555; line-height:1.7; }
+  .icon-data { background:rgba(0,85,255,.1); }
+  .icon-exp { background:rgba(0,191,165,.1); }
+  .icon-platform { background:rgba(255,170,0,.1); }
+
+  /* Scenarios */
+  .scenarios { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .scenario-card { background:var(--bg-white); border-radius:var(--radius); padding:28px 24px; box-shadow:var(--shadow); border-left:4px solid var(--accent); }
+  .scenario-card h3 { font-size:17px; font-weight:600; color:var(--text-dark); margin-bottom:10px; }
+  .scenario-card .tag { display:inline-block; background:rgba(0,85,255,.08); color:var(--primary); border-radius:4px; padding:2px 8px; font-size:12px; margin-bottom:10px; }
+  .scenario-card ul { list-style:none; padding:0; }
+  .scenario-card li { position:relative; padding-left:20px; font-size:14px; color:#444; margin-bottom:6px; }
+  .scenario-card li::before { content:"✓"; position:absolute; left:0; color:var(--success); font-weight:700; }
+
+  /* Efficiency */
+  .efficiency-box { background:linear-gradient(135deg, #0055FF 0%, #3399FF 100%); border-radius:var(--radius); padding:36px; color:#fff; text-align:center; }
+  .efficiency-box h3 { font-size:20px; font-weight:600; margin-bottom:20px; }
+  .efficiency-grid { display:flex; justify-content:center; gap:56px; }
+  .eff-item .val { font-size:36px; font-weight:700; }
+  .eff-item .unit { font-size:16px; font-weight:400; }
+  .eff-item .desc { font-size:13px; color:var(--text-hero-sub); margin-top:4px; }
+  .eff-vs { font-size:14px; color:rgba(255,255,255,.7); margin-top:20px; }
+
+  /* Enterprise Native */
+  .native-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .native-card { background:var(--bg-white); border-radius:var(--radius-sm); padding:24px; text-align:center; box-shadow:var(--shadow); }
+  .native-card .ico { font-size:32px; margin-bottom:8px; }
+  .native-card h4 { font-size:15px; font-weight:600; color:var(--text-dark); margin-bottom:6px; }
+  .native-card p { font-size:13px; color:#666; }
+
+  /* Quote */
+  .quote-box { background:linear-gradient(135deg, #0055FF 0%, #3399FF 100%); border-radius:var(--radius); padding:32px 40px; text-align:center; }
+  .quote-box .big { font-size:26px; font-weight:700; color:#fff; line-height:1.5; margin-bottom:8px; }
+  .quote-box .sub { font-size:14px; color:var(--text-hero-sub); }
+
+  /* Pain Grid */
+  .pain-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .pain-card { background:var(--bg-white); border-radius:var(--radius); padding:28px 24px; box-shadow:var(--shadow); border-top:4px solid var(--warning); position:relative; }
+  .pain-card .num { font-size:48px; font-weight:800; color:rgba(255,170,0,.12); position:absolute; top:8px; right:16px; }
+  .pain-card h3 { font-size:16px; font-weight:600; color:var(--text-dark); margin-bottom:8px; }
+  .pain-card .result { display:inline-block; background:rgba(255,170,0,.1); color:var(--warning); border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; margin-bottom:10px; }
+  .pain-card p { font-size:13px; color:#555; }
+
+  /* Compare Table */
+  .compare-table { width:100%; border-collapse:collapse; background:var(--bg-white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); }
+  .compare-table th { background:var(--text-dark); color:#fff; padding:14px 20px; font-size:15px; font-weight:600; text-align:left; }
+  .compare-table td { padding:14px 20px; font-size:14px; border-bottom:1px solid var(--border); }
+  .compare-table tr:last-child td { border-bottom:none; }
+  .compare-table .dim { font-weight:600; color:var(--text-dark); background:#F7F9FC; }
+  .compare-table .personal { color:#A6A6A6; }
+  .compare-table .enterprise { color:var(--success); font-weight:600; }
+  .icon-bad { color:#ccc; margin-right:4px; }
+  .icon-good { color:var(--success); margin-right:4px; }
+
+  /* Value Cards */
+  .value-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .value-card { background:var(--bg-white); border-radius:var(--radius-sm); padding:24px 18px; box-shadow:var(--shadow); text-align:center; border:1px solid var(--border); transition:transform .2s; }
+  .value-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+  .value-card .emoji { font-size:32px; margin-bottom:10px; }
+  .value-card h4 { font-size:14px; font-weight:600; color:var(--text-dark); margin-bottom:6px; }
+  .value-card p { font-size:12px; color:#666; line-height:1.6; }
+
+  /* MCP vs Native */
+  .mcp-native { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .mn-card { border-radius:var(--radius); padding:28px; box-shadow:var(--shadow); }
+  .mn-mcp { background:var(--bg-white); border:1px solid var(--border); }
+  .mn-native { background:linear-gradient(135deg, #0055FF 0%, #3399FF 100%); color:#fff; }
+  .mn-card h3 { font-size:17px; font-weight:600; margin-bottom:6px; }
+  .mn-card .subtitle { font-size:13px; margin-bottom:16px; }
+  .mn-mcp .subtitle { color:var(--text-muted); }
+  .mn-native .subtitle { color:var(--text-hero-sub); }
+  .mn-card ul { list-style:none; padding:0; }
+  .mn-card li { font-size:13px; margin-bottom:8px; padding-left:20px; position:relative; line-height:1.6; }
+  .mn-card li::before { content:""; position:absolute; left:0; top:7px; width:6px; height:6px; border-radius:50%; }
+  .mn-mcp li::before { background:var(--border); }
+  .mn-native li::before { background:rgba(255,255,255,.5); }
+  .mn-mcp li { color:#555; }
+  .mn-native li { color:rgba(255,255,255,.9); }
+
+  /* Talking Points */
+  .talk-scene { background:var(--bg-white); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); border-left:4px solid var(--accent); margin-bottom:16px; }
+  .talk-scene .scene-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .scene-tag { padding:3px 10px; border-radius:4px; font-size:12px; font-weight:600; flex-shrink:0; }
+  .tag-pain { background:rgba(255,170,0,.12); color:var(--warning); }
+  .tag-value { background:rgba(0,191,165,.1); color:var(--success); }
+  .tag-action { background:rgba(0,85,255,.08); color:var(--primary); }
+  .talk-scene h3 { font-size:15px; font-weight:600; color:var(--text-dark); }
+  .talk-scene .who { font-size:12px; color:var(--text-muted); margin-bottom:8px; }
+  .talk-script { background:var(--bg-light); border-radius:var(--radius-sm); padding:16px 20px; margin:12px 0; position:relative; }
+  .talk-script::before { content:'"'; position:absolute; top:8px; left:12px; font-size:32px; color:var(--primary); opacity:.2; font-family:Georgia,serif; }
+  .talk-script p { font-size:14px; color:var(--text-dark); line-height:1.9; padding-left:8px; }
+  .talk-tip { font-size:12px; color:var(--text-muted); margin-top:6px; padding-left:4px; border-left:2px solid var(--border); }
+
+  /* Framework */
+  .framework { display:flex; gap:20px; align-items:stretch; }
+  .fw-step { flex:1; background:var(--bg-white); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); text-align:center; position:relative; }
+  .fw-step .step-num { width:32px; height:32px; border-radius:50%; background:var(--primary); color:#fff; line-height:32px; font-weight:700; font-size:14px; margin:0 auto 12px; }
+  .fw-step h4 { font-size:14px; font-weight:600; color:var(--text-dark); margin-bottom:6px; }
+  .fw-step p { font-size:12px; color:#666; }
+  .fw-arrow { position:absolute; right:-18px; top:50%; transform:translateY(-50%); color:var(--primary); font-size:18px; z-index:1; }
+
+  /* FAQ */
+  .faq-list { max-width:720px; margin:0 auto; }
+  .faq-item { background:var(--bg-white); border-radius:var(--radius-sm); margin-bottom:10px; box-shadow:var(--shadow); overflow:hidden; }
+  .faq-q { padding:14px 20px; font-weight:600; color:var(--text-dark); cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-size:14px; }
+  .faq-q::after { content:"+"; font-size:18px; color:var(--primary); transition:transform .2s; flex-shrink:0; margin-left:8px; }
+  .faq-item.open .faq-q::after { transform:rotate(45deg); }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-item.open .faq-a { max-height:400px; }
+  .faq-a-inner { padding:0 20px 14px; font-size:13px; color:#555; line-height:1.8; border-top:1px solid var(--border); padding-top:12px; }
+  .faq-tag { display:inline-block; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:600; margin-right:6px; }
+  .faq-tag-product { background:rgba(0,85,255,.08); color:var(--primary); }
+  .faq-tag-sales { background:rgba(0,191,165,.1); color:var(--success); }
+
+  /* Footer */
+  .footer { text-align:center; padding:32px 0; color:var(--text-muted); font-size:12px; border-top:1px solid var(--border); }
+
+  /* Collapse */
+  .section-collapse { cursor:pointer; user-select:none; position:relative; }
+  .section-collapse::after { content:""; display:inline-block; width:7px; height:7px; border-right:2px solid var(--text-muted); border-bottom:2px solid var(--text-muted); transform:rotate(-45deg); margin-left:8px; transition:transform .25s; vertical-align:middle; }
+  .section-collapse.collapsed::after { transform:rotate(45deg); }
+  .collapse-body { overflow:hidden; transition:max-height .4s ease,opacity .2s; max-height:4000px; opacity:1; }
+  .collapse-body.hidden { max-height:0; opacity:0; }
+
+  /* Tooltip for terms */
+  .term-note { display:inline-block; border-bottom:1px dashed var(--text-muted); cursor:help; position:relative; }
+  .term-note .tip { position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:var(--text-dark); color:#fff; font-size:11px; padding:4px 10px; border-radius:4px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s; z-index:10; font-weight:400; }
+  .term-note:hover .tip { opacity:1; }
+
+  /* Print */
+  @media print {
+    .floating-nav { display:none; }
+    body { font-size:12px; line-height:1.5; }
+    .hero { padding:20px 0; margin-top:0; }
+    .section { padding:16px 0; }
+    .section-alt { background:white; }
+    .faq-item { break-inside:avoid; }
+    .faq-a { max-height:none; }
+    .faq-item .faq-a-inner { display:block; }
+    .talk-scene, .pillar-card, .scenario-card, .pain-card, .value-card, .native-card { break-inside:avoid; box-shadow:none; border:1px solid #ddd; }
+    .compare-table th { background:#333; }
+    .efficiency-box, .quote-box { background:#0055FF !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .mn-native { background:#0055FF !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .collapse-body.hidden { max-height:none; opacity:1; }
+  }
+
+  /* Responsive */
+  @media(max-width:768px) {
+    .pillars, .scenarios, .pain-grid, .value-cards, .mcp-native, .native-grid { grid-template-columns:1fr; }
+    .hero-stats { flex-direction:column; gap:16px; }
+    .efficiency-grid { flex-direction:column; gap:20px; }
+    .framework { flex-direction:column; }
+    .fw-arrow { display:none; }
+    .hero h1 { font-size:26px; }
+    .hero p { font-size:15px; }
+    .floating-nav .nav-brand { font-size:13px; }
+    .floating-nav a { font-size:11px; padding:4px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Nav -->
+<nav class="floating-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#hero">金蝶<span>灵基</span> · 速查卡</a>
+    <a href="#product">产品介绍</a>
+    <a href="#scenarios">业务场景</a>
+    <span class="nav-divider"></span>
+    <a href="#pains">痛点诊断</a>
+    <a href="#compare">维度对比</a>
+    <a href="#scripts">话术脚本</a>
+    <span class="nav-divider"></span>
+    <a href="#faq-all">FAQ</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-badge">🤖 企业级 AI 智能体平台</div>
+    <h1>金蝶灵基</h1>
+    <p>以 AI Agent 重新定义企业管理软件交互，让大模型真正"动手干活"，驱动财务从"事后记录"走向"事前预警、事中督导"</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">10<span style="font-size:18px">分钟</span></div><div class="label">自然语言构建业务应用</div></div>
+      <div class="hero-stat"><div class="num">0<span style="font-size:18px">代码</span></div><div class="label">业务人员即可上手</div></div>
+      <div class="hero-stat"><div class="num">100<span style="font-size:18px">%</span></div><div class="label">原生集成金蝶生态</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUCT INTRO ===== -->
+<section class="section" id="product">
+  <div class="container">
+    <div class="section-title">为什么企业需要 AI Agent？</div>
+    <div class="section-sub">大模型只能"思考"，Agent 让 AI 真正"执行"</div>
+    <div style="background:var(--bg-white);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);max-width:720px;margin:0 auto 32px;">
+      <p style="font-size:15px;color:#444;line-height:2;text-align:center;">
+        传统大模型擅长理解和生成文本，但<strong>无法直接操作企业系统</strong>。<br>
+        AI Agent 是为大模型装上"手脚"的关键技术——它将业务需求自动转化为可执行的操作脚本，<br>
+        直接调用 ERP、审批、核算等企业系统接口，<strong style="color:var(--primary)">实现从"对话"到"办结"的闭环</strong>。
+      </p>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:24px;align-items:center;flex-wrap:wrap;">
+        <span style="background:rgba(0,85,255,.08);color:var(--primary);padding:6px 16px;border-radius:20px;font-size:14px;">💬 自然语言输入</span>
+        <span style="color:var(--text-muted);font-size:18px;">→</span>
+        <span style="background:rgba(0,85,255,.08);color:var(--primary);padding:6px 16px;border-radius:20px;font-size:14px;">🧠 Agent 理解意图</span>
+        <span style="color:var(--text-muted);font-size:18px;">→</span>
+        <span style="background:rgba(0,191,165,.1);color:var(--success);padding:6px 16px;border-radius:20px;font-size:14px;">⚡ 自动执行业务</span>
+        <span style="color:var(--text-muted);font-size:18px;">→</span>
+        <span style="background:rgba(0,191,165,.1);color:var(--success);padding:6px 16px;border-radius:20px;font-size:14px;">✅ 结果交付</span>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="section-number">A</span>灵基的三大核心优势</div>
+    <div class="section-sub">不是通用 AI 工具，而是懂企业管理的企业原生智能体</div>
+    <div class="pillars">
+      <div class="pillar-card">
+        <div class="pillar-icon icon-data">🗄️</div>
+        <h3>企业数据资产</h3>
+        <p>直接接入企业真实运营数据，AI 不再"空转"于公开知识，而是基于您的财务、供应链、人力等核心数据进行分析与决策。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon icon-exp">📐</div>
+        <h3>行业管理经验</h3>
+        <p>沉淀 30 年企业管理 Know-how，将行业最佳实践注入 Agent 决策链路，确保 AI 输出符合业务规范而非"自由发挥"。</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon icon-platform">🔧</div>
+        <h3>苍穹低代码平台</h3>
+        <p>Agent 生成的应用直接在苍穹平台运行，原生具备权限、审批、集成能力，无需二次封装即可交付生产使用。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SCENARIOS ===== -->
+<section class="section section-alt" id="scenarios">
+  <div class="container">
+    <div class="section-title"><span class="section-number">B</span>典型业务场景</div>
+    <div class="section-sub">从财务到日常运营，AI Agent 让重复工作自动化</div>
+    <div class="scenarios">
+      <div class="scenario-card">
+        <span class="tag">财务场景</span>
+        <h3>费用报账智能体</h3>
+        <ul>
+          <li>定时自动获取发票，校验合规性</li>
+          <li>学习用户填报习惯，自动填充报销字段</li>
+          <li>消灭手工报销环节，提升员工体验</li>
+          <li>异常费用主动预警，降低审计风险</li>
+        </ul>
+      </div>
+      <div class="scenario-card">
+        <span class="tag">财务场景</span>
+        <h3>结账智能体</h3>
+        <ul>
+          <li>月结流程智能编排，自动生成任务清单</li>
+          <li>实时监控各模块进度与风险指标</li>
+          <li>自动生成月结简报，沉淀规则经验</li>
+          <li>从"事后记录"转向"事前预警、事中督导"</li>
+        </ul>
+      </div>
+      <div class="scenario-card">
+        <span class="tag">开发场景</span>
+        <h3>自然语言构建应用</h3>
+        <ul>
+          <li>一句话描述需求，自动生成苍穹原生应用</li>
+          <li>自动创建单据、字段、关联关系</li>
+          <li>业务人员可直接参与应用构建</li>
+          <li>开发团队聚焦复杂逻辑，效率倍增</li>
+        </ul>
+      </div>
+      <div class="scenario-card">
+        <span class="tag">交互场景</span>
+        <h3>动态表单与智能交互</h3>
+        <ul>
+          <li>根据业务场景动态构建输入界面</li>
+          <li>仅展示必填字段，极简操作体验</li>
+          <li>多账套智能识别，自动切换或询问确认</li>
+          <li>对话式交互，降低系统学习成本</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:36px;">
+      <div class="efficiency-box">
+        <h3>🚀 开发效率跃升</h3>
+        <div class="efficiency-grid">
+          <div class="eff-item">
+            <div class="val">4<span class="unit">小时</span></div>
+            <div class="desc">传统低代码拖拽开发一个单据</div>
+          </div>
+          <div class="eff-item" style="display:flex;align-items:center;">
+            <div style="font-size:32px;">→</div>
+          </div>
+          <div class="eff-item">
+            <div class="val" style="color:#00FFB3;">10<span class="unit">分钟</span></div>
+            <div class="desc">灵基一句话生成基础框架</div>
+          </div>
+        </div>
+        <div class="eff-vs">效率提升约 <strong>24 倍</strong>，开发人员从重复搭建中释放，专注业务逻辑</div>
+      </div>
+    </div>
+
+    <div class="section" style="padding-bottom:0;">
+      <div class="section-title"><span class="section-number">C</span>企业原生能力</div>
+      <div class="section-sub">不是"套壳 ChatGPT"，而是天生为企业而生</div>
+      <div class="native-grid">
+        <div class="native-card">
+          <div class="ico">🛡️</div>
+          <h4>组织权限集成</h4>
+          <p>天然集成组织架构与角色权限，员工入职自动开通、离职自动关闭</p>
+        </div>
+        <div class="native-card">
+          <div class="ico">🔗</div>
+          <h4>ERP 深度打通</h4>
+          <p>直接调用金蝶 ERP 接口完成业务操作，数据不出系统，安全可控</p>
+        </div>
+        <div class="native-card">
+          <div class="ico">📊</div>
+          <h4>财务范式变革</h4>
+          <p>推动财务从事后记录→事前预警+事中督导，AI 成为财务团队的智能助手</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAINS: 个人AI三大矛盾 ===== -->
+<section class="section" id="pains">
+  <div class="container">
+    <div class="section-header">
+      <h2><span class="section-number">1</span>客户现状诊断：个人 AI 的三大矛盾</h2>
+      <p>用这三句话帮客户认清问题，建立"企业级 AI 是刚需"的认知</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="num">01</div>
+        <h3>协作断裂</h3>
+        <div class="result">个人快了，团队慢了</div>
+        <p>测试工程师用旧版 PRD 生成测试用例，AI 生成得越快，返工越多。以前人慢，还会在群里问一句"这是最新版吗？"现在 AI 快了，错得也快了。</p>
+      </div>
+      <div class="pain-card">
+        <div class="num">02</div>
+        <h3>知识流失</h3>
+        <div class="result">资产跟着人走，不跟着公司走</div>
+        <p>员工调好的 Skill、提示词、工作流存在个人电脑里。离职时带走的不仅是人，更是一套已调顺的 AI 工作流。组织没有沉淀，每次清零重来。</p>
+      </div>
+      <div class="pain-card">
+        <div class="num">03</div>
+        <h3>管理失控</h3>
+        <div class="result">"影子 Agent" 正在企业里蔓延</div>
+        <p>员工各自接入不同工具，管理层不知道谁访问了什么数据、代码里有没有密钥、文档里有没有隐私。这不只是多装一个工具，而是多了一个不受控的"数字员工"。</p>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <div class="quote-box">
+        <div class="big">"您的员工都在用 AI，<br>但公司整体效率真的提升了吗？"</div>
+        <div class="sub">这是您在客户拜访时最有力的开场问题</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPARE: 七大维度对比 ===== -->
+<section class="section section-alt" id="compare">
+  <div class="container">
+    <div class="section-header">
+      <h2><span class="section-number">2</span>企业级 vs 个人级：七大维度对比</h2>
+      <p>一目了然的差异表，客户沟通时可用于快速建立认知框架</p>
+    </div>
+    <table class="compare-table">
+      <thead>
+        <tr><th style="width:18%">对比维度</th><th style="width:41%">个人 AI 工具</th><th style="width:41%">企业级 AI 平台</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dim">知识归属</td>
+          <td class="personal"><span class="icon-bad">✕</span> 存在个人电脑/账号，离职即带走</td>
+          <td class="enterprise"><span class="icon-good">✓</span> 存入企业知识库，一次沉淀全员复用</td>
+        </tr>
+        <tr>
+          <td class="dim">协作方式</td>
+          <td class="personal"><span class="icon-bad">✕</span> 各自开对话框，上下文不共享</td>
+          <td class="enterprise"><span class="icon-good">✓</span> 同一项目空间，基于同一份材料和目标</td>
+        </tr>
+        <tr>
+          <td class="dim">权限管控</td>
+          <td class="personal"><span class="icon-bad">✕</span> 无人知道谁接了什么、能访问什么</td>
+          <td class="enterprise"><span class="icon-good">✓</span> Agent 有身份、有权限、有边界，统一注册统一管理</td>
+        </tr>
+        <tr>
+          <td class="dim">工作模式</td>
+          <td class="personal"><span class="icon-bad">✕</span> 本地运行，关机即停</td>
+          <td class="enterprise"><span class="icon-good">✓</span> 云端常驻，7×24 在线，多端访问</td>
+        </tr>
+        <tr>
+          <td class="dim">能力复用</td>
+          <td class="personal"><span class="icon-bad">✕</span> 每个人从零调 Prompt，重复造轮子</td>
+          <td class="enterprise"><span class="icon-good">✓</span> 专家模板预置行业 Know-how，开箱即用</td>
+        </tr>
+        <tr>
+          <td class="dim">系统集成</td>
+          <td class="personal"><span class="icon-bad">✕</span> MCP 调用，能"连上"但无法深度协同</td>
+          <td class="enterprise"><span class="icon-good">✓</span> 原生集成，人和 AI 在同一文档/同一系统里协同接力</td>
+        </tr>
+        <tr>
+          <td class="dim">安全合规</td>
+          <td class="personal"><span class="icon-bad">✕</span> 凭证明文写在代码或配置里，风险不可控</td>
+          <td class="enterprise"><span class="icon-good">✓</span> 凭据加密存储，运行时注入，不留明文</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Values -->
+    <div style="margin-top:44px;">
+      <div class="section-header">
+        <h2><span class="section-number">3</span>企业级 AI 的四大核心价值</h2>
+        <p>从"超级个体"到"超级团队"的关键跃迁</p>
+      </div>
+      <div class="value-cards">
+        <div class="value-card">
+          <div class="emoji">🧠</div>
+          <h4>知识沉淀</h4>
+          <p>AI 形成的方法、文档、经验留在组织里，离职不带走，新人可继承</p>
+        </div>
+        <div class="value-card">
+          <div class="emoji">🤝</div>
+          <h4>团队协作</h4>
+          <p>人和 AI 在同一项目空间，基于同一份材料、同一套上下文协同工作</p>
+        </div>
+        <div class="value-card">
+          <div class="emoji">🛡️</div>
+          <h4>统一管控</h4>
+          <p>所有 Agent 有身份、有权限、有边界，可管理、可审计、可追溯</p>
+        </div>
+        <div class="value-card">
+          <div class="emoji">🚀</div>
+          <h4>持续在线</h4>
+          <p>云端常驻、7×24 运行，处理长时任务，真正做到"数字员工"而非"对话工具"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MCP vs Native -->
+    <div style="margin-top:44px;">
+      <div class="section-header">
+        <h2><span class="section-number">4</span>关键概念：MCP 调用 vs 原生协同</h2>
+        <p>客户最容易混淆的概念，务必讲清楚</p>
+      </div>
+      <div class="mcp-native">
+        <div class="mn-card mn-mcp">
+          <h3>🔌 MCP 调用</h3>
+          <div class="subtitle">能"连上"，但 ≠ 能一起干活</div>
+          <ul>
+            <li>Agent 在外面读一次、改一次、提交一次</li>
+            <li>无法实时感知别人正在改哪里</li>
+            <li>多人 + 多 Agent 同时编辑时，冲突版本谁来合并？</li>
+            <li>失败后谁重试？覆盖了谁的内容？</li>
+          </ul>
+        </div>
+        <div class="mn-card mn-native">
+          <h3>⚡ 原生协同</h3>
+          <div class="subtitle">人和 AI 在同一个工作现场</div>
+          <ul>
+            <li>用户和 Agent 在同一文档里同时写、协同接力</li>
+            <li>实时感知彼此的编辑状态</li>
+            <li>围绕同一份文档、同一个项目、同一套权限</li>
+            <li>不是"AI 帮写一段"，而是"人和 AI 一起把事往前推"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SCRIPTS: 客户话术库 ===== -->
+<section class="section" id="scripts">
+  <div class="container">
+    <div class="section-header section-collapse collapsed" data-target="scripts-body">
+      <h2><span class="section-number">5</span>客户沟通话术库 <span style="font-size:12px;color:var(--text-muted);font-weight:400;">（点击展开）</span></h2>
+      <p>不同场景下可直接使用的沟通脚本</p>
+    </div>
+    <div class="collapse-body hidden" id="scripts-body">
+
+    <div class="talk-scene">
+      <div class="scene-header">
+        <span class="scene-tag tag-pain">痛点诊断</span>
+        <h3>场景一：破冰——让客户意识到"大家都在用 AI，但公司没变快"</h3>
+      </div>
+      <div class="who">👤 适用对象：CEO / CIO / 分管副总</div>
+      <div class="talk-script">
+        <p>王总，我发现一个现象在很多企业里都很普遍——员工都在用 AI 提效，产品经理用 AI 写需求，开发用 AI 写代码，运营用 AI 写方案。单看每个人，效率确实提升了。但您有没有感觉，<strong>公司整体的运转效率，并没有明显提升？</strong></p>
+      </div>
+      <div class="talk-tip">💡 要点：先抛出共鸣现象，不急于推销，让客户自己感受到"个体 AI 不等于企业 AI"</div>
+    </div>
+
+    <div class="talk-scene">
+      <div class="scene-header">
+        <span class="scene-tag tag-value">价值塑造</span>
+        <h3>场景二：建立认知——"企业级 AI 不是把个人工具放大，而是重构组织能力"</h3>
+      </div>
+      <div class="who">👤 适用对象：IT 负责人 / 信息化主管</div>
+      <div class="talk-script">
+        <p>个人 AI 工具解决的是"一个人怎么更快"，企业级 AI 要解决的是"一群人怎么更强"。<strong>核心区别有三点：知识能不能沉淀回组织、AI 能不能有身份有权限被统一管控、人和 AI 能不能在同一个工作现场协同而不仅仅是调用接口。</strong>如果这三件事没打通，个人用得再多，也只是"个人外挂"，不是"组织基础设施"。</p>
+      </div>
+      <div class="talk-tip">💡 要点：用"外挂 vs 基础设施"的对比建立认知高度</div>
+    </div>
+
+    <div class="talk-scene">
+      <div class="scene-header">
+        <span class="scene-tag tag-pain">痛点深化</span>
+        <h3>场景三：戳中痛处——"您的 AI 资产，真的属于公司吗？"</h3>
+      </div>
+      <div class="who">👤 适用对象：HR 负责人 / 部门管理者</div>
+      <div class="talk-script">
+        <p>李总，您有没有考虑过一个问题：<strong>员工用个人 AI 积累的提示词、工作流、调好的 Skill，离职后还能留给下一个人吗？</strong>现在很多企业面临一个现实——核心员工离职，带走的不仅是业务经验，还有一套已经调顺的 AI 工作方式。新人来了，又从零开始。这就是个人 AI 的"知识流失"陷阱。</p>
+      </div>
+      <div class="talk-tip">💡 要点：用人力和知识管理的痛点切入，HR 负责人对此最敏感</div>
+    </div>
+
+    <div class="talk-scene">
+      <div class="scene-header">
+        <span class="scene-tag tag-action">行动号召</span>
+        <h3>场景四：落地路径——"企业 AI 建设不是买一个工具，而是搭一套体系"</h3>
+      </div>
+      <div class="who">👤 适用对象：CEO / CIO（决策层）</div>
+      <div class="talk-script">
+        <p>未来拉开企业差距的，不是谁家员工更会写提示词，而是<strong>谁家的 AI 协作体系先搭起来</strong>。这个体系需要三根支柱：<br>① <strong>项目空间</strong>——让人和 AI 围绕同一份材料协作，杜绝"信息孤岛"；<br>② <strong>知识沉淀</strong>——AI 形成的方法和经验留在组织里，不跟人走；<br>③ <strong>统一管控</strong>——所有 AI 有身份、有权限、有边界，可管理、可审计。<br>这三根柱子撑起来，企业 AI 就不再是"一阵热闹"，而是"真正的组织能力"。</p>
+      </div>
+      <div class="talk-tip">💡 要点：给出清晰框架而非抽象概念，让决策层看到路径</div>
+    </div>
+
+    <!-- Maturity Check -->
+    <div style="margin-top:44px;">
+      <div class="section-header">
+        <h2><span class="section-number">6</span>帮客户自检：企业 AI 成熟度四个问题</h2>
+        <p>拜访结束前留给客户的判断框架，引发深度思考</p>
+      </div>
+      <div class="framework">
+        <div class="fw-step" style="position:relative;">
+          <div class="step-num">1</div>
+          <h4>有没有项目空间？</h4>
+          <p>人和 AI 是否在同一协作现场，基于同一份材料和上下文？</p>
+          <div class="fw-arrow">→</div>
+        </div>
+        <div class="fw-step" style="position:relative;">
+          <div class="step-num">2</div>
+          <h4>知识能不能沉淀？</h4>
+          <p>AI 产出的方法、经验和文档，是留在组织里还是跟着人走？</p>
+          <div class="fw-arrow">→</div>
+        </div>
+        <div class="fw-step" style="position:relative;">
+          <div class="step-num">3</div>
+          <h4>Agent 有没有管控？</h4>
+          <p>所有 AI 是否统一注册、有身份、有权限、可审计？</p>
+          <div class="fw-arrow">→</div>
+        </div>
+        <div class="fw-step">
+          <div class="step-num">4</div>
+          <h4>集成是接口级还是原生级？</h4>
+          <p>AI 与企业办公系统，是"能连上"还是"能一起干活"？</p>
+        </div>
+      </div>
+    </div>
+    </div><!-- /collapse-body -->
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section section-alt" id="faq-all">
+  <div class="container">
+    <div class="section-header">
+      <h2><span class="section-number">7</span>常见问题速查</h2>
+      <p>产品 FAQ + 客户异议应答，一个页面全覆盖</p>
+    </div>
+    <div class="faq-list">
+      <!-- Product FAQ -->
+      <div class="faq-item open">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-product">产品</span>灵基能对接我们自建的大模型吗？</span></div>
+        <div class="faq-a"><div class="faq-a-inner">目前公有云版本暂不支持对接客户自建模型；未来私有云版本将支持该能力，届时需收取席位费。公有云用户可使用灵基内置的高性能大模型服务。</div></div>
+      </div>
+      <div class="faq-item open">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-product">产品</span>我们有多个公司账套，灵基怎么处理？</span></div>
+        <div class="faq-a"><div class="faq-a-inner">实施时会为您配置默认账套。当涉及多账套或无法确定目标时，AI 会主动询问您指定，确保操作精准、不串数据。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-product">产品</span>灵基的点数（Token）怎么消耗？</span></div>
+        <div class="faq-a"><div class="faq-a-inner">灵基点数是综合折算值。以发票处理为例：视觉模型提取文字（计费）→ 大模型结构化（计费）→ ERP 保存（免费）。简单数据查询不消耗 <span class="term-note">Token<span class="tip">大模型处理文本的基本计费单位，非直接人民币</span></span>，涉及 AI 推理分析的场景才会计费，按实际调用复杂度决定。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-product">产品</span>我们现有自研系统，灵基能分析其数据吗？</span></div>
+        <div class="faq-a"><div class="faq-a-inner">可以。数据分析场景，通过 <span class="term-note">MCP 协议<span class="tip">Model Context Protocol，AI 调用外部工具/API 的标准协议</span></span> 封装 API 即可让灵基调用分析。如需在金蝶系统中进行核算记账，则需通过集成平台将数据接入金蝶，确保财务合规与审计闭环。</div></div>
+      </div>
+      <!-- Sales FAQ -->
+      <div class="faq-item">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-sales">话术</span>"我们已经有员工在用 ChatGPT/元宝了，不需要企业 AI。"</span></div>
+        <div class="faq-a"><div class="faq-a-inner">个人 AI 和员工个人的 Excel 模板一样——它帮个人快，但不帮团队强。员工离职后，他的 ChatGPT 对话记录、提示词、工作流不会留给公司。企业 AI 解决的是"知识沉淀"和"团队协作"，两者不是替代关系，而是个人效率和组织能力的互补。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-sales">话术</span>"企业 AI 是不是就是把个人 AI 加个管理后台？"</span></div>
+        <div class="faq-a"><div class="faq-a-inner">远不止此。企业 AI 的核心差异在于三重能力：①专家——把行业 Know-how 预置为标准工作流；②助理——7×24 云端在线，处理长时任务；③团队——项目空间 + 知识沉淀 + 统一管控。管理后台只是底线，真正的价值是让 AI 从"个人外挂"变成"组织基础设施"。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-sales">话术</span>"我们系统很多，企业 AI 能打通吗？"</span></div>
+        <div class="faq-a"><div class="faq-a-inner">这恰恰是企业级 AI 与个人 AI 的关键分水岭。个人 AI 通过 MCP 可以"连上"各系统，但无法实现原生协同——比如多人和 AI 同时编辑一个文档时，冲突怎么处理？企业级 AI 与办公系统是原生集成的，人和 AI 在同一个工作现场协作，而非简单调用接口。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span><span class="faq-tag faq-tag-sales">话术</span>"投入回报怎么衡量？"</span></div>
+        <div class="faq-a"><div class="faq-a-inner">建议从三个维度衡量：①知识留存率——离职员工沉淀的 AI 经验和 Skill 能否被继承；②协作效率——团队是否从"各自开对话框"转向"同一项目空间协作"；③管理可见性——是否对所有 AI 有统一的身份、权限、审计能力。这几个指标直接关联组织能力的长期建设，而非短期人力节省。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CLOSE ===== -->
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <div class="quote-box">
+      <div class="big">从超级个体，到超级团队</div>
+      <div class="sub">这不是一句口号，而是企业 AI 转型真正的起点</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="container">
+    金蝶中国 · 天津分公司 — 灵基产品 & 销售话术速查卡<br>
+    产品信息来源：内部培训纪要 | 话术参考：WorkBuddy 企业版发布 · 2026
+  </div>
+</div>
+
+<script>
+// FAQ toggle
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Section collapse toggle
+document.querySelectorAll('.section-collapse').forEach(header => {
+  header.addEventListener('click', () => {
+    const targetId = header.getAttribute('data-target');
+    const body = document.getElementById(targetId);
+    const wasHidden = body.classList.contains('hidden');
+    body.classList.toggle('hidden');
+    header.classList.toggle('collapsed');
+    if (wasHidden) {
+      const label = header.querySelector('h2 span:last-child');
+      if (label) label.textContent = '';
+    } else {
+      // refresh any max-height animation
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
+});
+
+// Floating nav: smooth scroll + active highlight
+const navLinks = document.querySelectorAll('.floating-nav a[href^="#"]');
+const sections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href')));
+
+function updateNav() {
+  const scrollY = window.scrollY + 80;
+  let current = sections[0];
+  for (const s of sections) {
+    if (s && s.offsetTop <= scrollY) current = s;
+  }
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current.id) a.classList.add('active');
+  });
+}
+
+navLinks.forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      window.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
+    }
+  });
+});
+
+window.addEventListener('scroll', updateNav);
+updateNav();
+</script>
+</body>
+</html>

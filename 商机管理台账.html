@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商机管理台账</title>
+<style>
+:root {--pri:#4F46E5;--pri-bg:#EEF2FF;--pri-deep:#1E1B4B;--bg:#F8FAFC;--card:#fff;--text:#111;--sub:#475569;--line:#E2E8F0;--red:#DC2626;--orange:#EA580C;--green:#16A34A;--blue:#2563EB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.hero{background:linear-gradient(135deg,#1E1B4B,#312E81,#4F46E5,#6366F1,#818CF8);color:#fff;text-align:center;padding:36px 24px 28px}
+.hero h1{font-size:1.6rem;font-weight:900;color:#fff;margin-bottom:4px}
+.hero p{font-size:.9rem;opacity:.7}
+.container{max-width:1300px;margin:0 auto;padding:24px 20px 40px}
+
+/* Stage heads */
+.stage-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+@media(max-width:700px){.stage-strip{grid-template-columns:repeat(2,1fr)}}
+.stage-box{border-radius:10px;padding:12px;text-align:center;border:1px solid var(--line);cursor:pointer;transition:all .15s;background:var(--card)}
+.stage-box:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(0,0,0,.05)}
+.stage-box .lbl{font-size:10px;font-weight:700;letter-spacing:.8px;margin-bottom:1px}
+.stage-box .rate{font-size:1.3rem;font-weight:900}.stage-box .cnt{font-size:11px;color:var(--sub)}
+.s1{border-top:3px solid var(--red)}.s1 .lbl{color:var(--red)}.s1 .rate{color:var(--red)}
+.s2{border-top:3px solid var(--orange)}.s2 .lbl{color:var(--orange)}.s2 .rate{color:var(--orange)}
+.s3{border-top:3px solid var(--green)}.s3 .lbl{color:var(--green)}.s3 .rate{color:var(--green)}
+.s4{border-top:3px solid var(--blue)}.s4 .lbl{color:var(--blue)}.s4 .rate{color:var(--blue)}.stage-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);text-align:left;font-size:.78rem;color:var(--sub);line-height:1.7}
+.stage-expand.show{display:block}
+.stage-expand li{list-style:none;padding:3px 0;display:flex;gap:6px;align-items:flex-start}
+.stage-expand li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+
+/* Table */
+.tbl-wrap{background:var(--card);border-radius:12px;border:1px solid var(--line);overflow-x:auto;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:1100px}
+th{background:var(--pri-deep);color:#fff;padding:9px 10px;text-align:left;font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px}
+td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--sub)}
+tr:last-child td{border-bottom:none}tr:hover td{background:#FAFBFC}
+
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
+.tag-a{background:#D1FAE5;color:#065F46}.tag-b{background:#FEF3C7;color:#92400E}
+.tag-s1{background:#FEE2E2;color:#991B1B}.tag-s2{background:#FFEDD5;color:#9A3412}.tag-s3{background:#D1FAE5;color:#065F46}.tag-s4{background:#DBEAFE;color:#1E40AF}
+
+.calc-row td{background:var(--pri-bg)!important;font-weight:700;color:var(--pri);font-size:.88rem}
+
+.fbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.fbar select{padding:5px 10px;border:1px solid var(--line);border-radius:6px;font-size:.82rem;font-family:inherit;background:#fff}
+.fbar select:focus{outline:none;border-color:var(--pri)}
+.fbar .count{font-size:.8rem;color:var(--sub);margin-left:auto}
+
+/* Bottom */
+.bot-row{display:flex;gap:14px;margin-top:12px;flex-wrap:wrap}
+.bot-card{background:var(--card);border-radius:10px;padding:14px 16px;border:1px solid var(--line);flex:1;min-width:220px}
+.bot-card h4{font-size:.85rem;font-weight:700;color:var(--pri-deep);margin-bottom:6px}
+.bot-card .v{font-size:1.3rem;font-weight:900;color:var(--green)}
+.bot-card .sub{font-size:.75rem;color:#94A3B8;margin-top:2px}
+.bot-card ul{list-style:none;padding:0;font-size:.78rem;color:var(--sub);line-height:1.7}
+.bot-card ul li::before{content:'• ';color:var(--pri)}
+.footer{text-align:center;padding:18px;color:#94A3B8;font-size:11px;border-top:1px solid var(--line);margin-top:20px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>商机管理台账</h1>
+  <p>倒金字塔 · 成单率逐级递增 · 管理越细预测越准</p>
+</div>
+
+<div class="container">
+
+<!-- Stage cards - clickable to expand -->
+<div class="stage-strip">
+  <div class="stage-box s1" onclick="toggleStage(this)">
+    <div class="lbl">🔴 商机确认</div><div class="rate">10%</div><div class="cnt" id="cntS1">-</div>
+    <ul class="stage-expand"><li>明确有ERP/云产品需求</li><li>确认有预算或预算立项中</li><li>初步了解客户决策流程</li><li>客户愿意安排进一步沟通</li></ul>
+  </div>
+  <div class="stage-box s2" onclick="toggleStage(this)">
+    <div class="lbl">🟠 方案确认</div><div class="rate">25%</div><div class="cnt" id="cntS2">-</div>
+    <ul class="stage-expand"><li>已完成产品演示/方案讲解</li><li>客户对方案表示认可</li><li>关键决策人已介入并表态</li><li>明确竞争对手情况</li></ul>
+  </div>
+  <div class="stage-box s3" onclick="toggleStage(this)">
+    <div class="lbl">🟢 商务确认</div><div class="rate">50%</div><div class="cnt" id="cntS3">-</div>
+    <ul class="stage-expand"><li>进入价格谈判阶段</li><li>付款条件、交付周期已明确</li><li>客户内部已基本达成一致</li><li>竞争对手已排除或劣势明显</li></ul>
+  </div>
+  <div class="stage-box s4" onclick="toggleStage(this)">
+    <div class="lbl">🔵 待签合同</div><div class="rate">75%</div><div class="cnt" id="cntS4">-</div>
+    <ul class="stage-expand"><li>合同条款已确认无误</li><li>客户已签字或走内部审批</li><li>仅待客户盖章或最终审批</li><li>预计签约时间明确</li></ul>
+  </div>
+</div>
+
+<!-- Filter -->
+<div class="fbar">
+  <select id="filterGrade" onchange="render()"><option value="all">全部等级</option><option value="A">A级</option><option value="B">B级</option></select>
+  <select id="filterStage" onchange="render()"><option value="all">全部阶段</option><option value="商机确认">🔴 商机确认</option><option value="方案确认">🟠 方案确认</option><option value="商务确认">🟢 商务确认</option><option value="待签合同">🔵 待签合同</option></select>
+  <span class="count" id="filterCount"></span>
+</div>
+
+<!-- Main table -->
+<div class="tbl-wrap">
+  <table>
+    <thead><tr>
+      <th style="width:12%">客户名称</th><th style="width:5%">等级</th><th style="width:7%">阶段</th><th style="width:5%">成单率</th><th style="width:8%">合同金额</th><th style="width:8%">加权预期</th><th style="width:18%">核心诉求</th><th style="width:8%">现有系统</th><th style="width:10%">决策人</th><th style="width:7%">竞品</th><th style="width:12%">下一步</th></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<!-- Bottom row -->
+<div class="bot-row">
+  <div class="bot-card">
+    <h4>📊 加权推算</h4>
+    <div>合同总 <span style="font-weight:700" id="sumContract">-</span></div>
+    <div class="v" id="sumWeighted">-</div>
+    <div class="sub">管理粗放估算(25%)：<span id="sumRough">-</span></div>
+  </div>
+  <div class="bot-card">
+    <h4>💰 回款参考</h4>
+    <ul>
+      <li>小项目(&lt;50万)：年内 50-60%</li>
+      <li>中项目(50-100万)：年内 40-50%</li>
+      <li>大项目(&gt;100万)：年内 30-40%</li>
+    </ul>
+  </div>
+  <div class="bot-card">
+    <h4>⚠️ 升级规则</h4>
+    <ul>
+      <li>每个阶段须有明确依据才能升级</li>
+      <li>阶段停留超2周未推进 → 标记异常</li>
+      <li>商机→方案：至少一场演示</li>
+      <li>方案→商务：须决策人介入</li>
+      <li>商务→待签：须报价已认可</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">金蝶中国·天津分公司 · 营销中心</div>
+
+<script>
+const STAGES = {
+  '商机确认':{rate:.10,color:'red',tag:'tag-s1'},
+  '方案确认':{rate:.25,color:'orange',tag:'tag-s2'},
+  '商务确认':{rate:.50,color:'green',tag:'tag-s3'},
+  '待签合同':{rate:.75,color:'blue',tag:'tag-s4'}
+};
+
+const opps = [
+  {name:"阿特普科螺杆压缩机",grade:"A",stage:"商务确认",value:29.3,pain:"项目制造+项目管理+条码+委外质检+费用报销+合并报表+成本还原",oldSys:"用友U8(20年+)",decision:"杨良(65%)",compete:"用友YonSuite",nextAction:"成本还原方案+PM面试+客户考察"},
+  {name:"德力仪器设备",grade:"A",stage:"方案确认",value:65,pain:"上市合规+项目制造+项目管理+项目成本核算",oldSys:"金蝶K3(老客户)",decision:"钟长干(98.6%)·陈韬",compete:"用友可能介入",nextAction:"确认IPO时间表+接触决策层"}
+];
+
+function toggleStage(el) {
+  const was = el.querySelector('.stage-expand').classList.contains('show');
+  document.querySelectorAll('.stage-expand').forEach(e=>e.classList.remove('show'));
+  if(!was) el.querySelector('.stage-expand').classList.add('show');
+}
+
+function render() {
+  const fg=document.getElementById('filterGrade').value,fs=document.getElementById('filterStage').value;
+  let filtered=opps.filter(o=>{if(fg!=='all'&&o.grade!==fg)return false;if(fs!=='all'&&o.stage!==fs)return false;return true;});
+  const f=n=>n?.toLocaleString('zh-CN',{minimumFractionDigits:1,maximumFractionDigits:1})||'0';
+  const gl=g=>g==='A'?'<span class="tag tag-a">A</span>':'<span class="tag tag-b">B</span>';
+
+  document.getElementById('tableBody').innerHTML=filtered.map(o=>{
+    const si=STAGES[o.stage],w=(o.value||0)*si.rate;
+    return `<tr><td><strong>${o.name}</strong></td><td>${gl(o.grade)}</td><td><span class="tag ${si.tag}">${o.stage}</span></td><td style="font-weight:700;color:var(--${si.color})">${Math.round(si.rate*100)}%</td><td style="font-weight:600;color:var(--pri)">${f(o.value)}万</td><td style="font-weight:700;color:var(--green)">${f(w)}万</td><td style="font-size:.8rem;line-height:1.5">${o.pain}</td><td>${o.oldSys}</td><td>${o.decision}</td><td style="font-size:.8rem">${o.compete}</td><td style="font-size:.8rem;line-height:1.4">${o.nextAction}</td></tr>`;
+  }).join('');
+
+  const tv=filtered.reduce((s,o)=>s+(o.value||0),0),tw=filtered.reduce((s,o)=>s+(o.value||0)*(STAGES[o.stage]?.rate||0),0);
+  document.getElementById('tableBody').innerHTML+=`<tr class="calc-row"><td colspan="4" style="text-align:right">合计 加权预期：</td><td>${f(tv)}万</td><td style="font-size:1rem">${f(tw)}万</td><td colspan="5"></td></tr>`;
+  if(!filtered.length)document.getElementById('tableBody').innerHTML='<tr><td colspan="11" style="text-align:center;padding:32px;color:#94A3B8">暂无匹配商机</td></tr>';
+
+  const av=opps.reduce((s,o)=>s+(o.value||0),0),aw=opps.reduce((s,o)=>s+(o.value||0)*(STAGES[o.stage]?.rate||0),0);
+  document.getElementById('sumContract').textContent=f(av)+'万 ('+opps.length+'个)';
+  document.getElementById('sumWeighted').textContent=f(aw)+'万';
+  document.getElementById('sumRough').textContent=f(av*0.25)+'万';
+  document.getElementById('filterCount').textContent=`显示 ${filtered.length}/${opps.length}`;
+
+  ['S1','S2','S3','S4'].forEach((s,i)=>{
+    const st=['商机确认','方案确认','商务确认','待签合同'];
+    document.getElementById('cnt'+s).textContent=opps.filter(o=>o.stage===st[i]).length+' 个';
+  });
+}
+render();
+</script>
+</body>
+</html>

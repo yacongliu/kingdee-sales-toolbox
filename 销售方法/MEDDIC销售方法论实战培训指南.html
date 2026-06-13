@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEDDIC销售方法论实战培训指南</title>
+  <style>
+    /* ========== CSS Variables ========== */
+    :root {
+      --blue-deep: #2B70F9;
+      --blue-bright: #4E95FF;
+      --blue-sky: #3398FE;
+      --cyan: #1AC6FF;
+      --teal: #1EBFB5;
+      --purple: #9D5CFF;
+      --yellow: #FFAA00;
+      --navy-dark: #1A1B45;
+      --black: #222222;
+      --text-secondary: #3d4a5c;
+      --text-muted: #5c6b7e;
+      --gray: #B0B0B0;
+      --blue-gray: #E6EDFC;
+      --white: #FFFFFF;
+      --bg: #FFFFFF;
+    }
+
+    /* ========== Reset & Base ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+      color: var(--black);
+      background: var(--white);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========== Top Navigation ========== */
+    .topnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 60px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      transition: box-shadow 0.3s;
+    }
+    .topnav.scrolled { box-shadow: 0 2px 12px rgba(43,112,249,0.10); }
+    .topnav-brand {
+      font-size: 16px; font-weight: 700; color: var(--blue-deep);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .topnav-brand svg { width: 24px; height: 24px; }
+    .topnav-links { display: flex; gap: 4px; overflow-x: auto; }
+    .topnav-links a {
+      text-decoration: none; font-size: 13px; color: var(--text-muted);
+      padding: 6px 14px; border-radius: 6px; white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .topnav-links a:hover { background: var(--blue-gray); color: var(--blue-deep); }
+    .topnav-links a.active { background: var(--blue-deep); color: #fff; }
+
+    /* ========== Hero ========== */
+    .hero {
+      margin-top: 60px;
+      background: linear-gradient(135deg, #2B70F9, #4E95FF);
+      color: #fff;
+      padding: 64px 32px 48px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 16px;
+      font-size: 12px; letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+    .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; letter-spacing: 1px; }
+    .hero-sub { font-size: 15px; color: rgba(255,255,255,0.82); margin-bottom: 28px; max-width: 640px; margin-left: auto; margin-right: auto; }
+    .hero-meta { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+    .hero-meta-item { text-align: center; }
+    .hero-meta-item .meta-num { font-size: 28px; font-weight: 800; }
+    .hero-meta-item .meta-label { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+    /* ========== Container ========== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+    /* ========== Section Title ========== */
+    .section-title {
+      font-size: 20px; font-weight: 700; color: var(--navy-dark);
+      margin: 48px 0 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title .st-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--blue-deep); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; flex-shrink: 0;
+    }
+
+    /* ========== Card ========== */
+    .card {
+      background: #fff; border-radius: 12px; padding: 28px 32px; margin-bottom: 22px;
+      box-shadow: 0 1px 3px rgba(43,112,249,0.06);
+      border: 1px solid var(--blue-gray);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .card:hover { box-shadow: 0 8px 24px rgba(43,112,249,0.10); transform: translateY(-1px); }
+    .card-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 18px; padding-bottom: 12px;
+      border-bottom: 2px solid var(--blue-gray);
+    }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--navy-dark); flex: 1; }
+    .card-title .card-num { font-size: 22px; font-weight: 800; color: var(--blue-deep); margin-right: 6px; }
+
+    /* ========== MEDDIC Grid (Module 2) ========== */
+    .meddic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+    .meddic-item {
+      background: #f8faff; border-radius: 10px; padding: 20px;
+      border-left: 4px solid var(--blue-deep);
+      transition: box-shadow 0.2s;
+    }
+    .meddic-item:hover { box-shadow: 0 4px 16px rgba(43,112,249,0.08); }
+    .meddic-letter { font-size: 24px; font-weight: 800; color: var(--blue-deep); }
+    .meddic-name { font-size: 14px; font-weight: 700; color: var(--navy-dark); margin: 4px 0 8px; }
+    .meddic-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.8; }
+
+    /* ========== Timeline ========== */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 9px; top: 8px; bottom: 8px;
+      width: 2px; background: var(--blue-gray);
+    }
+    .tl-item { position: relative; margin-bottom: 20px; }
+    .tl-dot {
+      position: absolute; left: -28px; top: 6px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--blue-deep); border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--blue-deep);
+      z-index: 1;
+    }
+    .tl-content { font-size: 13.5px; color: var(--text-secondary); }
+    .tl-title { font-weight: 700; color: var(--navy-dark); margin-bottom: 4px; }
+
+    /* ========== Table ========== */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    .data-table thead th {
+      background: var(--blue-deep); color: #fff;
+      padding: 10px 14px; text-align: left; font-weight: 600;
+    }
+    .data-table thead th:first-child { border-radius: 8px 0 0 0; }
+    .data-table thead th:last-child { border-radius: 0 8px 0 0; }
+    .data-table tbody td { padding: 10px 14px; border-bottom: 1px solid #eef1f6; }
+    .data-table tbody tr:nth-child(even) td { background: #fafbff; }
+    .data-table tbody tr:hover td { background: #eef3ff; }
+
+    /* ========== Callout ========== */
+    .callout { padding: 14px 18px; border-radius: 8px; margin: 14px 0; display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.8; }
+    .callout-blue { background: #f0f6ff; border: 1px solid #d6e4ff; }
+    .callout-yellow { background: #fffcf0; border: 1px solid #fde8c8; }
+    .callout-green { background: #edfaf1; border: 1px solid #c8e6d5; }
+    .callout-icon { flex-shrink: 0; margin-top: 2px; }
+
+    /* ========== Case Study Cards ========== */
+    .case-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+    .case-card {
+      border-radius: 10px; padding: 22px; border: 1px solid var(--blue-gray);
+      transition: box-shadow 0.2s;
+    }
+    .case-card:hover { box-shadow: 0 6px 20px rgba(43,112,249,0.08); }
+    .case-industry { font-size: 11px; font-weight: 600; color: var(--blue-deep); background: var(--blue-gray); padding: 2px 10px; border-radius: 10px; display: inline-block; margin-bottom: 10px; }
+    .case-title { font-size: 15px; font-weight: 700; color: var(--navy-dark); margin-bottom: 8px; }
+    .case-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .case-section { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 8px; }
+    .case-section strong { color: var(--navy-dark); }
+
+    /* ========== Mistake List ========== */
+    .mistake-item {
+      display: flex; gap: 14px; padding: 16px 0;
+      border-bottom: 1px solid #eef1f6;
+      align-items: flex-start;
+    }
+    .mistake-item:last-child { border-bottom: none; }
+    .mistake-num {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      background: var(--yellow);
+    }
+    .mistake-wrong { font-size: 13px; color: #c0392b; font-weight: 600; margin-bottom: 4px; }
+    .mistake-right { font-size: 13px; color: #1e8449; }
+
+    /* ========== Tool Cards ========== */
+    .tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+    .tool-card {
+      background: #f8faff; border-radius: 10px; padding: 20px;
+      text-align: center;
+      transition: box-shadow 0.2s;
+    }
+    .tool-card:hover { box-shadow: 0 6px 20px rgba(43,112,249,0.08); }
+    .tool-icon { margin-bottom: 10px; }
+    .tool-name { font-size: 14px; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px; }
+    .tool-desc { font-size: 12.5px; color: var(--text-muted); }
+
+    /* ========== Appendix Tabs ========== */
+    .appendix-section { margin-bottom: 18px; }
+    .appendix-heading {
+      font-size: 14px; font-weight: 700; color: var(--navy-dark);
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .appendix-heading .ap-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--teal); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+    }
+    .script-box {
+      background: #f8faff; border-radius: 8px; padding: 16px 20px;
+      font-size: 13px; color: var(--text-secondary); line-height: 1.9;
+      border-left: 3px solid var(--blue-sky);
+    }
+
+    /* ========== Floating Nav ========== */
+    .fab-nav { position: fixed; bottom: 32px; right: 32px; z-index: 999; }
+    .fab-btn {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: linear-gradient(135deg, #2B70F9, #4E95FF);
+      border: none; color: #fff; font-size: 20px;
+      box-shadow: 0 4px 16px rgba(43,112,249,0.35);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+    }
+    .fab-btn:hover { transform: scale(1.08); }
+    .fab-menu {
+      position: absolute; bottom: 60px; right: 0;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      padding: 8px 0; width: 200px;
+      display: none; opacity: 0; transform: translateY(10px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .fab-menu.show { display: block; opacity: 1; transform: translateY(0); }
+    .fab-menu-item {
+      display: block; padding: 10px 20px; font-size: 13px;
+      color: var(--text-secondary); text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .fab-menu-item:hover { background: var(--blue-gray); border-left-color: var(--blue-deep); color: var(--blue-deep); }
+
+    /* ========== Footer ========== */
+    .footer {
+      text-align: center; padding: 32px 16px;
+      font-size: 12px; color: var(--text-muted);
+      border-top: 1px solid var(--blue-gray);
+      margin-top: 48px;
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 800px) {
+      .meddic-grid, .case-cards, .tool-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 24px; }
+      .hero-meta { gap: 20px; }
+      .card { padding: 20px 18px; }
+      .topnav-links { display: none; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 14px; }
+      .fab-nav { bottom: 20px; right: 16px; }
+      .fab-btn { width: 46px; height: 46px; }
+      .hero { padding: 48px 16px 36px; }
+    }
+
+    /* ========== Print ========== */
+    @media print {
+      .topnav, .fab-nav { display: none; }
+      body { padding-top: 0; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .card { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
+    }
+
+    /* ========== Smooth Scroll ========== */
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+
+  <!-- ========== Top Navigation ========== -->
+  <nav class="topnav" id="topnav">
+    <div class="topnav-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      MEDDIC 培训指南
+    </div>
+    <div class="topnav-links" id="navLinks">
+      <a href="#m1" data-section="m1">基础认知</a>
+      <a href="#m2" data-section="m2">六要素</a>
+      <a href="#m3" data-section="m3">行业案例</a>
+      <a href="#m4" data-section="m4">误区纠正</a>
+      <a href="#m5" data-section="m5">工具落地</a>
+      <a href="#appendix" data-section="appendix">附录</a>
+    </div>
+  </nav>
+
+  <!-- ========== Hero ========== -->
+  <div class="hero">
+    <div class="hero-badge">MEDDIC 销售方法论 · 实战培训指南</div>
+    <h1>MEDDIC销售方法论实战培训指南</h1>
+    <p class="hero-sub">面向1-3年经验销售人员，系统掌握复杂B2B销售的赢单框架，2-3天可拆分模块灵活交付</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="meta-num">1-3年</div>
+        <div class="meta-label">目标受众</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="meta-num">2-3天</div>
+        <div class="meta-label">培训时长</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="meta-num">5大模块</div>
+        <div class="meta-label">核心内容</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="meta-num">6要素</div>
+        <div class="meta-label">MEDDIC框架</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ========== 培训概览 ========== -->
+    <div class="card" style="margin-top:32px;">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">📋</span>培训概览</div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--blue-deep);"></div>
+          <div class="tl-content">
+            <div class="tl-title">培训目标</div>
+            让学员掌握MEDDIC六要素的诊断与运作方法，能在真实客户项目中识别盲区、制定策略、提升赢单率。学完能独立用MEDDIC评估任何一个商机的健康度。
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--blue-deep);"></div>
+          <div class="tl-content">
+            <div class="tl-title">交付形式</div>
+            讲师讲解 + 小组演练 + 案例拆解 + 工具实操。建议每班不超过30人，分组进行角色扮演。
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--gray);"></div>
+          <div class="tl-content">
+            <div class="tl-title">前置要求</div>
+            学员需有至少一次完整B2B销售周期经历。不需要提前了解MEDDIC，但建议培训前发放《MEDDIC快速入门》阅读材料。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 模块一 -->
+    <!-- ============================================================ -->
+    <div class="section-title" id="m1"><div class="st-num">1</div>MEDDIC基础认知</div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">01</span>MEDDIC的起源与适用场景</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.9;margin-bottom:16px;">
+        MEDDIC由Jack Napoli和Dick Dunkel在1990年代于<strong style="color:var(--navy-dark);">PTC公司</strong>创立，是一套专为复杂B2B销售设计的量化诊断框架。PTC用这套方法将年收入从3亿增长到10亿美元，随后MEDDIC被Salesforce、ServiceNow、Snowflake等顶级SaaS公司广泛采用。
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>适用场景</th><th>特征描述</th><th>典型行业</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>复杂B2B销售</td><td>多决策人、长周期、高客单价</td><td>ERP/CRM、企业软件、咨询服务</td></tr>
+          <tr><td>解决方案销售</td><td>需定制方案、涉及多部门</td><td>数字化转型、系统集成</td></tr>
+          <tr><td>竞争性销售</td><td>多家供应商参与、决策复杂</td><td>几乎所有企业采购</td></tr>
+          <tr><td>不适用场景</td><td> transactional/快消、单一决策者</td><td>零售、简单电商</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-blue" style="margin-top:18px;">
+        <div class="callout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--blue-deep)"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#fff">i</text></svg>
+        </div>
+        <div>
+          <strong>核心认知：</strong>MEDDIC不是一套话术，而是一套<strong>诊断框架</strong>。它帮你问对问题，找到销售漏斗里的漏洞，而不是教你怎样把产品卖出去。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">02</span>六要素快速概览</div>
+      </div>
+
+      <div class="meddic-grid">
+        <div class="meddic-item" style="border-left-color:#2B70F9;">
+          <div class="meddic-letter">M</div>
+          <div class="meddic-name">Metrics · 量化收益</div>
+          <div class="meddic-desc">客户能算出来的经济价值。没有Metrics，就只是在卖功能，不是卖价值。</div>
+        </div>
+        <div class="meddic-item" style="border-left-color:#4E95FF;">
+          <div class="meddic-letter">E</div>
+          <div class="meddic-name">Economic Buyer · 经济决策人</div>
+          <div class="meddic-desc">掌握预算审批权的人。找不到EB，项目随时可能被叫停。</div>
+        </div>
+        <div class="meddic-item" style="border-left-color:#3398FE;">
+          <div class="meddic-letter">D</div>
+          <div class="meddic-name">Decision Criteria · 决策标准</div>
+          <div class="meddic-desc">客户用什么标准来评估方案。不知道DC，你就不知道该强调什么。</div>
+        </div>
+        <div class="meddic-item" style="border-left-color:#1AC6FF;">
+          <div class="meddic-letter">D</div>
+          <div class="meddic-name">Decision Process · 决策流程</div>
+          <div class="meddic-desc">客户内部从评估到签合同的步骤。搞不清DP，你就不知道什么时候该做什么。</div>
+        </div>
+        <div class="meddic-item" style="border-left-color:#1EBFB5;">
+          <div class="meddic-letter">I</div>
+          <div class="meddic-name">Identify Pain · 识别痛点</div>
+          <div class="meddic-desc">客户为什么要变。没有真实的Pain，客户没有动力推动采购。</div>
+        </div>
+        <div class="meddic-item" style="border-left-color:#9D5CFF;">
+          <div class="meddic-letter">C</div>
+          <div class="meddic-name">Champion · 内部支持者</div>
+          <div class="meddic-desc">愿意帮你卖的人。没有Champion，你在客户内部是聋的、瞎的。</div>
+        </div>
+      </div>
+
+      <div class="callout callout-yellow" style="margin-top:18px;">
+        <div class="callout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--yellow)"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#fff">!</text></svg>
+        </div>
+        <div>
+          <strong>六要素相互关系：</strong>Pain是起点（客户为什么要买），Metrics是价值的量化（买这个值不值），EB/DC/DP是决策机制（客户怎么买），Champion是你内部的盟友（谁能帮你推动）。任何一个要素缺失，都会大幅降低赢单概率。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">03</span>与传统销售方法的差异</div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>维度</th><th>传统销售</th><th>MEDDIC</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>关注焦点</strong></td><td>产品功能、竞争优势</td><td>客户业务价值、决策机制</td></tr>
+          <tr><td><strong>提问方式</strong></td><td>封闭式、引导式</td><td>开放式、SPIN式挖掘</td></tr>
+          <tr><td><strong>客户关系</strong></td><td>单点联系人</td><td>多角色决策网</td></tr>
+          <tr><td><strong>漏斗管理</strong></td><td>阶段推进</td><td>六要素健康度评分</td></tr>
+          <tr><td><strong>赢单预期</strong></td><td>主观感觉</td><td>可量化的赢单概率</td></tr>
+          <tr><td><strong>丢单后</strong></td><td>不知道为什么</td><td>精准定位哪个要素缺失</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- 模块二 -->
+    <!-- ============================================================ -->
+    <div class="section-title" id="m2"><div class="st-num">2</div>六要素深度实战</div>
+
+    <!-- M - Metrics -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">M</span>Metrics · 量化收益（45分钟）</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">Metrics是客户能算出来的经济价值。教会客户算账，比任何产品演示都更有说服力。</p>
+
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">1</div>三种ROI计算模型</div>
+        <table class="data-table">
+          <thead><tr><th>模型</th><th>适用场景</th><th>计算公式</th><th>关键输入</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>成本节约型</strong></td>
+              <td>替换旧系统、降本增效</td>
+              <td>（原年成本 - 新年成本）× 年份 - 方案投入</td>
+              <td>原运营成本、人力成本、维护费用</td>
+            </tr>
+            <tr>
+              <td><strong>收入增长型</strong></td>
+              <td>营销/销售/客服系统</td>
+              <td>（新收入预测 - 原收入）× 毛利率 - 方案投入</td>
+              <td>转化率提升、客单价提升、复购率</td>
+            </tr>
+            <tr>
+              <td><strong>风险规避型</strong></td>
+              <td>合规/安全/容灾系统</td>
+              <td>风险事件概率 × 损失金额 - 方案投入</td>
+              <td>历史风险事件、监管罚款、声誉损失</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="appendix-section" style="margin-top:18px;">
+        <div class="appendix-heading"><div class="ap-num">2</div>量化收益话术模板</div>
+        <div class="script-box" style="margin-top:8px;">
+          <strong>开场引导：</strong><br>
+          "在深入演示之前，我想先了解一下，如果这个问题不解决，对贵司来说最大的成本是什么？我们可以一起算一算。"<br><br>
+          <strong>引导客户自己算：</strong><br>
+          "您刚才提到库存周转率现在是X，行业平均是Y。如果提升到Y，对您的现金流会有什么影响？我们可以一起估算一下。"<br><br>
+          <strong>把收益钉在客户KPI上：</strong><br>
+          "这个改进会直接体现在您的[Q3成本节约目标/年度数字化转型KPI]里，对吗？"
+        </div>
+      </div>
+
+      <div class="callout callout-green" style="margin-top:16px;">
+        <div class="callout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#1e8449"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <div>
+          <strong>练习任务：</strong>找一个真实客户场景，用三种模型分别算一遍ROI，看哪种最能打动这个客户。
+        </div>
+      </div>
+    </div>
+
+    <!-- E - Economic Buyer -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">E</span>Economic Buyer · 经济决策人（45分钟）</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">EB是掌握预算审批权的人。找不到EB，项目随时可能被叫停。见不到EB，你就不是在真正销售。</p>
+
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">1</div>决策者识别技巧</div>
+        <table class="data-table">
+          <thead><tr><th>信号</th><th>说明</th><th>应对</th></tr></thead>
+          <tbody>
+            <tr><td>"这个要上董事会审批"</td><td>EB是董事会级别</td><td>准备董事会简报材料</td></tr>
+            <tr><td>"我们要做ROI分析"</td><td>CFO可能是EB或关键影响者</td><td>准备财务量化材料</td></tr>
+            <tr><td>联系人回避预算话题</td><td>他可能不是EB</td><td>请他引荐EB</td></tr>
+            <tr><td>"老板很关注这个项目"</td><td>老板=EB</td><td>争取直接向老板汇报的机会</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="appendix-section" style="margin-top:18px;">
+        <div class="appendix-heading"><div class="ap-num">2</div>高层会面策略</div>
+        <div class="timeline" style="margin-top:10px;">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--blue-deep);"></div>
+            <div class="tl-content"><div class="tl-title">会前：找准EB的关注点</div>通过Champion或公开信息（年报、财报、采访）了解EB今年的头号优先级。EB只关心和他KPI相关的事。</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--blue-deep);"></div>
+            <div class="tl-content"><div class="tl-title">会中：30/70法则</div>你说话不超过30%，70%是问和听。带一份一页纸的Executive Summary，不是100页的PPT。</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--gray);"></div>
+            <div class="tl-content"><div class="tl-title">会后：24小时内跟进</div>发送会议纪要，明确下一步，抄送所有相关人。EB的记忆力比你想象的差，书面跟进至关重要。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="script-box" style="margin-top:16px;">
+        <strong>请求引荐EB的话术：</strong><br>
+        "这个项目涉及到跨部门预算审批，我想确保我们的方案完全符合[EB姓名/职位]的决策标准。您能不能帮我安排一次30分钟的简短汇报？我保证不占用他更多时间。"
+      </div>
+    </div>
+
+    <!-- D - Decision Criteria -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">D</span>Decision Criteria · 决策标准（45分钟）</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">DC是客户用来评估方案的准绳。你不知道DC，就不知道该强调什么、该准备什么。</p>
+
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">1</div>竞品分析框架（CIA模型）</div>
+        <table class="data-table">
+          <thead><tr><th>要素</th><th>问题</th><th>目的</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Capabilities 能力</strong></td><td>我们需要哪些功能？哪些是必须的，哪些是加分项？</td><td>确认你的方案覆盖了必选项</td></tr>
+            <tr><td><strong>Implementation 实施</strong></td><td>上线周期多长？对业务中断有多大？</td><td>如果你的实施更快，这就是优势</td></tr>
+            <tr><td><strong>Affordability 成本</strong></td><td>TCO是多少？不仅是采购价，还有隐藏成本</td><td>引导客户看总体拥有成本，不是只看报价</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="appendix-section" style="margin-top:18px;">
+        <div class="appendix-heading"><div class="ap-num">2</div>客户偏好挖掘问卷（直接可用）</div>
+        <div class="script-box" style="margin-top:8px;">
+          1. "在您看过的方案里，哪些地方是最符合您预期的？"<br>
+          2. "如果只能选三个最重要的评估标准，会是什么？"<br>
+          3. "您的IT团队最关心什么？财务团队呢？"<br>
+          4. "您之前遇到过类似项目失败的情况吗？原因是什么？"<br>
+          5. "如果您的竞争对手用了类似系统，您觉得对您有什么压力？"
+        </div>
+      </div>
+
+      <div class="callout callout-yellow" style="margin-top:16px;">
+        <div class="callout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--yellow)"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#fff">!</text></svg>
+        </div>
+        <div>
+          <strong>常见陷阱：</strong>客户说"我们要货比三家"，这是DC吗？<strong>不是。</strong>这是流程，不是标准。你要追问："比的是哪些方面？"那才是真正的DC。
+        </div>
+      </div>
+    </div>
+
+    <!-- D - Decision Process -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">D</span>Decision Process · 决策流程（45分钟）</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">DP是客户内部的采购步骤。搞不清DP，你就不知道什么时候该做什么，容易错过关键节点。</p>
+
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">1</div>决策流程图绘制实操</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">让学员在白板上画出客户决策流程，标注每个节点的关键人物和输出物。</p>
+        <table class="data-table">
+          <thead><tr><th>步骤</th><th>典型名称</th><th>你的行动</th><th>风险点</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>需求确认</td><td>与客户共同定义需求文档</td><td>需求被竞争对手影响</td></tr>
+            <tr><td>2</td><td>方案评估</td><td>安排关键决策人参与演示</td><td>演示对象不包含EB</td></tr>
+            <tr><td>3</td><td>PoC/试点</td><td>设定明确的成功标准</td><td>PoC范围蔓延，永不结束</td></tr>
+            <tr><td>4</td><td>商务谈判</td><td>提前了解预算周期</td><td>赶上预算冻结期</td></tr>
+            <tr><td>5</td><td>合同审批</td><td>提前获取合同模板要求</td><td>法务审批耗时超预期</td></tr>
+            <tr><td>6</td><td>签约</td><td>准备快速启动计划</td><td>签字人临时变更</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="script-box" style="margin-top:16px;">
+        <strong>摸清决策流程的问题：</strong><br>
+        "类似的项目，贵司通常的采购流程是怎样的？"<br>
+        "从评估到签合同，一般需要过哪几个关卡？"<br>
+        "每个关卡，通常需要谁签字/批准？"<br>
+        "上一个类似项目，在哪个环节花了最长时间？"
+      </div>
+    </div>
+
+    <!-- I - Identify Pain -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">I</span>Identify Pain · 识别痛点（45分钟）</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">没有真实的Pain，客户没有动力推动采购。Pain是销售机会存在的唯一理由。</p>
+
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">1</div>SPIN提问法演练</div>
+        <table class="data-table">
+          <thead><tr><th>类型</th><th>目的</th><th>示例问题</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Situation 现状</strong></td><td>了解事实背景</td><td>"您目前的财务月末结账流程是怎样的？"</td></tr>
+            <tr><td><strong>Problem 问题</strong></td><td>揭示难点和不满</td><td>"在这个流程里，最让您头疼的是哪一步？"</td></tr>
+            <tr><td><strong>Implication 影响</strong></td><td>让问题变得更严重</td><td>"如果结账延迟，对后续的报表和决策有什么影响？"</td></tr>
+            <tr><td><strong>Need-Payoff 价值</strong></td><td>引导客户说出解决方案价值</td><td>"如果结账时间从5天缩短到2天，对您团队意味着什么？"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="appendix-section" style="margin-top:18px;">
+        <div class="appendix-heading"><div class="ap-num">2</div>痛点分级评估</div>
+        <table class="data-table">
+          <thead><tr><th>级别</th><th>特征</th><th>销售策略</th></tr></thead>
+          <tbody>
+            <tr><td><strong style="color:#e74c3c;">紧急 Pain</strong></td><td>不解决会影响业务运行（合规风险、系统崩溃）</td><td>加速推进，强调紧迫性</td></tr>
+            <tr><td><strong style="color:#e67e22;">重要 Pain</strong></td><td>影响效率/KPI，但不会立刻崩溃</td><td>量化影响，建立时间表</td></tr>
+            <tr><td><strong style="color:#95a5a6;">潜在 Pain</strong></td><td>客户还没意识到的问题</td><td>教育市场，建立认知</td></tr>
+            <tr><td><strong style="color:#bdc3c7;">无 Pain</strong></td><td>客户只是"看看"</td><td>重新评估是否值得投入时间</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- C - Champion -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">C</span>Champion · 内部支持者（45分钟）</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:14px;">Champion是愿意帮你卖的人。没有Champion，你在客户内部是聋的、瞎的，所有信息都是滞后的、失真的。</p>
+
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">1</div>Champion vs 联系人 vs 用户</div>
+        <table class="data-table">
+          <thead><tr><th>角色</th><th>是否帮你卖</th><th>关注点</th><th>你能给的</th></tr></thead>
+          <tbody>
+            <tr><td><strong>用户</strong></td><td>❌ 不关心</td><td>功能好不好用</td><td>培训、易用性</td></tr>
+            <tr><td><strong>联系人</strong></td><td>❌ 只是窗口</td><td>把事办完</td><td>及时响应</td></tr>
+            <tr><td><strong>教练 Coach</strong></td><td>⚠️ 提供信息</td><td>项目成功</td><td>洞察、预警</td></tr>
+            <tr><td><strong>Champion 支持者</strong></td><td>✅ 主动帮你卖</td><td>项目成功=他的成功</td><td>赋能工具、荣誉感</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="appendix-section" style="margin-top:18px;">
+        <div class="appendix-heading"><div class="ap-num">2</div>内部支持者培养路径</div>
+        <div class="timeline" style="margin-top:10px;">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--blue-deep);"></div>
+            <div class="tl-content"><div class="tl-title">Step 1：识别潜在Champion</div>找那些对现状不满、有影响力、且与你建立信任的人。通常是中层管理者，有足够影响力但还不够到EB层。</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--blue-deep);"></div>
+            <div class="tl-content"><div class="tl-title">Step 2：提供价值，建立互惠</div>给他行业洞察、竞品分析、成功案例——任何能让他在其内部更有话语权的信息。</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--blue-deep);"></div>
+            <div class="tl-content"><div class="tl-title">Step 3：赋能他向内部推销</div>给他准备一页纸的Executive Summary、ROI计算表、与EB沟通的话术。让他能自信地向老板推荐你。</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:var(--gray);"></div>
+            <div class="tl-content"><div class="tl-title">Step 4：维护关系，长期经营</div>即使项目结束，也要持续给Champion提供价值。他是你在这个客户里的永久资产。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-blue" style="margin-top:16px;">
+        <div class="callout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--blue-deep)"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#fff">i</text></svg>
+        </div>
+        <div>
+          <strong>Champion赋能工具包包含：</strong>Executive Summary模板、ROI计算器（Excel）、客户案例视频链接、与EB沟通的话术参考、竞争对手对比表。
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- 模块三 -->
+    <!-- ============================================================ -->
+    <div class="section-title" id="m3"><div class="st-num">3</div>行业案例实战（90分钟）</div>
+
+    <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:18px;">每组案例包含：客户画像、角色分析、完整对话脚本、关键转折点标注。学员分组演练后，讲师点评。</p>
+
+    <!-- Case 1 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">🏭</span>案例一：装备制造企业 · 长周期多决策层</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">客户画像</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            某大型装备制造企业，年营收80亿，员工5000+。现有ERP系统已使用10年，频繁出现故障，月度结账需7天。IT负责人主动发起替换评估。
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">角色分析</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            <strong>EB：</strong>CFO（关注ROI和财务风险）<br>
+            <strong>决策影响者：</strong>IT总监（关注技术架构）、各业务副总（关注业务中断）<br>
+            <strong>Champion：</strong>财务部长（深受旧系统之苦）
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">关键对话脚本（节选）</div>
+      <div class="script-box" style="margin-bottom:12px;">
+        <strong>销售：</strong>"李部长，我了解到贵司月末结账现在需要7天，这7天里财务部团队的工作状态是怎样的？"<br>
+        <strong>李部长：</strong>"连续加班，数据还对不上，业务部门天天催报表。"<br>
+        <strong>销售：</strong>"如果结账缩短到2天，对您团队意味着什么？"（Need-Payoff问题）<br>
+        <strong>李部长：</strong>"那我的人就不用每个月疯一次了。而且能给管理层更及时的决策数据。"<br>
+        <strong>💡 转折点：</strong>李部长从"用户"转变为"Champion"，主动提出帮销售约见CFO。
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">MEDDIC要素标注</div>
+      <table class="data-table">
+        <thead><tr><th>要素</th><th>本案例中的体现</th><th>评分（1-5）</th></tr></thead>
+        <tbody>
+          <tr><td>M</td><td>结账从7天→2天，财务人力成本节约可量化</td><td style="color:var(--teal);font-weight:700;">4</td></tr>
+          <tr><td>E</td><td>CFO已介入，但还需第二次单独汇报</td><td style="color:var(--yellow);font-weight:700;">3</td></tr>
+          <tr><td>DC</td><td>已知：稳定性>功能多>价格；但竞品DC未完全摸清</td><td style="color:var(--yellow);font-weight:700;">3</td></tr>
+          <tr><td>DP</td><td>决策流程清晰，但法务审批时间不确定</td><td style="color:var(--teal);font-weight:700;">4</td></tr>
+          <tr><td>I</td><td>痛点真实且紧急（系统频繁故障）</td><td style="color:var(--teal);font-weight:700;">5</td></tr>
+          <tr><td>C</td><td>李部长已成为Champion，主动推进</td><td style="color:var(--teal);font-weight:700;">4</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Case 2 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">💡</span>案例二：电子高科技企业 · 技术驱动快速迭代</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">客户画像</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            某芯片设计公司，年营收20亿，高速成长。现有系统无法支撑多组织多币种，海外业务扩张受阻。CEO直接推动系统升级。
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">角色分析</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            <strong>EB：</strong>CEO（关注业务扩张支撑）<br>
+            <strong>决策影响者：</strong>CFO（关注财务合规）、CIO（关注架构灵活性）<br>
+            <strong>Champion：</strong>CEO本人（罕见，但本案例如此）
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">关键对话脚本（节选）</div>
+      <div class="script-box" style="margin-bottom:12px;">
+        <strong>销售：</strong>"张总，贵司今年计划在几个海外市场落地？现有的财务系统能支撑多币种并行结账吗？"<br>
+        <strong>CEO：</strong>"计划进3个市场，现有系统搞不定，这就是为什么我要换。"<br>
+        <strong>销售：</strong>"如果系统上线延迟6个月，对贵司海外扩张计划的影响怎么量化？"（Implication问题）<br>
+        <strong>💡 转折点：</strong>CEO意识到Delay的代价远大于软件采购成本，决策加速。
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">高科技行业决策特点</div>
+      <table class="data-table">
+        <thead><tr><th>特点</th><th>对销售的影响</th><th>应对策略</th></tr></thead>
+        <tbody>
+          <tr><td>决策速度快</td><td>给你准备的时间少</td><td>提前准备好行业方案包</td></tr>
+          <tr><td>技术权重高</td><td>IT/CIO话语权大</td><td>技术架构材料要过硬</td></tr>
+          <tr><td>关注扩展性</td><td>未来3-5年规划很重要</td><td>强调平台能力，不是单点功能</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Case 3 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">🤝</span>案例三：现代服务业 · 关系导向个性化需求</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">客户画像</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            某大型连锁服务机构，800+门店，年营收50亿。关注客户体验和运营效率。IT外包，决策高度依赖业务负责人之间的关系。
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">角色分析</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            <strong>EB：</strong>运营VP（关注客户满意度和成本）<br>
+            <strong>决策影响者：</strong>IT外包商（可能影响技术选型）<br>
+            <strong>Champion：</strong>运营总监（与销售建立了私人关系）
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">服务业销售关键洞察</div>
+      <div class="callout callout-blue" style="margin-top:8px;">
+        <div class="callout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--blue-deep)"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="#fff">i</text></svg>
+        </div>
+        <div>
+          <strong>服务业决策的核心是"关系+定制"。</strong>标准化产品很难打动这类客户，需要展示对行业的深刻理解，以及定制化能力。Champion的关系维护比任何技巧都重要。
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- 模块四 -->
+    <!-- ============================================================ -->
+    <div class="section-title" id="m4"><div class="st-num">4</div>误区识别与纠正（30分钟）</div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">⚠️</span>10大常见错误情景模拟</div>
+      </div>
+
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">以下每一条都是真实销售场景中高频出现的错误。培训中可请学员先判断错在哪里，再揭示正确做法。</p>
+
+      <!-- Mistake 1 -->
+      <div class="mistake-item">
+        <div class="mistake-num">1</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：把联系人当成EB，全程只跟他沟通，以为项目稳了</div>
+          <div class="mistake-right">✅ 正确：任何关键节点（方案确认、报价、合同）都要求与EB或至少影响EB的人一起参与。联系人≠决策者。</div>
+        </div>
+      </div>
+
+      <!-- Mistake 2 -->
+      <div class="mistake-item">
+        <div class="mistake-num">2</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：Metrics只讲"效率提升"，没有具体数字</div>
+          <div class="mistake-right">✅ 正确：Metrics必须是客户能算出来的数字。不用客户的KPI指标来算，就是纸上谈兵。</div>
+        </div>
+      </div>
+
+      <!-- Mistake 3 -->
+      <div class="mistake-item">
+        <div class="mistake-num">3</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：Demo时滔滔不绝讲功能，不问客户关心什么</div>
+          <div class="mistake-right">✅ 正确：演示前先确认DC（决策标准），演示时70%时间在展示与客户DC相关的内容。</div>
+        </div>
+      </div>
+
+      <!-- Mistake 4 -->
+      <div class="mistake-item">
+        <div class="mistake-num">4</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：PoC范围不锁定，客户不断加需求，PoC永无止境</div>
+          <div class="mistake-right">✅ 正确：PoC前书面确认范围、成功标准、时间限制。到期必须评估，不能无限延期。</div>
+        </div>
+      </div>
+
+      <!-- Mistake 5 -->
+      <div class="mistake-item">
+        <div class="mistake-num">5</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：以为Champion会主动帮你卖，不给他工具</div>
+          <div class="mistake-right">✅ 正确：Champion需要被赋能。给他Executive Summary、ROI表、与EB沟通的话术。让他能自信地帮你推销。</div>
+        </div>
+      </div>
+
+      <!-- Mistake 6 -->
+      <div class="mistake-item">
+        <div class="mistake-num">6</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：客户说"我们还要再比较一下"，不追问DC就离开了</div>
+          <div class="mistake-right">✅ 正确：这是挖掘DC的黄金机会。追问："比较的是哪些方面？我可以确保我们的方案在这些方面是最优的。"</div>
+        </div>
+      </div>
+
+      <!-- Mistake 7 -->
+      <div class="mistake-item">
+        <div class="mistake-num">7</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：把"客户有兴趣"当成"客户有Pain"</div>
+          <div class="mistake-right">✅ 正确：有兴趣≠有购买动机。用SPIN的Implication问题测试——客户是否感受到不行动的代价？</div>
+        </div>
+      </div>
+
+      <!-- Mistake 8 -->
+      <div class="mistake-item">
+        <div class="mistake-num">8</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：报价后才发现客户预算只有报价的一半</div>
+          <div class="mistake-right">✅ 正确：在方案确认之前就要摸清预算范围。问法："类似项目的预算区间，贵司通常是什么水平？"</div>
+        </div>
+      </div>
+
+      <!-- Mistake 9 -->
+      <div class="mistake-item">
+        <div class="mistake-num">9</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：丢单后不知道为什么，只记得"客户选了竞争对手"</div>
+          <div class="mistake-right">✅ 正确：用MEDDIC复盘——六个要素里哪个最弱？下次怎么改进？建立丢单分析习惯。</div>
+        </div>
+      </div>
+
+      <!-- Mistake 10 -->
+      <div class="mistake-item">
+        <div class="mistake-num">10</div>
+        <div>
+          <div class="mistake-wrong">❌ 错误：签完合同就消失，不经营Champion关系</div>
+          <div class="mistake-right">✅ 正确：签约是关系的开始，不是结束。Champion是你的永久资产，经营好他，他会给你带来下一个商机。</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- 模块五 -->
+    <!-- ============================================================ -->
+    <div class="section-title" id="m5"><div class="st-num">5</div>工具落地应用（30分钟）</div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">🛠️</span>让MEDDIC真正用起来</div>
+      </div>
+
+      <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:18px;">再好的方法论，不用就是没用。本模块提供三个可直接落地的工具，培训结束后学员可以立刻上手。</p>
+
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--blue-deep)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="tool-name">MEDDIC评估打分表</div>
+          <div class="tool-desc">每个要素1-5分，总分判断商机健康度。低于20分的高危商机要重点管理。</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+          </div>
+          <div class="tool-name">销售流程检查清单</div>
+          <div class="tool-desc">按阶段定制的Checklist，确保每个关键动作不遗漏。可嵌入CRM阶段推进规则。</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1.08 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001.08 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1.08z"/></svg>
+          </div>
+          <div class="tool-name">CRM系统集成建议</div>
+          <div class="tool-desc">将MEDDIC六要素字段化，商机健康度自动计算，提醒销售及时补齐盲区。</div>
+        </div>
+      </div>
+
+      <div class="appendix-section" style="margin-top:22px;">
+        <div class="appendix-heading"><div class="ap-num">📊</div>MEDDIC评分规则（可直接用于评估打分表）</div>
+        <table class="data-table">
+          <thead><tr><th>要素</th><th>1分</th><th>3分</th><th>5分</th></tr></thead>
+          <tbody>
+            <tr><td><strong>M</strong></td><td>客户说不出具体收益</td><td>有定性描述，缺定量</td><td>客户自己算出了ROI数字</td></tr>
+            <tr><td><strong>E</strong></td><td>不知道EB是谁</td><td>知道EB，但没见过</td><td>EB已参与，且认可方案</td></tr>
+            <tr><td><strong>DC</strong></td><td>完全不清楚</td><td>知道部分标准</td><td>客户书面确认了评估标准</td></tr>
+            <tr><td><strong>DP</strong></td><td>不清楚流程</td><td>知道主要步骤</td><td>有客户方的采购流程图</td></tr>
+            <tr><td><strong>I</strong></td><td>客户"只是看看"</td><td>有不满，但不紧急</td><td>痛点紧急，不解决有影响</td></tr>
+            <tr><td><strong>C</strong></td><td>没有内部支持者</td><td>有教练，但不是Champion</td><td>有活跃的Champion在帮你推进</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-green" style="margin-top:18px;">
+        <div class="callout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#1e8449"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <div>
+          <strong>落地建议：</strong>培训结束后，要求学员在两周内用MEDDIC评估自己手上所有商机，提交一份《商机健康度评估报告》。这是检验培训效果的最直接方式。
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- 附录 -->
+    <!-- ============================================================ -->
+    <div class="section-title" id="appendix"><div class="st-num">附</div>附录资源</div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">📎</span>附录一：MEDDIC话术速查手册</div>
+      </div>
+
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">M</div>Metrics 话术速查</div>
+        <div class="script-box">
+          ▪ "这个问题如果继续存在，对贵司最大的成本是什么？"<br>
+          ▪ "您刚才提到[X]，这个数字能不能量化一下？我想帮您算一笔账。"<br>
+          ▪ "如果这个问题解决了，对您的[Q3目标/KPI]有什么贡献？"
+        </div>
+      </div>
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">E</div>Economic Buyer 话术速查</div>
+        <div class="script-box">
+          ▪ "这个项目最终谁批预算？我想确保我们的方案完全符合他的要求。"<br>
+          ▪ "能不能安排一次与[EB职位]的简短交流？我保证不占用他太多时间。"<br>
+          ▪ "在[EB姓名]看来，这个项目最大的风险是什么？"
+        </div>
+      </div>
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">DC</div>Decision Criteria 话术速查</div>
+        <div class="script-box">
+          ▪ "在您评估过的方案里，哪些地方最符合预期？"<br>
+          ▪ "如果只能选三个评估标准，会是什么？"<br>
+          ▪ "您的IT团队最关心什么？财务团队呢？"
+        </div>
+      </div>
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">DP</div>Decision Process 话术速查</div>
+        <div class="script-box">
+          ▪ "类似项目，贵司通常的采购流程是怎样的？"<br>
+          ▪ "从评估到签合同，一般需要过哪几个关卡？"<br>
+          ▪ "下一个关键节点是什么？我们需要准备什么？"
+        </div>
+      </div>
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">I</div>Identify Pain 话术速查</div>
+        <div class="script-box">
+          ▪ "这个问题对您来说最大的影响是什么？"<br>
+          ▪ "如果什么都不做，6个月后贵司会是什么状态？"<br>
+          ▪ "您之前尝试过解决这个问题吗？当时为什么没成功？"
+        </div>
+      </div>
+      <div class="appendix-section">
+        <div class="appendix-heading"><div class="ap-num">C</div>Champion 话术速查</div>
+        <div class="script-box">
+          ▪ "如果这个项目成功了，对您来说意味着什么？"<br>
+          ▪ "您需要我提供什么材料，来帮助您向内部推介这个方案？"<br>
+          ▪ "除了您，还有谁在这个项目上能帮上忙？"
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">🏭</span>附录二：各行业决策特点对照表</div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>行业</th><th>决策周期</th><th>关键决策者</th><th>核心关注点</th><th>销售策略重点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>装备制造</strong></td>
+            <td>6-12个月</td>
+            <td>CFO + 生产副总</td>
+            <td>ROI、生产稳定性</td>
+            <td>量化Metrics，强调稳定性</td>
+          </tr>
+          <tr>
+            <td><strong>电子高科技</strong></td>
+            <td>3-6个月</td>
+            <td>CEO + CIO</td>
+            <td>扩展性、上市速度</td>
+            <td>快速演示，平台能力</td>
+          </tr>
+          <tr>
+            <td><strong>现代服务业</strong></td>
+            <td>3-9个月</td>
+            <td>运营VP + IT外包商</td>
+            <td>客户体验、定制能力</td>
+            <td>行业案例，关系经营</td>
+          </tr>
+          <tr>
+            <td><strong>金融/保险</strong></td>
+            <td>9-18个月</td>
+            <td>CTO + 合规负责人</td>
+            <td>安全、合规、稳定性</td>
+            <td>合规认证，安全架构</td>
+          </tr>
+          <tr>
+            <td><strong>零售/消费品</strong></td>
+            <td>2-6个月</td>
+            <td>CMO + CFO</td>
+            <td>营销ROI、库存周转</td>
+            <td>营销数据整合，快速见效</td>
+          </tr>
+          <tr>
+            <td><strong>医药/医疗</strong></td>
+            <td>12-24个月</td>
+            <td>药监局合规 + CFO</td>
+            <td>合规、追溯、GSP</td>
+            <td>合规资质，行业专属方案</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-num">✍️</span>附录三：实战练习作业清单</div>
+      </div>
+
+      <div style="font-size:13.5px;color:var(--text-secondary);line-height:2.2;">
+        <div style="display:flex;gap:10px;margin-bottom:8px;">
+          <div style="color:var(--blue-deep);font-weight:700;flex-shrink:0;">作业一</div>
+          <div><strong>MEDDIC自评：</strong>用六要素评估自己手上最成熟的商机，打出分数，标注最弱的要素和补救计划。（提交时间：培训结束后3天内）</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:8px;">
+          <div style="color:var(--blue-deep);font-weight:700;flex-shrink:0;">作业二</div>
+          <div><strong>SPIN演练：</strong>找一个真实客户，用SPIN框架完成一次电话/拜访，录音并提交反思。（提交时间：培训结束后1周内）</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:8px;">
+          <div style="color:var(--blue-deep);font-weight:700;flex-shrink:0;">作业三</div>
+          <div><strong>Champion赋能：</strong>为自己最大的商机找到一个Champion，给他发一份定制化的Executive Summary，并获取他的反馈。（提交时间：培训结束后2周内）</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:8px;">
+          <div style="color:var(--blue-deep);font-weight:700;flex-shrink:0;">作业四</div>
+          <div><strong>丢单复盘：</strong>选一个过去6个月内丢的单子，用MEDDIC六要素复盘，写一份1页的复盘报告。（提交时间：培训结束后3周内）</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <div style="color:var(--blue-deep);font-weight:700;flex-shrink:0;">作业五</div>
+          <div><strong>行业案例改写：</strong>把自己的一个真实客户（匿名化）改写成培训案例，包含角色分析、对话脚本和MEDDIC标注。（提交时间：培训结束后1个月内）</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- ========== Footer ========== -->
+  <div class="footer">
+    MEDDIC销售方法论实战培训指南 · 内部培训资料<br>
+    基于金蝶品牌规范设计 &nbsp;|&nbsp; 2026年6月 &nbsp;|&nbsp; 机密 · 仅限内部使用
+  </div>
+
+  <!-- ========== Floating Nav ========== -->
+  <div class="fab-nav">
+    <div class="fab-menu" id="fabMenu">
+      <a class="fab-menu-item" href="#m1">01 · 基础认知</a>
+      <a class="fab-menu-item" href="#m2">02 · 六要素实战</a>
+      <a class="fab-menu-item" href="#m3">03 · 行业案例</a>
+      <a class="fab-menu-item" href="#m4">04 · 误区纠正</a>
+      <a class="fab-menu-item" href="#m5">05 · 工具落地</a>
+      <a class="fab-menu-item" href="#appendix">附录 · 资源</a>
+    </div>
+    <button class="fab-btn" id="fabBtn" aria-label="导航菜单">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- ========== JavaScript ========== -->
+  <script>
+    /* ---- Floating Nav Toggle ---- */
+    const fabBtn = document.getElementById('fabBtn');
+    const fabMenu = document.getElementById('fabMenu');
+
+    fabBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      fabMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!fabMenu.contains(e.target) && e.target !== fabBtn) {
+        fabMenu.classList.remove('show');
+      }
+    });
+
+    document.querySelectorAll('.fab-menu-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        fabMenu.classList.remove('show');
+      });
+    });
+
+    /* ---- Top Nav Scroll Effect ---- */
+    const topnav = document.getElementById('topnav');
+    const navLinks = document.querySelectorAll('#navLinks a');
+
+    window.addEventListener('scroll', function() {
+      /* Add shadow on scroll */
+      if (window.scrollY > 10) {
+        topnav.classList.add('scrolled');
+      } else {
+        topnav.classList.remove('scrolled');
+      }
+
+      /* Highlight current section */
+      const sections = ['m1', 'm2', 'm3', 'm4', 'm5', 'appendix'];
+      let current = '';
+      sections.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 120) current = id;
+        }
+      });
+      navLinks.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('data-section') === current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

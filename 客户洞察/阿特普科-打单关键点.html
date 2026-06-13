@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阿特普科 · 打单看板</title>
+<style>
+:root {--pri:#4F46E5;--pri-deep:#1E1B4B;--bg:#F8FAFC;--card:#fff;--text:#111;--sub:#475569;--line:#E2E8F0;--teal:#059669;--amber:#D97706;--rose:#DC2626}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+.hero{background:linear-gradient(135deg,#1E1B4B,#312E81,#4F46E5,#6366F1,#818CF8);color:#fff;text-align:center;padding:50px 24px 40px}
+.hero h1{font-size:2rem;font-weight:900;color:#fff;margin-bottom:6px}
+.hero p{font-size:1rem;opacity:.8}
+.hero .tag-line{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:4px 14px;border-radius:20px;font-size:12px;margin-top:14px}
+.container{max-width:900px;margin:0 auto;padding:28px 20px 50px}
+.sec{margin-top:36px}
+.sec-h{font-size:1.25rem;font-weight:800;color:var(--pri-deep);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.sec-sub{font-size:13px;color:var(--sub);margin-bottom:16px}
+.card{background:var(--card);border-radius:10px;padding:18px 20px;margin-bottom:12px;border:1px solid var(--line)}
+.card h3{font-size:1.05rem;font-weight:700;margin-bottom:6px}
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:6px 0}
+th{background:#EEF2FF;color:var(--pri);padding:8px 10px;text-align:left;font-weight:600;border-bottom:2px solid var(--pri)}
+td{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--sub);vertical-align:top}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin:1px}
+.tag-g{background:#D1FAE5;color:#065F46}.tag-y{background:#FEF3C7;color:#92400E}.tag-r{background:#FEE2E2;color:#991B1B}.tag-b{background:#DBEAFE;color:#1E40AF}.tag-p{background:#EDE9FE;color:#5B21B6}
+.hl{padding:11px 14px;border-radius:0 8px 8px 0;margin:8px 0;font-size:.9rem;line-height:1.6}
+.hl-i{background:#F0F9FF;border-left:4px solid #3B82F6;color:#1E40AF}
+.hl-ok{background:#D1FAE5;border-left:4px solid #059669;color:#065F46}
+.hl-w{background:#FEF3C7;border-left:4px solid #D97706;color:#92400E}
+.hl-e{background:#FEE2E2;border-left:4px solid #DC2626;color:#991B1B}
+.prog{display:flex;gap:4px;align-items:center;margin-top:8px}
+.prog-dot{width:12px;height:12px;border-radius:50%;background:#E2E8F0}
+.prog-dot.done{background:#059669}
+.prog-dot.active{background:#4F46E5;box-shadow:0 0 8px rgba(79,70,229,.4)}.prog-line{flex:1;height:2px;background:#E2E8F0}.prog-line.done{background:#059669}
+.meter{height:8px;background:#E2E8F0;border-radius:4px;margin:6px 0;overflow:hidden}.meter .fill{height:100%;background:#059669;border-radius:4px}
+.nums{font-size:2.2rem;font-weight:900;color:var(--pri);line-height:1}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:600px){.g2{grid-template-columns:1fr}}
+.footer{text-align:center;padding:20px;color:#94A3B8;font-size:12px;border-top:1px solid var(--line);margin-top:28px}
+.action-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:.9rem;color:var(--sub);border-bottom:1px solid var(--line)}
+.action-item:last-child{border-bottom:none}
+.action-num{width:24px;height:24px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>阿特普科 · 打单看板</h1>
+  <p>6月9日 + 6月10日 四场深度交流后 · 综合评估</p>
+  <div class="tag-line">📋 供应商管理+供应链+MRP+成本还原+多组织+一期二期拆分</div>
+</div>
+
+<div class="container">
+
+<!-- 项目阶段 -->
+<div class="sec">
+  <div class="sec-h">📍 01 · 项目走到哪了</div>
+  <div class="card">
+    <div style="font-size:13px;color:var(--sub);margin-bottom:12px;">目前已经过了需求调研和模块演示，进入了模块选型确认和报价阶段。</div>
+    <div class="prog">
+      <span style="font-size:11px;color:#059669;white-space:nowrap">初访 ✅</span>
+      <span class="prog-line done"></span>
+      <span class="prog-dot done"></span>
+      <span class="prog-line done"></span>
+      <span style="font-size:11px;color:#059669;white-space:nowrap">方案 ✅</span>
+      <span class="prog-line done"></span>
+      <span class="prog-dot active"></span>
+      <span class="prog-line"></span>
+      <span style="font-size:11px;color:#4F46E5;white-space:nowrap;font-weight:700">选型·报价</span>
+      <span class="prog-line"></span>
+      <span class="prog-dot"></span>
+      <span class="prog-line"></span>
+      <span style="font-size:11px;color:#94A3B8;white-space:nowrap">商务</span>
+      <span class="prog-line"></span>
+      <span class="prog-dot"></span>
+      <span class="prog-line"></span>
+      <span style="font-size:11px;color:#94A3B8;white-space:nowrap">签约</span>
+    </div>
+    <div class="hl hl-i" style="margin-top:12px;">
+      <strong>你离签约还有多远？</strong>模块需求基本确认（4场深聊已经很透了），客户已经给了明确的模块取舍和分期意见。报价29.3万已出。下一步核心是<strong>成本还原方案敲定+项目经理面试+客户考察安排</strong>。如果这三件事推动顺畅，签约窗口在2-3周内。
+    </div>
+  </div>
+</div>
+
+<!-- 综合评估 -->
+<div class="sec">
+  <div class="sec-h">🎯 02 · 项目打单评估</div>
+
+  <div class="g2">
+    <div class="card" style="text-align:center">
+      <div class="nums">A级</div>
+      <div style="font-size:13px;color:var(--sub);margin-top:4px">综合商机评级</div>
+      <div class="meter" style="margin-top:8px"><div class="fill" style="width:75%"></div></div>
+      <div style="font-size:12px;color:var(--sub);margin-top:4px">离签约完成度 ~75%</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="nums">29.3万</div>
+      <div style="font-size:13px;color:var(--sub);margin-top:4px">一二期总报价</div>
+      <div style="font-size:12px;color:var(--sub);margin-top:2px">一期约21万+二期约7万+实施待评估</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>为什么是A级</h3>
+    <table>
+      <tr><th style="width:120px">维度</th><th>判断</th></tr>
+      <tr><td>需求明确度</td><td><span class="tag tag-g">极高</span> 四场深聊+两轮纪要，模块清单已确认到具体用户数</td></tr>
+      <tr><td>决策流程</td><td><span class="tag tag-g">清晰</span> 民企老板拍板，杨良态度积极（主动抛成本还原这一深层需求）</td></tr>
+      <tr><td>预算信号</td><td><span class="tag tag-g">已出价</span> 客户对29.3万未表现出抗拒，关注点在"能不能成功"而非"能不能便宜"</td></tr>
+      <tr><td>竞争态势</td><td><span class="tag tag-y">优势</span> 客户弃用友U8主动找金蝶，用友U9老旧+YonSuite项目制造需大量二开</td></tr>
+      <tr><td>时间窗口</td><td><span class="tag tag-g">紧迫</span> 计划2027年1月1日上线，3-4个月实施周期，签约窗口在6月内</td></tr>
+      <tr><td>风险</td><td>成本还原落地方案需研判+5公司多组织架构复杂度+项目经理面试</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 6月10日核心关键点 -->
+<div class="sec">
+  <div class="sec-h">🔑 03 · 6月10日新增核心关键点</div>
+  <div class="sec-sub">从三场会议中提炼出你必须掌握的关键信息</div>
+
+  <div class="card">
+    <h3 style="color:#DC2626">⚠️ 成本还原——这是整个项目最核心的难点</h3>
+    <div style="font-size:.9rem;color:var(--sub);line-height:1.8;">
+      客户5家公司之间存在内部加价，导致项目成本虚高。客户要的是<strong>去掉内部加价的真实项目成本</strong>，用于业务员考核和公司整体核算。
+    </div>
+    <div class="hl hl-w" style="margin-top:8px;">
+      <strong>两个候选方案（会后需研判）：</strong><br>
+      ① 虚拟集团账套方案：新增一个集团虚拟账套处理真实业务，5家实体从虚拟账套同步数据，内部加价仅在实体层体现<br>
+      ② 自定义字段方案：在采购订单等业务单据上新增字段存储源头采购价格，报表取该字段<br>
+      <strong>两个方案都有问题：</strong>虚拟集团方案库存盘点分不清各公司；自定义字段方案领料时区分不了批次对应源头价格<br>
+      <strong>目前客户对手工方案已经比较熟练：</strong>合同编号前缀区分公司+开发工具自动同步数据
+    </div>
+    <div class="hl hl-i">
+      <strong>明天关键回应：</strong>"成本还原这个事我们回去做了研判，会后给你出针对性落地方案。核心原则是——不增加你们日常操作的复杂度，让系统去算而不是让人去算。"
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>供应商管理模块——客户需求明确</h3>
+    <table>
+      <tr><th style="width:140px">要点</th><th>内容</th></tr>
+      <tr><td>供应商规模</td><td>100-200家，基本稳定，核心供应商固定</td></tr>
+      <tr><td>核心需求</td><td>准入流程+资质到期预警+绩效考核(A/B/C级)+供应商画像</td></tr>
+      <tr><td>特殊需求</td><td>预询价——项目签单前提前询价，物料编码规格都还没定，需要关联项目号</td></tr>
+      <tr><td>客户痛点</td><td>老供应商"宰熟"，核心原材料价格随市场波动，需要定期询比价砍价</td></tr>
+      <tr><td>供应商协同</td><td>独立门户+短信推送+图纸上传+在线对账，确认放二期</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>一期二期拆分确认</h3>
+    <table>
+      <tr><th style="width:100px">期次</th><th>包含</th><th style="width:100px">金额</th></tr>
+      <tr><td style="font-weight:700;color:var(--pri)">一期</td><td>财务+供应链+生产+委外+质检+条码+项目管理+合同+费用报销+合并报表+中望CAD/图文档/设计变更</td><td>约21万</td></tr>
+      <tr><td style="font-weight:700;color:#059669">二期</td><td>供应商协同、电子档案、电子凭证池、商业汇票、银企直连、移动审批、开票收票自动化</td><td>约7万</td></tr>
+      <tr><td colspan="2">年服务费：高级成功服务 12,000元/年（已给折扣）</td><td></td></tr>
+      <tr><td colspan="2">实施费用：后台重新评估后给出</td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>MRP上线节奏——客户自己承认之前U8 MRP不准是数据问题</h3>
+    <div style="font-size:.9rem;color:var(--sub);line-height:1.8;">
+      客户主动提到之前U8 MRP计算不准是因为现存量更新不及时，整理后就好了。<strong>这是好消息</strong>——客户理解MRP出问题的根源是数据质量而非系统本身。建议：先跑稳采购库存单据，数据准确后再开MRP。客户选择了项目型MRP（全程跟踪项目号）。
+    </div>
+    <div class="hl hl-ok">
+      <strong>确认了BOM存在</strong>——之前沟通有误解，实际生产组装需要BOM支撑，满足MRP基础要求。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Salesforce集成——客户要求必须做，不能省略</h3>
+    <div style="font-size:.9rem;color:var(--sub);line-height:1.8;">
+      Salesforce签单→同步U8→U8处理完→合同/资产回传Salesforce。客户售后按资产维护，这个闭环不能省。建议先U8跑通再做集成，降低一期复杂度。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>OA对接——两个选择，客户自己定</h3>
+    <div style="font-size:.9rem;color:var(--sub);line-height:1.8;">
+      ① 迁移到云之家（原生打通，不需要额外接口开发）<br>
+      ② 保持现有范围OA，U8审批代办推送过去<br>
+      客户会后讨论决定，不需要你强推。
+    </div>
+  </div>
+</div>
+
+<!-- 明天行动清单 -->
+<div class="sec">
+  <div class="sec-h">📋 04 · 明天必须推进的事</div>
+
+  <div class="card">
+    <h3 style="color:#DC2626">🔴 高优先级</h3>
+    <div class="action-item"><div class="action-num">1</div>成本还原落地方案——会议约定的"会后研判输出"，不能拖超过两天</div>
+    <div class="action-item"><div class="action-num">2</div>给出更新后的完整报价（含实施费用评估），明确一期二期边界</div>
+    <div class="action-item"><div class="action-num">3</div>确认项目经理人选，安排客户面试时间</div>
+    <div class="action-item"><div class="action-num">4</div>安排华为海洋等同类客户考察交流</div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="color:#D97706">🟡 中优先级</h3>
+    <div class="action-item"><div class="action-num">5</div>确认OA对接方案（等客户自己决定，不要催）</div>
+    <div class="action-item"><div class="action-num">6</div>供应商协同模块后续单独做一次演示（客户明确问了询比价和签约协同）</div>
+  </div>
+</div>
+
+<!-- 风险预警 -->
+<div class="sec">
+  <div class="sec-h">⚠️ 05 · 风险评估</div>
+
+  <div class="card">
+    <div class="hl hl-e">
+      <strong>① 成本还原方案复杂度——最大风险</strong><br>
+      这个需求涉及5公司多组织、3-5年历史数据追溯、多批次多价格。两个方案都有未解问题，需要研发或实施专家介入。如果方案迟迟定不下来，会影响签约节奏。
+    </div>
+    <div class="hl hl-w">
+      <strong>② 多组织架构复杂度</strong><br>
+      5家独立法人+1个虚拟集团，关联交易自动结算是优势，但库存盘点分不清各公司的问题需要做好预案。
+    </div>
+    <div class="hl hl-e">
+      <strong>③ 实施范围不小</strong><br>
+      一期含财务+供应链+生产+委外+质检+条码+项目+合同+费用+报表+CAD集成，跨度大。分两期是对的，但要守住——客户如果提出"能不能一期全做完"，不能答应。
+    </div>
+    <div class="hl hl-w">
+      <strong>④ Salesforce集成</strong><br>
+      双向集成（合同+资产回传）不是标准功能，需要评估开发工作量并明确谁来承担。
+    </div>
+  </div>
+</div>
+
+<!-- 最后建议 -->
+<div class="sec">
+  <div class="sec-h">💡 06 · 我的建议</div>
+
+  <div class="card" style="background:#f0f9ff;border-color:#93c5fd;">
+    <div style="font-size:.9rem;color:var(--sub);line-height:1.9;">
+      <strong>1. 成本还原不要急着给"完美方案"。</strong>先给一个"先跑通现有流程，成本还原报表二期迭代"的思路。一期先把业务单据跑准，数据积累够了再出成本还原报表——这个逻辑客户会接受。<br><br>
+      <strong>2. 报价不要再降了。</strong>29.3万客户没有抗拒，说明预算能cover。再降反而显得之前报高了。守住价格线，用"帮你选对模块不花冤枉钱"来体现诚意。<br><br>
+      <strong>3. 项目经理面试是关键。</strong>客户明确提出要面试。如果你这边能推一个有项目型制造交付经验的PM，面试通过，签约就只剩流程问题了。<br><br>
+      <strong>4. 客户考察安排要快。</strong>华为海洋案例太亮了——128个系统68天替换，而且是真项目型制造。安排客户去考察（或至少线上交流），这是最强的信任背书。<br><br>
+      <strong>5. 这个项目的节奏判断：</strong>签约大概率在6月下旬。关键节点是成本还原方案确认+报价定版+项目经理面试通过。三件事都过，客户就会拍板。
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  金蝶中国·天津分公司 &nbsp;|&nbsp; 刘总专属 &nbsp;|&nbsp; 6月9日+10日四场会谈后 &nbsp;|&nbsp; 含打单评估
+</div>
+
+</body>
+</html>
