@@ -29,6 +29,7 @@
   body { font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif; color: var(--text-body); background: var(--bg-light); line-height:1.7; }
   .container { max-width:960px; margin:0 auto; padding:0 24px; }
 
+  /* Hero */
   .hero {
     background: linear-gradient(135deg, #0055FF 0%, #3399FF 100%);
     color: #fff; padding:56px 0 48px; text-align:center;
@@ -41,11 +42,13 @@
   .hero-stat .num { font-size:32px; font-weight:700; }
   .hero-stat .label { font-size:13px; color:var(--text-hero-sub); margin-top:4px; }
 
+  /* Section */
   .section { padding:48px 0; }
   .section-alt { background: var(--bg-white); }
   .section-title { font-size:24px; font-weight:700; color:var(--text-dark); margin-bottom:8px; text-align:center; }
   .section-sub { text-align:center; color:var(--text-muted); font-size:15px; margin-bottom:36px; }
 
+  /* Pillar Cards */
   .pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
   .pillar-card {
     background: var(--bg-white); border-radius: var(--radius); padding:28px 24px;
@@ -60,6 +63,7 @@
   .icon-exp { background:rgba(0,191,165,.1); }
   .icon-platform { background:rgba(255,170,0,.1); }
 
+  /* Scenario Cards */
   .scenarios { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
   .scenario-card {
     background: var(--bg-white); border-radius: var(--radius); padding:28px 24px;
@@ -71,6 +75,7 @@
   .scenario-card li { position:relative; padding-left:20px; font-size:14px; color:#444; margin-bottom:6px; }
   .scenario-card li::before { content:"✓"; position:absolute; left:0; color:var(--success); font-weight:700; }
 
+  /* Efficiency Highlight */
   .efficiency-box {
     background: linear-gradient(135deg, #0055FF 0%, #3399FF 100%);
     border-radius: var(--radius); padding:36px; color:#fff; text-align:center;
@@ -82,6 +87,7 @@
   .eff-item .desc { font-size:13px; color:var(--text-hero-sub); margin-top:4px; }
   .eff-vs { font-size:14px; color:rgba(255,255,255,.7); margin-top:20px; }
 
+  /* FAQ */
   .faq-list { max-width:720px; margin:0 auto; }
   .faq-item { background:var(--bg-white); border-radius:var(--radius-sm); margin-bottom:12px; box-shadow:var(--shadow); overflow:hidden; }
   .faq-q { padding:16px 20px; font-weight:600; color:var(--text-dark); cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-size:15px; }
@@ -91,8 +97,10 @@
   .faq-item.open .faq-a { max-height:300px; }
   .faq-a-inner { padding:0 20px 16px; font-size:14px; color:#555; line-height:1.8; border-top:1px solid var(--border); padding-top:14px; }
 
+  /* Footer */
   .footer { text-align:center; padding:36px 0; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); }
 
+  /* Responsive */
   @media(max-width:768px) {
     .pillars, .scenarios { grid-template-columns:1fr; }
     .hero-stats { flex-direction:column; gap:16px; }
@@ -102,6 +110,8 @@
 </style>
 </head>
 <body>
+
+<!-- Hero -->
 <section class="hero">
   <div class="container">
     <div class="hero-badge">🤖 企业级 AI 智能体平台</div>
@@ -114,6 +124,8 @@
     </div>
   </div>
 </section>
+
+<!-- Core Positioning -->
 <section class="section">
   <div class="container">
     <div class="section-title">为什么企业需要 AI Agent？</div>
@@ -136,6 +148,8 @@
     </div>
   </div>
 </section>
+
+<!-- Three Pillars -->
 <section class="section section-alt">
   <div class="container">
     <div class="section-title">灵基的三大核心优势</div>
@@ -159,6 +173,8 @@
     </div>
   </div>
 </section>
+
+<!-- Business Scenarios -->
 <section class="section">
   <div class="container">
     <div class="section-title">典型业务场景</div>
@@ -207,6 +223,8 @@
     </div>
   </div>
 </section>
+
+<!-- Efficiency -->
 <section class="section section-alt">
   <div class="container">
     <div class="efficiency-box">
@@ -228,6 +246,8 @@
     </div>
   </div>
 </section>
+
+<!-- Enterprise Native -->
 <section class="section">
   <div class="container">
     <div class="section-title">企业原生能力</div>
@@ -251,6 +271,8 @@
     </div>
   </div>
 </section>
+
+<!-- FAQ -->
 <section class="section section-alt">
   <div class="container">
     <div class="section-title">常见问题</div>
@@ -283,9 +305,25 @@
     </div>
   </div>
 </section>
+
+<!-- CTA -->
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <div style="background:var(--bg-white);border-radius:var(--radius);padding:40px;box-shadow:var(--shadow);">
+      <h2 style="font-size:22px;font-weight:700;color:var(--text-dark);margin-bottom:8px;">让 AI 真正为您的企业干活</h2>
+      <p style="color:var(--text-muted);font-size:15px;margin-bottom:24px;">金蝶灵基 — 不只是对话，更是行动</p>
+      <div style="display:inline-block;background:linear-gradient(135deg,#0055FF,#3399FF);color:#fff;padding:12px 36px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">预约演示</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
 <div class="footer">
-  <div class="container">© 2026 金蝶软件（中国）有限公司 · 金蝶灵基产品介绍</div>
+  <div class="container">
+    © 2026 金蝶软件（中国）有限公司 · 金蝶灵基产品介绍
+  </div>
 </div>
+
 <script>
 document.querySelectorAll('.faq-q').forEach(q=>{
   q.addEventListener('click',()=>{
