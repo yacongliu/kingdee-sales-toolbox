@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Desktop 完全指南</title>
+<style>
+:root {
+  --blue-deep: #2B70F9;
+  --blue-bright: #4E95FF;
+  --blue-sky: #3398FE;
+  --cyan: #1AC6FF;
+  --teal: #1EBFB5;
+  --purple: #9D5CFF;
+  --yellow: #FFAA00;
+  --navy-dark: #1A1B45;
+  --black: #222222;
+  --text-secondary: #3d4a5c;
+  --text-muted: #5c6b7e;
+  --gray: #B0B0B0;
+  --blue-gray: #E6EDFC;
+  --white: #FFFFFF;
+  --bg: #FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Microsoft YaHei","微软雅黑",sans-serif;
+  background:var(--bg);color:var(--black);
+  line-height:1.7;-webkit-font-smoothing:antialiased;
+}
+
+/* ─── Top Nav ─── */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(12px);
+  height:60px;display:flex;align-items:center;justify-content:center;
+  gap:4px;padding:0 16px;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
+  transition:box-shadow .3s;
+}
+.topnav.scrolled{box-shadow:0 2px 12px rgba(43,112,249,.10);}
+.nav-btn{
+  padding:7px 16px;border-radius:8px;border:none;
+  background:transparent;color:var(--text-secondary);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--blue-gray);color:var(--blue-deep)}
+.nav-btn.active{background:var(--blue-deep);color:#fff;}
+
+/* ─── Hero ─── */
+.hero{
+  background:linear-gradient(135deg,#2B70F9,#4E95FF);
+  padding:100px 24px 56px;text-align:center;
+}
+.hero h1{font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;letter-spacing:1px;}
+.hero .sub{font-size:16px;color:rgba(255,255,255,.75);margin-top:10px;max-width:700px;margin-left:auto;margin-right:auto;}
+.hero-meta{display:flex;justify-content:center;gap:24px;margin-top:24px;font-size:13px;color:rgba(255,255,255,.55);flex-wrap:wrap;}
+
+/* ─── Container ─── */
+.container{max-width:1100px;margin:0 auto;padding:0 16px;}
+
+/* ─── Section ─── */
+.sec{margin-top:44px;opacity:0;transform:translateY(24px);transition:all .6s}
+.sec.in{opacity:1;transform:translateY(0)}
+.sec-hd{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.sec-hd .sn{font-size:22px;font-weight:800;color:var(--blue-deep);}
+.sec-hd h2{font-size:20px;font-weight:700;color:var(--navy-dark);}
+.sec-hd .ss{font-size:13px;color:var(--text-muted);margin-left:auto;}
+
+/* ─── Card ─── */
+.card{background:#fff;border-radius:12px;padding:28px 32px;margin-bottom:22px;box-shadow:0 1px 3px rgba(43,112,249,0.06);border:1px solid var(--blue-gray);transition:box-shadow .2s,transform .2s;}
+.card:hover{box-shadow:0 8px 24px rgba(43,112,249,.10);transform:translateY(-1px)}
+.card-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--blue-gray)}
+.card-tl{font-size:16px;font-weight:700;color:var(--navy-dark);flex:1}
+.card-tl .cn{font-size:22px;font-weight:800;color:var(--blue-deep)}
+.card p{font-size:14px;color:var(--text-secondary);line-height:1.8}
+.card ul{font-size:14px;color:var(--text-secondary);line-height:1.8;padding-left:20px}
+.card li{margin-bottom:4px}
+.card strong{color:var(--navy-dark)}
+
+/* ─── Stage Flow ─── */
+.stage-flow{display:flex;align-items:flex-start;justify-content:space-between;margin:14px 0;}
+.stage-node{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
+.stage-node .sc{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;position:relative;z-index:2;flex-shrink:0;}
+.stage-node .sl{font-size:12px;font-weight:600;margin-top:6px;text-align:center;white-space:nowrap;}
+.stage-node .sd{font-size:10.5px;color:var(--text-muted);text-align:center;}
+.stage-node .scon{position:absolute;top:22px;left:calc(50% + 22px);width:calc(100% - 44px);height:3px;z-index:1;border-radius:2px;}
+.stage-node:last-child .scon{display:none}
+.sn-done .sc{background:var(--blue-deep);color:#fff;border:3px solid var(--blue-deep);}
+.sn-done .sl{color:var(--blue-deep)}
+.sn-done .scon{background:var(--blue-deep)}
+.sn-cur .sc{background:var(--blue-deep);color:#fff;border:3px solid var(--blue-deep);animation:breathe 1.8s ease-in-out infinite;}
+@keyframes breathe{0%{box-shadow:0 0 0 0 rgba(43,112,249,.35)}50%{box-shadow:0 0 0 10px rgba(43,112,249,.12)}100%{box-shadow:0 0 0 0 rgba(43,112,249,.35)}}
+.sn-cur .sl{color:var(--blue-deep);font-weight:700}
+.sn-cur .scon{background:var(--blue-deep)}
+.sn-pending .sc{background:#f5f6f8;color:var(--gray);border:3px solid #dce0e8}
+.sn-pending .sl{color:var(--gray)}
+.sn-pending .scon{background:#dce0e8}
+
+/* ─── Grid ─── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:700px){.g2{grid-template-columns:1fr}}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+@media(max-width:800px){.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.g3{grid-template-columns:1fr}}
+
+.feature-card{border-radius:10px;padding:22px;border:1px solid var(--blue-gray);transition:all .2s}
+.feature-card:hover{box-shadow:0 4px 16px rgba(43,112,249,.08);border-color:var(--blue-deep);transform:translateY(-2px)}
+.feature-card .fc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px;}
+.feature-card h4{font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;}
+.feature-card p{font-size:12.5px;color:var(--text-muted);line-height:1.6}
+
+/* ─── Callout ─── */
+.callout{border-radius:10px;padding:16px 18px;margin:12px 0;display:flex;gap:10px;align-items:flex-start;}
+.callout-blue{background:#f0f6ff;border-left:3px solid var(--blue-deep);}
+.callout-yellow{background:#fffcf0;border-left:3px solid var(--yellow);}
+.callout-green{background:#edfaf1;border-left:3px solid var(--teal);}
+.callout .co-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.callout p{font-size:13px;color:var(--text-secondary);line-height:1.7;}
+
+/* ─── Table ─── */
+.stbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+.stbl thead th{background:linear-gradient(135deg,#2B70F9,#4E95FF);color:#fff;padding:10px 14px;font-weight:600;text-align:left;font-size:12px;}
+.stbl tbody td{padding:10px 14px;border-bottom:1px solid var(--blue-gray);color:var(--text-secondary);}
+.stbl tbody tr:nth-child(even) td{background:#fafbff;}
+.stbl tbody tr:hover td{background:#f0f6ff;}
+
+/* ─── Tag ─── */
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:500;}
+.tag-blue{background:rgba(43,112,249,.1);color:var(--blue-deep)}
+.tag-teal{background:rgba(30,191,181,.1);color:var(--teal)}
+.tag-purple{background:rgba(157,92,255,.1);color:var(--purple)}
+.tag-yellow{background:rgba(255,170,0,.1);color:#996600}
+
+/* ─── Flow Steps ─── */
+.fl{display:flex;gap:10px;margin:10px 0;padding:10px 14px;border-radius:8px;background:#f8faff;border:1px solid var(--blue-gray);}
+.fl .fn{width:26px;height:26px;border-radius:50%;background:var(--blue-deep);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.fl .fc{flex:1;}
+.fl .fc .ft{font-size:13px;font-weight:600;color:var(--navy-dark);margin-bottom:2px;}
+.fl .fc .fd{font-size:12.5px;color:var(--text-muted);line-height:1.6;}
+
+/* ─── Code Block ─── */
+.cb{background:#f5f7fa;border:1px solid var(--blue-gray);border-radius:8px;padding:14px 16px;margin:10px 0;font-size:12.5px;color:var(--text-secondary);line-height:1.8;overflow-x:auto;white-space:pre-wrap;font-family:monospace;}
+.cb .hl{color:var(--blue-deep);font-weight:600;}
+
+/* ─── Footer ─── */
+.ft{text-align:center;padding:36px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--blue-gray);margin-top:44px;}
+
+/* ─── FAB ─── */
+.fab-nav{position:fixed;bottom:32px;right:32px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.fab-btn{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#2B70F9,#4E95FF);color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(43,112,249,.3);transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.fab-btn:hover{transform:scale(1.05);box-shadow:0 6px 24px rgba(43,112,249,.4);}
+.fab-menu{display:none;flex-direction:column;align-items:flex-end;gap:6px;}
+.fab-menu.open{display:flex;}
+.fab-item{padding:8px 16px;border-radius:20px;border:1px solid var(--blue-gray);background:rgba(255,255,255,.96);backdrop-filter:blur(10px);color:var(--text-secondary);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.fab-item:hover{background:var(--blue-deep);color:#fff;border-color:var(--blue-deep);}
+
+/* ─── Responsive ─── */
+@media(max-width:800px){.card{padding:20px 18px;}.stage-flow{flex-wrap:wrap;gap:8px;justify-content:center;}.stage-node{flex:0 0 45%;margin-bottom:8px;}.stage-node .scon{display:none}}
+@media(max-width:640px){.container{padding:0 14px;}.fab-btn{width:46px;height:46px;}}
+@media print{.topnav,.fab-nav{display:none;}.card{break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<nav class="topnav" id="topNav">
+  <button class="nav-btn active" data-s="s1">入门</button>
+  <button class="nav-btn" data-s="s2">Projects</button>
+  <button class="nav-btn" data-s="s3">Live Artifacts</button>
+  <button class="nav-btn" data-s="s4">高阶玩法</button>
+  <button class="nav-btn" data-s="s5">ERP场景</button>
+  <button class="nav-btn" data-s="s6">提示词</button>
+</nav>
+
+<section class="hero">
+  <h1>Claude Code Desktop 完全指南</h1>
+  <p class="sub">从安装配置到高阶玩法，让AI成为你的超级搭档</p>
+  <div class="hero-meta">
+    <span>金蝶 · 天津</span>
+    <span>2026年6月</span>
+    <span>④ 内部公开</span>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- ═══ 01 入门 ═══ -->
+<section class="sec" id="s1">
+  <div class="sec-hd"><span class="sn">01</span><h2>入门 · 安装与配置</h2><span class="ss">5分钟上手</span></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">1</span> · 下载安装</div></div>
+    <p>访问 <strong>claude.ai/download</strong> 下载桌面版，支持 macOS / Windows。</p>
+    <p>安装后打开，用 Claude 账号登录（需 Pro/Max/Team 订阅）。</p>
+    <div class="callout callout-green"><span class="co-icon">💡</span><p><strong>提示：</strong>如果你已经在用 CC Switch，安装后可以直接在 CC Switch 中配置模型切换，让桌面版走千问或其他模型。</p></div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">2</span> · 连接你的工具</div></div>
+    <p>点击左下角头像 → <strong>设置 → 连接器</strong>，可连接：</p>
+    <div class="g2" style="margin-top:12px;">
+      <div class="feature-card"><div class="fc-icon" style="background:rgba(43,112,249,.1);color:var(--blue-deep);">🔗</div><h4>MCP 服务器</h4><p>连接飞书、浏览器、数据库等外部工具，让Claude直接操作你的业务系统。</p></div>
+      <div class="feature-card"><div class="fc-icon" style="background:rgba(30,191,181,.1);color:var(--teal);">📂</div><h4>本地文件夹</h4><p>挂载你的项目目录、销售方案库、客户资料夹，Claude可直接读写文件。</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">3</span> · 认识界面</div></div>
+    <div class="g3">
+      <div class="fl"><div class="fn">1</div><div class="fc"><div class="ft">对话区</div><div class="fd">主聊天窗口，直接下达指令</div></div></div>
+      <div class="fl"><div class="fn">2</div><div class="fc"><div class="ft">侧边栏</div><div class="fd">多会话切换，并行任务管理</div></div></div>
+      <div class="fl"><div class="fn">3</div><div class="fc"><div class="ft">Live Artifacts</div><div class="fd">持久化HTML看板，数据实时刷新</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 02 Projects ═══ -->
+<section class="sec" id="s2">
+  <div class="sec-hd"><span class="sn">02</span><h2>Projects · 项目管理</h2><span class="ss">给每个客户一个专属空间</span></div>
+  <div class="card">
+    <p><strong>Projects</strong> 是 Claude Code Desktop 的核心组织单元。每个 Project 有自己的文件目录、上下文记忆（CLAUDE.md）、MCP 连接和技能配置。切换 Project 就是切换整套工作环境。</p>
+    <div class="callout callout-blue"><span class="co-icon">🎯</span><p><strong>核心价值</strong>：Project 隔离了不同客户/项目的上下文，防止串项目。这是你之前提到的"每个客户独立窗口"需求的完美解决方案。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">4</span> · 创建Project</div></div>
+    <div class="fl"><div class="fn">1</div><div class="fc"><div class="ft">新建文件夹</div><div class="fd">在本地创建一个项目目录，比如 ~/Clients/万达电影/</div></div></div>
+    <div class="fl"><div class="fn">2</div><div class="fc"><div class="ft">在桌面端打开</div><div class="fd">Claude Code Desktop 中点击"Open Project"，选择该目录</div></div></div>
+    <div class="fl"><div class="fn">3</div><div class="fc"><div class="ft">编写 CLAUDE.md</div><div class="fd">写入客户背景、关键联系人、当前进展，以后每次打开自动加载</div></div></div>
+    <div class="fl"><div class="fn">4</div><div class="fc"><div class="ft">配置 MCP</div><div class="fd">按需连接飞书、Tavily搜索等工具</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">5</span> · CLAUDE.md 模板</div></div>
+    <div class="callout callout-yellow"><span class="co-icon">✏️</span><p>在每个 Project 根目录创建 <strong>CLAUDE.md</strong>，Claude 每次进入自动读取，作为持久化项目记忆。</p></div>
+    <div class="cb"><span class="hl"># [客户名称] 打单项目</span>
+<span class="hl">## 客户信息</span>
+- 行业：军工/制造/零售
+- 规模：年营收XX亿，员工XX人
+- 决策链：CEO（张总）→ CIO（李总）→ 财务（王总）
+- 内线：生产部 赵经理
+
+<span class="hl">## 项目状态</span>
+- 当前阶段：方案汇报完成，待演示
+- 关键痛点：项目利润算不准，超支率25%
+- 竞品动态：用友已接触，出了初步方案
+- 下一步：安排针对性产品演示
+
+<span class="hl">## 文档索引</span>
+- 客户调研报告：research.md
+- 定制方案书：proposal_v3.docx
+- 痛点挖掘速填：quick-fill.md</div>
+  </div>
+
+  <!-- 四阶段流程 -->
+  <div class="card" style="margin-top:24px;">
+    <div class="card-hd"><div class="card-tl"><span class="cn">6</span> · 打单项目流程节点</div></div>
+    <p style="margin-bottom:14px;">每个 Project 中，用四阶段跟踪打单进度：</p>
+    <div class="stage-flow">
+      <div class="stage-node sn-done"><div class="sc">✓</div><div class="sl">商机确认</div><div class="sd">痛点清晰·预算明确</div><div class="scon"></div></div>
+      <div class="stage-node sn-cur"><div class="sc">2</div><div class="sl">方案确认</div><div class="sd">定制方案·ROI测算</div><div class="scon"></div></div>
+      <div class="stage-node sn-pending"><div class="sc">3</div><div class="sl">商务确认</div><div class="sd">谈判·客情·竞品</div><div class="scon"></div></div>
+      <div class="stage-node sn-pending"><div class="sc">4</div><div class="sl">合同确认</div><div class="sd">签约·交付衔接</div><div class="scon"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 03 Live Artifacts ═══ -->
+<section class="sec" id="s3">
+  <div class="sec-hd"><span class="sn">03</span><h2>Live Artifacts · 活页面</h2><span class="ss">一次创建，永远新鲜</span></div>
+  <div class="card">
+    <p>Live Artifacts 是 Claude Code Desktop 中的<strong>持久化、可交互的HTML面板</strong>。与普通对话不同，它独立存在，每次打开时自动刷新数据。</p>
+    <div class="g3" style="margin-top:14px;">
+      <div class="feature-card"><h4>📌 持久化</h4><p>不依赖对话，在"Live Artifacts"标签页永久保存</p></div>
+      <div class="feature-card"><h4>🔄 实时刷新</h4><p>打开时自动拉取飞书/日历/搜索等最新数据</p></div>
+      <div class="feature-card"><h4>📋 版本历史</h4><p>自动保存每次迭代，可对比差异、还原旧版</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">7</span> · 创建方式</div></div>
+    <div class="fl"><div class="fn">1</div><div class="fc"><div class="ft">对话中创建</div><div class="fd">跟Claude说"帮我创建一个XX看板"或"生成一个持续更新的XX页面"</div></div></div>
+    <div class="fl"><div class="fn">2</div><div class="fc"><div class="ft">从 Artifacts 标签页</div><div class="fd">点"New artifact"按钮，直接描述需求</div></div></div>
+    <div class="fl"><div class="fn">3</div><div class="fc"><div class="ft">现有对话转 Artifact</div><div class="fd">对话中生成的HTML内容，可以"保存为Artifact"</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">8</span> · ERP销售的实战Artifacts</div></div>
+    <div class="callout callout-blue"><span class="co-icon">💡</span><p>以下是我建议你创建的 Artifacts，一次创建，每次打开自动刷新：</p></div>
+    <table class="stbl">
+      <thead><tr><th>Artifact 名称</th><th>数据来源</th><th>更新频次</th><th>价值</th></tr></thead>
+      <tbody>
+        <tr><td><strong>打单进度总看板</strong></td><td>Project内文件 + 手动输入</td><td>每次打开</td><td>一眼看清所有客户当前阶段</td></tr>
+        <tr><td><strong>竞品动态情报板</strong></td><td>Tavily搜索（用友/浪潮等）</td><td>每日</td><td>自动抓取竞品新闻，不盯也知</td></tr>
+        <tr><td><strong>客户痛点洞察卡</strong></td><td>15分钟速填表 + Tavily</td><td>拜访前后</td><td>客户信息结构化沉淀</td></tr>
+        <tr><td><strong>本周行动清单</strong></td><td>Project + 日历</td><td>每周</td><td>自动生成本周拜访/跟进计划</td></tr>
+        <tr><td><strong>话术库/常见异议</strong></td><td>销售工具箱</td><td>按需更新</td><td>随时翻的实战话术手册</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 04 高阶玩法 ═══ -->
+<section class="sec" id="s4">
+  <div class="sec-hd"><span class="sn">04</span><h2>高阶玩法</h2><span class="ss">从能用 → 好用 → 离不开</span></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">9</span> · 并行会话 + 侧边栏</div></div>
+    <p>新版桌面支持<strong>同时运行多个会话</strong>。你可以：</p>
+    <ul style="margin-top:8px;">
+      <li>左侧窗口跑客户调研，右侧窗口写方案——互不干扰</li>
+      <li>主会话做打单推进，Side Chat 快速查询政策/案例——不用切换上下文</li>
+      <li>跨 Project 拖拽文件引用——调研报告直接拖到方案项目里</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">10</span> · 权限模式（Permission Modes）</div></div>
+    <table class="stbl">
+      <thead><tr><th>模式</th><th>说明</th><th>适用场景</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ask</strong></td><td>每步操作都确认</td><td>关键文件操作、删改</td></tr>
+        <tr><td><strong>Auto-accept edits</strong></td><td>允许自动编辑文件</td><td>写方案、改文档类任务</td></tr>
+        <tr><td><strong>Plan</strong></td><td>只规划不执行</td><td>策略分析、方案框架设计</td></tr>
+        <tr><td><strong>Auto</strong></td><td>完全自主（Team/Enterprise）</td><td>有经验的用户加速工作</td></tr>
+      </tbody>
+    </table>
+    <div class="callout callout-yellow" style="margin-top:12px;"><span class="co-icon">⚡</span><p><strong>建议：</strong>日常用 <strong>Plan</strong> + <strong>Auto-accept</strong> 组合——先让Claude出方案你确认，确认后自动执行。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">11</span> · 跨端切换 + 定时任务</div></div>
+    <div class="g2">
+      <div class="feature-card"><h4>📱 从桌面到手机</h4><p>输入 <strong>/desktop</strong> 切换到桌面端；点击"Continue on web"推送到云端，手机也能继续聊。</p></div>
+      <div class="feature-card"><h4>⏰ 定时任务</h4><p>"每天早上6点查竞品新闻发到Artifact"——Claude自动执行，结果推送到你的Live Artifacts。</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">12</span> · 集成终端 + 内嵌预览</div></div>
+    <p>桌面端内置终端和编辑器：</p>
+    <ul>
+      <li>编写H5报告 → 直接运行预览，Claude会检查bug并自动修复</li>
+      <li>写Python调研脚本 → 终端跑完出结果，不用切窗口</li>
+      <li>Diff 视图 → 修改前后对比一目了然，点击"Review code"让Claude审查逻辑</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ 05 ERP场景 ═══ -->
+<section class="sec" id="s5">
+  <div class="sec-hd"><span class="sn">05</span><h2>ERP销售应用场景</h2><span class="ss">专属你的实战配置</span></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">13</span> · Projects 推荐方案</div></div>
+    <table class="stbl">
+      <thead><tr><th>Project 名称</th><th>CLAUDE.md 重点</th><th>MCP 连接</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><strong>客户·[企业名]</strong></td><td>行业/痛点/决策链/竞品/阶段</td><td>飞书+Tavily+浏览器</td><td>每个大客户一个独立Project</td></tr>
+        <tr><td><strong>销售工具箱</strong></td><td>所有话术/模板/方法索引</td><td>Tavily+H5生成</td><td>维护你的五份H5工具箱</td></tr>
+        <tr><td><strong>竞品情报</strong></td><td>用友/SAP/浪潮动态</td><td>Tavily（定时任务）</td><td>每日自动抓竞品新闻</td></tr>
+        <tr><td><strong>飞书知识库</strong></td><td>输出文档规范</td><td>飞书MCP</td><td>统一管理输出到claude协作</td></tr>
+        <tr><td><strong>行业研究</strong></td><td>装备制造/军工/零售等</td><td>Tavily+浏览器</td><td>行业报告生成和归档</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">14</span> · 打单全流程的Claude用法</div></div>
+    <div class="fl"><div class="fn">商机</div><div class="fc"><div class="ft">客户背调</div><div class="fd">"查一下XX公司，生成企业信息报告" → Claude用Tavily+飞书，5分钟出报告</div></div></div>
+    <div class="fl"><div class="fn">方案</div><div class="fc"><div class="ft">定制方案+ROI</div><div class="fd">"按痛点挖掘清单的分析，写一份针对XX的方案书" → Claude调H5模板+飞书，一键生成</div></div></div>
+    <div class="fl"><div class="fn">演示</div><div class="fc"><div class="ft">演示编排</div><div class="fd">"帮我整理明天演示的要点，针对他们的三个痛点" → Claude出演示提纲+话术</div></div></div>
+    <div class="fl"><div class="fn">商务</div><div class="fc"><div class="ft">谈判策略</div><div class="fd">"客户领导不认可工作量，帮我出几个应对方案" → Claude出A/B方案+话术</div></div></div>
+    <div class="fl"><div class="fn">收单</div><div class="fc"><div class="ft">合同+交付</div><div class="fd">"检查合同条款，列明风险项" → Claude逐条扫描，标注需要关注的条款</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">15</span> · 销售管理视角的Projects</div></div>
+    <p>作为营销总监，Projects 还可以帮你做团队管理：</p>
+    <ul>
+      <li><strong>团队周报 Project</strong>：每个人的跟进情况自动汇总，生成小组周报</li>
+      <li><strong>商机 Pipeline Project</strong>：所有商机汇总看板，按阶段/金额/概率排序</li>
+      <li><strong>话术迭代 Project</strong>：每次遇到的客户异议和应对话术，积累成团队资产</li>
+    </ul>
+    <div class="callout callout-green" style="margin-top:12px;"><span class="co-icon">🚀</span><p><strong>建议：</strong>先建一个"销售工具箱"Project，把5份H5放进去，CLAUDE.md写清索引。以后任何打单任务，都在这个Project里做。</p></div>
+  </div>
+</section>
+
+<!-- ═══ 06 提示词 ═══ -->
+<section class="sec" id="s6">
+  <div class="sec-hd"><span class="sn">06</span><h2>优化提示词</h2><span class="ss">向Claude发指令的正确姿势</span></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">16</span> · 三段式模板：背景+任务+格式</div></div>
+    <p style="margin-bottom:10px;">一个好 Prompt = 告诉Claude三件事：<strong>你是谁→要什么→怎么给</strong></p>
+    <div class="cb"><span class="hl">【背景】</span>我是金蝶的销售，正在跟进XX制造集团的ERP项目。
+<span class="hl">【任务】</span>帮我分析这个客户的痛点，结合行业趋势，给出差异化竞争策略。
+<span class="hl">【格式】</span>用表格呈现：痛点→根因→金蝶方案→竞品应对→行动建议。</div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">17</span> · 角色约束法</div></div>
+    <p>给Claude一个身份，输出质量明显提升：</p>
+    <div class="callout callout-blue"><span class="co-icon">🎭</span><p><strong>建议Prompt：</strong>"你是金蝶的资深解决方案专家，有15年装备制造行业经验。现在面对XX集团的CIO，要用他听得懂的语言解释为什么需要升级系统……"</p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">18</span> · 迭代指令法</div></div>
+    <p>别试图一次说清楚，分批推进：</p>
+    <div class="g3">
+      <div class="fl" style="display:block;text-align:center;"><div class="fn" style="margin:0 auto 6px;">1</div><p style="font-size:12px;color:var(--text-muted);">"查一下XX公司背景"</p></div>
+      <div class="fl" style="display:block;text-align:center;"><div class="fn" style="margin:0 auto 6px;">2</div><p style="font-size:12px;color:var(--text-muted);">"再搜一下行业趋势和竞品动态"</p></div>
+      <div class="fl" style="display:block;text-align:center;"><div class="fn" style="margin:0 auto 6px;">3</div><p style="font-size:12px;color:var(--text-muted);">"结合以上信息，出一份打单策略"</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">19</span> · ERP销售专用Prompt模板</div></div>
+    <table class="stbl">
+      <thead><tr><th>场景</th><th>Prompt</th></tr></thead>
+      <tbody>
+        <tr><td><strong>客户调研</strong></td><td>"我是金蝶天津的销售，正在跟进[企业名]。帮我用Tavily查一下它的工商信息、业务概况、数字化系统现状，出结构化报告。"</td></tr>
+        <tr><td><strong>痛点分析</strong></td><td>"针对[企业名+行业]，列出5个最常见的ERP升级痛点，每个痛点包含：场景描述+量化损失+我们的应对方案。"</td></tr>
+        <tr><td><strong>竞品应对</strong></td><td>"客户提到用友比我们便宜30%。用TCO对比法写出三个反驳角度，语气专业不贬低，带数据支撑。"</td></tr>
+        <tr><td><strong>方案框架</strong></td><td>"针对[企业名]的[痛点]，写一个方案框架：项目背景→解决方案→实施计划→ROI测算→为什么选金蝶。"</td></tr>
+        <tr><td><strong>谈判话术</strong></td><td>"客户领导不认可工作量。帮我出两套方案：一套分步走不大幅降价，一套最小方案先见效。每套带具体话术。"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">20</span> · 快速上手指南</div></div>
+    <div class="g3">
+      <div class="feature-card"><h4>1️⃣ 先建一个Project</h4><p>~/Clients/销售工具箱/，写好CLAUDE.md</p></div>
+      <div class="feature-card"><h4>2️⃣ 连上飞书+Tavily</h4><p>MCP配置好，Claude就能读写飞书和搜索</p></div>
+      <div class="feature-card"><h4>3️⃣ 创建第一个Artifact</h4><p>"创建一个打单进度看板"</p></div>
+    </div>
+    <div class="callout callout-blue" style="margin-top:14px;"><span class="co-icon">🎉</span><p><strong>万事俱备，开始打单！</strong>遇到任何问题，直接问Claude——它已经是你的AI搭档了。</p></div>
+  </div>
+</section>
+
+</div>
+
+<div class="ft">金蝶 · 天津 &nbsp;|&nbsp; 销售团队内部工具 &nbsp;|&nbsp; ④ 内部公开 请勿外传</div>
+
+<div class="fab-nav" id="fabNav">
+  <div class="fab-menu" id="fabMenu">
+    <button class="fab-item" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">入门</button>
+    <button class="fab-item" onclick="document.getElementById('s2').scrollIntoView({behavior:'smooth'})">Projects</button>
+    <button class="fab-item" onclick="document.getElementById('s3').scrollIntoView({behavior:'smooth'})">Live Artifacts</button>
+    <button class="fab-item" onclick="document.getElementById('s4').scrollIntoView({behavior:'smooth'})">高阶玩法</button>
+    <button class="fab-item" onclick="document.getElementById('s5').scrollIntoView({behavior:'smooth'})">ERP场景</button>
+    <button class="fab-item" onclick="document.getElementById('s6').scrollIntoView({behavior:'smooth'})">提示词</button>
+  </div>
+  <button class="fab-btn" id="fabBtn" onclick="document.getElementById('fabMenu').classList.toggle('open')">✦</button>
+</div>
+
+<script>
+// ── Nav ──
+(function(){
+  const btns=document.querySelectorAll('.nav-btn');
+  const secs=[];
+  btns.forEach(b=>{const e=document.getElementById(b.dataset.s);if(e)secs.push({el:e,btn:b});});
+  window.addEventListener('scroll',function(){
+    let cur=secs[0];const sy=window.scrollY+80;
+    for(let i=0;i<secs.length;i++){if(secs[i].el.offsetTop<=sy)cur=secs[i];}
+    btns.forEach(b=>b.classList.remove('active'));
+    if(cur)cur.btn.classList.add('active');
+    document.getElementById('topNav').classList.toggle('scrolled',window.scrollY>80);
+  },{passive:true});
+  btns.forEach(b=>{
+    b.addEventListener('click',function(){
+      const el=document.getElementById(this.dataset.s);
+      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+})();
+// ── Scroll Reveal ──
+(function(){
+  const els=document.querySelectorAll('.sec');
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.05});
+  els.forEach(el=>obs.observe(el));
+})();
+// ── Close FAB on scroll ──
+window.addEventListener('scroll',function(){document.getElementById('fabMenu').classList.remove('open')},{passive:true});
+</script>
+</body>
+</html>

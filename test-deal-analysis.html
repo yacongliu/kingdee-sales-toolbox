@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XX装备集团 · 打单策略分析报告</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-deep: #2B70F9; --blue-bright: #4E95FF; --blue-pure: #2D66F6;
+  --blue-sky: #3398FE; --cyan: #1AC6FF; --teal: #1EBFB5; --purple: #9D5CFF; --yellow: #FFAA00;
+  --navy-dark: #1A1B45; --black: #222; --text-secondary: #3d4a5c; --text-muted: #5c6b7e; --gray: #B0B0B0; --blue-gray: #E6EDFC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:var(--black);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+/* ─── Top Nav ─── */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);height:60px;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 16px;transition:box-shadow .3s}
+.topnav.scrolled{box-shadow:0 2px 12px rgba(43,112,249,.10)}
+.nav-btn{padding:7px 16px;border-radius:8px;border:none;background:transparent;color:var(--text-secondary);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.nav-btn:hover{background:var(--blue-gray);color:var(--blue-deep)}
+.nav-btn.active{background:var(--blue-deep);color:#fff}
+
+/* ─── Hero ─── */
+.hero{background:linear-gradient(135deg,#2B70F9,#4E95FF);padding:100px 24px 56px;text-align:center}
+.hero h1{font-size:clamp(28px,4vw,40px);font-weight:800;color:#fff}
+.hero .sub{font-size:15px;color:rgba(255,255,255,.75);margin-top:8px}
+.hero-meta{display:flex;justify-content:center;gap:24px;margin-top:16px;font-size:13px;color:rgba(255,255,255,.55);flex-wrap:wrap}
+
+/* ─── Container ─── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+
+/* ─── Section ─── */
+.sec{margin-top:44px;opacity:0;transform:translateY(20px);transition:all .5s}
+.sec.in{opacity:1;transform:translateY(0)}
+.sec-hd{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-hd .sn{font-size:20px;font-weight:800;color:var(--blue-deep)}
+.sec-hd h2{font-size:18px;font-weight:700;color:var(--navy-dark)}
+
+/* ─── Card ─── */
+.card{background:#fff;border-radius:12px;padding:28px 32px;margin-bottom:22px;box-shadow:0 1px 3px rgba(43,112,249,.06);border:1px solid var(--blue-gray);transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 8px 28px rgba(43,112,249,.10);transform:translateY(-2px)}
+.card-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--blue-gray)}
+.card-tl{font-size:16px;font-weight:700;color:var(--navy-dark);flex:1}
+.card-tl .cn{font-size:22px;font-weight:800;color:var(--blue-deep)}
+.card p,.card li{font-size:14px;color:var(--text-secondary);line-height:1.8}
+.card ul{padding-left:20px}
+.card li{margin-bottom:4px}
+.card strong{color:var(--navy-dark)}
+
+/* ─── Table ─── */
+.stbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.stbl thead th{background:linear-gradient(135deg,#2B70F9,#4E95FF);color:#fff;padding:10px 14px;font-weight:600;text-align:left;font-size:12px}
+.stbl tbody td{padding:10px 14px;border-bottom:1px solid var(--blue-gray);color:var(--text-secondary)}
+.stbl tbody tr:nth-child(even) td{background:#fafbff}
+
+/* ─── Pillar Grid ─── */
+.pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:14px 0}
+@media(max-width:800px){.pg{grid-template-columns:1fr 1fr}}@media(max-width:500px){.pg{grid-template-columns:1fr}}
+.pc{border-radius:10px;padding:18px;border:1px solid var(--blue-gray);background:#fff;transition:all .2s}
+.pc:hover{box-shadow:0 4px 16px rgba(43,112,249,.08);border-color:var(--blue-deep)}.pc .pd{width:8px;height:8px;border-radius:50%;display:inline-block;margin-bottom:6px}
+.pc .pl{font-size:12px;font-weight:600;color:var(--navy-dark);margin-bottom:4px}
+.pc .pv{font-size:14px;font-weight:600;color:var(--blue-deep);margin-bottom:4px}
+.pc .pd2{font-size:12px;color:var(--text-muted);line-height:1.5}
+
+/* ─── Bar ─── */
+.progress-row{display:flex;align-items:center;gap:12px;margin:14px 0}
+.pr-label{font-size:13px;font-weight:600;color:var(--navy-dark);min-width:80px}
+.bar{flex:1;height:4px;background:#dce0e8;border-radius:2px;overflow:hidden}
+.bar .f{height:100%;border-radius:2px;transition:width 1s ease}
+.pr-val{font-weight:700;font-size:15px;min-width:40px;text-align:right}
+
+/* ─── MEDDIC ─── */
+.mi{display:flex;align-items:flex-start;gap:14px;margin:14px 0}
+.ms{flex-shrink:0;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
+.mc{flex:1}
+.ml{font-size:14px;font-weight:600;color:var(--navy-dark);margin-bottom:4px}
+.md2{font-size:12px;color:var(--text-muted)}
+.mi .bar{height:4px;margin:6px 0}
+
+/* ─── Pillar 3-cols ─── */
+.pc3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}@media(max-width:700px){.pc3{grid-template-columns:1fr}}
+.pc3-item{border-radius:10px;padding:24px;text-align:center;border:1px solid var(--blue-gray);transition:all .2s}
+.pc3-item:hover{box-shadow:0 4px 16px rgba(43,112,249,.08)}.pc3-item h4{font-size:14px;font-weight:700;color:var(--navy-dark);margin-bottom:4px}
+.pc3-item p{font-size:12px;color:var(--text-muted);line-height:1.5}
+
+/* ─── Callout ─── */
+.callout{border-radius:8px;padding:14px 16px;margin:10px 0;display:flex;gap:10px;align-items:flex-start}
+.callout-blue{background:#f0f6ff;border-left:3px solid var(--blue-deep)}.callout-yellow{background:#fffcf0;border-left:3px solid var(--yellow)}.callout-green{background:#edfaf1;border-left:3px solid var(--teal)}
+.callout .ci{font-size:15px;flex-shrink:0;margin-top:1px}
+.callout p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+
+/* ─── Talking Point ─── */
+.tp{border-radius:8px;padding:14px 16px;margin:8px 0;border-left:3px solid var(--blue-deep);background:#f0f6ff}
+.tp .tt{font-size:11px;font-weight:600;color:var(--blue-deep);margin-bottom:4px}
+.tp p{font-size:13px;color:var(--text-secondary);line-height:1.7}
+
+/* ─── Tag ─── */
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:500}
+.tag-blue{background:rgba(43,112,249,.1);color:var(--blue-deep)}
+.tag-red{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:#FEF2F2;color:#DC2626}
+
+/* ─── Stage Flow ─── */
+.stage-flow{display:flex;align-items:flex-start;justify-content:space-between;margin:14px 0}
+.stage-node{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.stage-node .sc{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;position:relative;z-index:2;flex-shrink:0}
+.stage-node .sl{font-size:12px;font-weight:600;margin-top:6px;text-align:center;white-space:nowrap}
+.stage-node .sd{font-size:10.5px;color:var(--text-muted);text-align:center}
+.stage-node .scon{position:absolute;top:22px;left:calc(50%+22px);width:calc(100%-44px);height:3px;z-index:1;border-radius:2px}
+.stage-node:last-child .scon{display:none}
+.sn-done .sc{background:var(--blue-deep);color:#fff;border:3px solid var(--blue-deep)}
+.sn-done .sl{color:var(--blue-deep)}.sn-done .scon{background:var(--blue-deep)}
+.sn-cur .sc{background:var(--blue-deep);color:#fff;border:3px solid var(--blue-deep);animation:breathe 1.8s ease-in-out infinite}
+@keyframes breathe{0%{box-shadow:0 0 0 0 rgba(43,112,249,.35)}50%{box-shadow:0 0 0 10px rgba(43,112,249,.12)}100%{box-shadow:0 0 0 0 rgba(43,112,249,.35)}}
+.sn-cur .sl{color:var(--blue-deep);font-weight:700}.sn-cur .scon{background:var(--blue-deep)}
+.sn-pending .sc{background:#f5f6f8;color:var(--gray);border:3px solid #dce0e8}
+.sn-pending .sl{color:var(--gray)}.sn-pending .scon{background:#dce0e8}
+
+/* ─── Footer ─── */
+.ft{text-align:center;padding:36px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--blue-gray);margin-top:44px}
+
+/* ─── FAB ─── */
+.fab-wrap{position:fixed;bottom:32px;right:32px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fab-btn{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#2B70F9,#4E95FF);color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(43,112,249,.3);transition:all .2s;display:flex;align-items:center;justify-content:center}
+.fab-btn:hover{transform:scale(1.05);box-shadow:0 6px 24px rgba(43,112,249,.4)}
+.fab-menu{display:none;flex-direction:column;align-items:flex-end;gap:6px}
+.fab-menu.open{display:flex}
+.fab-item{padding:8px 16px;border-radius:20px;border:1px solid var(--blue-gray);background:rgba(255,255,255,.96);backdrop-filter:blur(10px);color:var(--text-secondary);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.fab-item:hover{background:var(--blue-deep);color:#fff;border-color:var(--blue-deep)}
+
+/* ─── Responsive ─── */
+@media(max-width:800px){.card{padding:20px 18px}.stage-flow{flex-wrap:wrap;gap:8px;justify-content:center}.stage-node{flex:0 0 45%}.stage-node .scon{display:none}}
+@media print{.topnav,.fab-wrap{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<nav class="topnav" id="topNav">
+  <button class="nav-btn active" data-s="s1">判断</button>
+  <button class="nav-btn" data-s="s2">概况</button>
+  <button class="nav-btn" data-s="s3">痛点</button>
+  <button class="nav-btn" data-s="s4">角色</button>
+  <button class="nav-btn" data-s="s5">MEDDIC</button>
+</nav>
+
+<section class="hero">
+  <h1>XX装备集团 · 打单策略分析</h1>
+  <p class="sub">当前阶段：商务谈判 · 生成日期：2026年6月</p>
+  <div class="hero-meta"><span>金蝶 · 天津</span><span>④ 内部公开</span></div>
+</section>
+
+<div class="wrap">
+
+<!-- 01 总体判断 -->
+<div class="sec" id="s1">
+  <div class="sec-hd"><span class="sn">01</span><h2>总体判断</h2></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">·</span> 推荐跟进 · 赢单概率中等</div></div>
+    <p>客户痛点清晰（项目成本管控+信创合规），决策链完整，预算初步确认。主要风险在用友长期合作关系和高层决策不确定性。建议集中资源突破CIO和财务总两个关键角色。</p>
+    <div class="progress-row">
+      <div class="pr-label">赢单概率</div>
+      <div class="bar"><div class="f" style="width:65%;background:var(--blue-bright)"></div></div>
+      <span class="pr-val" style="color:var(--blue-deep);">65%</span>
+    </div>
+  </div>
+</div>
+
+<!-- 02 客户概况 -->
+<div class="sec" id="s2">
+  <div class="sec-hd"><span class="sn">02</span><h2>客户概况</h2></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">·</span> 基本信息</div></div>
+    <table class="stbl"><tbody>
+      <tr><td style="font-weight:600;width:25%">企业名称</td><td>XX重型装备集团</td></tr>
+      <tr><td style="font-weight:600">行业</td><td>装备制造（项目型制造）</td></tr>
+      <tr><td style="font-weight:600">现有系统</td><td>金蝶EAS、浪潮GS7</td></tr>
+      <tr><td style="font-weight:600">项目背景</td><td>系统上线约5年，功能无法满足财务管理要求</td></tr>
+      <tr><td style="font-weight:600">预算范围</td><td>初步确认200-300万</td></tr>
+    </tbody></table>
+  </div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">·</span> 关键决策人</div></div>
+    <div class="pg">
+      <div class="pc"><div class="pd" style="background:var(--blue-deep)"></div><div class="pl">生产副总 · 张总</div><div class="pv">内部支持者</div><div class="pd2">关注成本管控，痛点最集中</div></div>
+      <div class="pc"><div class="pd" style="background:var(--teal)"></div><div class="pl">财务总 · 李总</div><div class="pv">中立偏支持</div><div class="pd2">月结效率低，急需改善</div></div>
+      <div class="pc"><div class="pd" style="background:var(--yellow)"></div><div class="pl">CIO · 王总</div><div class="pv">中立</div><div class="pd2">信创合规压力，技术评估中</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 痛点分析 -->
+<div class="sec" id="s3">
+  <div class="sec-hd"><span class="sn">03</span><h2>痛点穿透分析</h2></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">·</span> 四层痛点</div></div>
+    <table class="stbl">
+      <thead><tr><th>痛点层级</th><th>痛点描述</th><th>量化影响</th><th>与金蝶方案关联</th></tr></thead>
+      <tbody>
+        <tr><td><strong>战略层</strong></td><td>信创合规压力</td><td>2027年安可替代deadline</td><td>苍穹全栈信创适配</td></tr>
+        <tr><td><strong>管理层</strong></td><td>项目成本算不准</td><td>超支率高达25%</td><td>项目成本管理+实时利润分析</td></tr>
+        <tr><td><strong>运营层</strong></td><td>月结周期长</td><td>月结需10天</td><td>财务核算自动化</td></tr>
+        <tr><td><strong>技术层</strong></td><td>系统数据孤岛</td><td>EAS与业务系统不通</td><td>一体化平台打通数据</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 04 角色策略 -->
+<div class="sec" id="s4">
+  <div class="sec-hd"><span class="sn">04</span><h2>关键角色策略</h2></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">·</span> 四类关键人</div></div>
+    <div class="pg">
+      <div class="pc"><div class="pd" style="background:var(--teal)"></div><div class="pl">生产副总 · 张总</div><div class="pv" style="color:var(--teal)">立场：支持</div><div class="pd2">关注：项目利润、成本管控。安排参观标杆客户</div></div>
+      <div class="pc"><div class="pd" style="background:var(--gray)"></div><div class="pl">财务总 · 李总</div><div class="pv" style="color:var(--gray)">立场：中立</div><div class="pd2">关注：月结效率、报表准确性。出ROI测算</div></div>
+      <div class="pc"><div class="pd" style="background:#DC2626"></div><div class="pl">CIO · 王总</div><div class="pv" style="color:#DC2626">立场：有风险</div><div class="pd2">关注：技术路线、信创合规。安排技术交流</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 MEDDIC -->
+<div class="sec" id="s5">
+  <div class="sec-hd"><span class="sn">05</span><h2>MEDDIC 评估</h2></div>
+  <div class="card">
+    <div class="card-hd"><div class="card-tl"><span class="cn">·</span> 六维评分</div></div>
+    <div class="mi"><div class="ms" style="background:#f0f6ff;color:var(--blue-deep)">3</div><div class="mc"><div class="ml">M · Metrics</div><div class="bar"><div class="f" style="width:60%;background:var(--blue-bright)"></div></div><div class="md2">客户清楚痛点，但未完全量化ROI</div></div></div>
+    <div class="mi"><div class="ms" style="background:#edfaf1;color:var(--teal)">4</div><div class="mc"><div class="ml">E · Economic Buyer</div><div class="bar"><div class="f" style="width:80%;background:var(--teal)"></div></div><div class="md2">财务总是关键决策人，已建立联系</div></div></div>
+    <div class="mi"><div class="ms" style="background:#fffcf0;color:var(--yellow)">2</div><div class="mc"><div class="ml">D · Decision Criteria</div><div class="bar"><div class="f" style="width:40%;background:var(--yellow)"></div></div><div class="md2">选型标准未完全明确</div></div></div>
+    <div class="mi"><div class="ms" style="background:#f0f6ff;color:var(--blue-deep)">3</div><div class="mc"><div class="ml">D · Decision Process</div><div class="bar"><div class="f" style="width:60%;background:var(--blue-bright)"></div></div><div class="md2">需要党委会审批，流程较长</div></div></div>
+    <div class="mi"><div class="ms" style="background:#edfaf1;color:var(--teal)">4</div><div class="mc"><div class="ml">I · Identify Pain</div><div class="bar"><div class="f" style="width:80%;background:var(--teal)"></div></div><div class="md2">痛点清晰，客户主动寻求方案</div></div></div>
+    <div class="mi"><div class="ms" style="background:#fffcf0;color:var(--yellow)">2</div><div class="mc"><div class="ml">C · Champion</div><div class="bar"><div class="f" style="width:40%;background:var(--yellow)"></div></div><div class="md2">内线角色不够强，需要培养</div></div></div>
+  </div>
+</div>
+
+</div>
+
+<div class="ft">金蝶 · 天津 &nbsp;|&nbsp; ④ 内部公开</div>
+
+<div class="fab-wrap" id="fabWrap">
+  <div class="fab-menu" id="fabMenu">
+    <button class="fab-item" onclick="goto('s1')">判断</button>
+    <button class="fab-item" onclick="goto('s2')">概况</button>
+    <button class="fab-item" onclick="goto('s3')">痛点</button>
+    <button class="fab-item" onclick="goto('s4')">角色</button>
+    <button class="fab-item" onclick="goto('s5')">MEDDIC</button>
+  </div>
+  <button class="fab-btn" id="fabBtn">✦</button>
+</div>
+
+<script>
+function goto(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});document.getElementById('fabMenu').classList.remove('open')}
+(function(){
+  const btn=document.getElementById('fabBtn'),menu=document.getElementById('fabMenu');
+  btn.addEventListener('click',function(e){e.stopPropagation();menu.classList.toggle('open')});
+  document.addEventListener('click',function(){menu.classList.remove('open')});
+  window.addEventListener('scroll',function(){menu.classList.remove('open')},{passive:true});
+  const nb=document.querySelectorAll('.nav-btn'),secs=[];
+  nb.forEach(b=>{const e=document.getElementById(b.dataset.s);if(e)secs.push({el:e,btn:b})});
+  window.addEventListener('scroll',function(){let cur=secs[0];const sy=window.scrollY+80;for(let i=0;i<secs.length;i++){if(secs[i].el.offsetTop<=sy)cur=secs[i];}nb.forEach(b=>b.classList.remove('active'));if(cur)cur.btn.classList.add('active');document.getElementById('topNav').classList.toggle('scrolled',window.scrollY>80)},{passive:true});
+  nb.forEach(b=>{b.addEventListener('click',function(){const el=document.getElementById(this.dataset.s);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})})});
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')})},{threshold:.05});
+  document.querySelectorAll('.sec').forEach(el=>obs.observe(el));
+})();
+</script>
+</body>
+</html>
