@@ -257,6 +257,7 @@
     <a href="#scripts">话术脚本</a>
     <span class="nav-divider"></span>
     <a href="#versions">版本对比</a>
+    <a href="#agent-table">智能体速查</a>
     <a href="#faq-all">FAQ</a>
   </div>
 </nav>
@@ -875,6 +876,133 @@
       <div class="talk-tip">💡 要点：应对预算有限≠降价，而是版本梯度+场景聚焦+节奏推进</div>
     </div>
 
+    <!-- 智能体速查表 -->
+    <div style="margin-top:44px;">
+      <div class="section-header">
+        <h2><span class="section-number">7</span>AI 财务部 · 智能体速查表</h2>
+        <p>每个智能体的岗位、场景、价值一句话速查，面向客户快速展示</p>
+      </div>
+      <style>
+        .agent-table { width:100%; border-collapse:collapse; background:var(--bg-white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); font-size:13px; }
+        .agent-table th { background:var(--text-dark); color:#fff; padding:10px 12px; font-size:12px; font-weight:600; text-align:left; }
+        .agent-table td { padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.6; }
+        .agent-table .agent-name { font-weight:600; color:var(--text-dark); white-space:nowrap; }
+        .agent-table .agent-role { font-size:11px; color:var(--text-muted); white-space:nowrap; }
+        .agent-table .agent-efficiency { font-size:11px; color:var(--success); font-weight:600; white-space:nowrap; }
+        .agent-cat { background:var(--primary); color:#fff; font-size:11px; padding:3px 10px; border-radius:4px; display:inline-block; margin:8px 0 4px; }
+      </style>
+      <div class="agent-cat">业务审核</div>
+      <table class="agent-table">
+        <thead><tr><th style="width:130px;">智能体</th><th style="width:80px;">适用岗位</th><th style="width:220px;">核心能力</th><th style="width:200px;">客户痛点</th><th style="width:120px;">效率提升</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="agent-name">费用审核智能体</td>
+            <td class="agent-role">财务审核岗</td>
+            <td>规则自进化+批量审核，30分钟落地审核规则；自动识别拆单报销等隐蔽舞弊</td>
+            <td>单据量大、人工审核标准不一、规则配置耗时2-3个月</td>
+            <td class="agent-efficiency">审核工作量↓90%<br>规则落地：3月→30分钟</td>
+          </tr>
+          <tr>
+            <td class="agent-name">采购付款审核智能体</td>
+            <td class="agent-role">应付会计</td>
+            <td>收票查询→物料映射→多单匹配→应付单下推→匹配报告，全流程自动化</td>
+            <td>单据链条长、物料匹配复杂、人工核对工作量大</td>
+            <td class="agent-efficiency">采购成本↓3-10%<br>审核效率大幅提升</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="agent-cat" style="background:var(--success);">对账与差异分析</div>
+      <table class="agent-table">
+        <thead><tr><th style="width:130px;">智能体</th><th style="width:80px;">适用岗位</th><th style="width:220px;">核心能力</th><th style="width:200px;">客户痛点</th><th style="width:120px;">效率提升</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="agent-name">银企对账智能体</td>
+            <td class="agent-role">出纳</td>
+            <td>银行流水与日记账自动匹配、差异定位、余额调节表生成，7×24在线</td>
+            <td>数据量大、差异排查耗时，月底集中负担重</td>
+            <td class="agent-efficiency">对账：3天→3小时<br>月底负担→日常轻任务</td>
+          </tr>
+          <tr>
+            <td class="agent-name">往来对账智能体</td>
+            <td class="agent-role">应收/应付会计</td>
+            <td>客户对账查询→对账函创建→邮件发送，全流程自动化</td>
+            <td>客户数量多、账期不一、对账沟通耗时</td>
+            <td class="agent-efficiency">对账效率大幅提升</td>
+          </tr>
+          <tr>
+            <td class="agent-name">集团内部对账智能体</td>
+            <td class="agent-role">集团财务</td>
+            <td>对账方案查询→双方数据抽取→自动勾稽→差异分析→通知制单人</td>
+            <td>成员单位多、交易链条长、差异归因难</td>
+            <td class="agent-efficiency">集团对账闭环自动化</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="agent-cat" style="background:var(--warning);">核算与记账</div>
+      <table class="agent-table">
+        <thead><tr><th style="width:130px;">智能体</th><th style="width:80px;">适用岗位</th><th style="width:220px;">核心能力</th><th style="width:200px;">客户痛点</th><th style="width:120px;">效率提升</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="agent-name">记账智能体</td>
+            <td class="agent-role">总账会计</td>
+            <td>凭证录入→智能凭证生成→模板检查→业财对账→差异处理，全流程</td>
+            <td>业务来源多、凭证处理频次高、业财一致性要求高</td>
+            <td class="agent-efficiency">凭证处理效率大幅提升<br>异常自动介入分析</td>
+          </tr>
+          <tr>
+            <td class="agent-name">成本核算智能体</td>
+            <td class="agent-role">成本会计</td>
+            <td>成本数据归集→月结数据检查→异常诊断→智能催办与修复</td>
+            <td>数据来源复杂、月结前异常集中暴露</td>
+            <td class="agent-efficiency">月结前移，前置发现异常</td>
+          </tr>
+          <tr>
+            <td class="agent-name">资产管理智能体</td>
+            <td class="agent-role">资产会计</td>
+            <td>资产结账检查→异常检查→逾期/临期资产预警</td>
+            <td>资产状态变化频繁、逾期临期事项需持续关注</td>
+            <td class="agent-efficiency">降低资产结账返工</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="agent-cat" style="background:var(--info);">专家服务与报告</div>
+      <table class="agent-table">
+        <thead><tr><th style="width:130px;">智能体</th><th style="width:80px;">适用岗位</th><th style="width:220px;">核心能力</th><th style="width:200px;">客户痛点</th><th style="width:120px;">效率提升</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="agent-name">税务管理智能体</td>
+            <td class="agent-role">税务会计</td>
+            <td>开票排期→自动开票→智能勾选排期→自动勾选</td>
+            <td>开票/勾选时效要求高、集中处理影响核算进度</td>
+            <td class="agent-efficiency">票税处理计划化、自动化</td>
+          </tr>
+          <tr>
+            <td class="agent-name">报表编制智能体</td>
+            <td class="agent-role">总账/报表岗</td>
+            <td>法定报表生成→勾稽关系检查→同比环比异常分析</td>
+            <td>出具时间紧、校验要求高、异常分析依赖人工</td>
+            <td class="agent-efficiency">数天→几分钟<br>维度更全面</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="agent-cat" style="background:var(--accent);">月结统筹</div>
+      <table class="agent-table">
+        <thead><tr><th style="width:130px;">智能体</th><th style="width:80px;">适用岗位</th><th style="width:220px;">核心能力</th><th style="width:200px;">客户痛点</th><th style="width:120px;">效率提升</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="agent-name">结账智能体</td>
+            <td class="agent-role">财务主管</td>
+            <td>一键发起总账/资产/出纳/存货4大域检查→自动诊断→流程创建→任务下达→进度监控→催办→完成简报</td>
+            <td>逐模块手动排查、流程分散易遗漏、进度不可视、跨组织协同困难</td>
+            <td class="agent-efficiency">结账周期↓60%<br>7-15天→3-5天</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px;padding:12px 18px;background:rgba(0,85,255,.06);border-radius:8px;border:1px solid rgba(0,85,255,.15);font-size:13px;color:var(--text-body);">
+        <strong style="color:var(--primary);">数据来源：</strong>金蝶灵基官方操作手册 + 金蝶官网客户案例（汽车零部件/装备制造/电子高科/永和豆浆等）。实际效果因企业规模、业务复杂度、系统基础而异。
+      </div>
+    </div>
+
     <!-- Maturity Check -->
     <div style="margin-top:44px;">
       <div class="section-header">
@@ -915,7 +1043,7 @@
 <section class="section section-alt" id="faq-all">
   <div class="container">
     <div class="section-header">
-      <h2><span class="section-number">7</span>常见问题速查</h2>
+      <h2><span class="section-number">8</span>常见问题速查</h2>
       <p>产品 FAQ + 客户异议应答，一个页面全覆盖</p>
     </div>
     <div class="faq-list">
